@@ -1,0 +1,5 @@
+fresh_calc_homepage:
+    path:     /
+    defaults: { _controller: FreshCalcBundle:Index:index }
+    requirements:
+        methods:  GET

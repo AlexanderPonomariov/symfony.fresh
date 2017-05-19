@@ -1,0 +1,39 @@
+{% extends 'FreshCalcBundle::base.html.twig' %}
+
+{% block title %}
+    Калькулятор - Fresh
+{% endblock %}
+
+{% block body %}
+
+    <form action="#">
+        <label for="company">Компания <em>*</em></label>
+        <input type="text" name="company" id="company" required>
+
+        <label for="name">Имя <em>*</em></label>
+        <input type="text" name="name" id="name" required>
+
+        <label for="surname">Фамилия</label>
+        <input type="text" name="surname" id="surname">
+
+        <label for="secondname">Отчество</label>
+        <input type="text" name="secondname" id="secondname">
+
+        <select>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+        </select>
+
+
+
+
+
+
+    </form>
+
+
+{% endblock %}

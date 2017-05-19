@@ -1,0 +1,4 @@
+fresh_calc:
+    resource: "@FreshCalcBundle/Resources/config/routing.yml"
+    prefix:   /
+
