@@ -7,27 +7,121 @@
 {% block body %}
 
     <form action="#">
-        <label for="company">Компания <em>*</em></label>
-        <input type="text" name="company" id="company" required>
 
-        <label for="name">Имя <em>*</em></label>
-        <input type="text" name="name" id="name" required>
+        <p>
+            <label for="company">Компания <em>*</em></label>
+            <input type="text" name="company" id="company" required>
+        </p>
 
-        <label for="surname">Фамилия</label>
-        <input type="text" name="surname" id="surname">
+        <p>
+            <label for="name">Имя <em>*</em></label>
+            <input type="text" name="name" id="name" required>
+        </p>
 
-        <label for="secondname">Отчество</label>
-        <input type="text" name="secondname" id="secondname">
+        <p>
+            <label for="surname">Фамилия</label>
+            <input type="text" name="surname" id="surname">
+        </p>
 
-        <select>
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-            <option>6</option>
-        </select>
+        <p>
+            <label for="secondname">Отчество</label>
+            <input type="text" name="secondname" id="secondname">
+        </p>
 
+        <p>
+            <label for="email">Email <em>*</em></label>
+            <input type="text" name="email" id="email">
+        </p>
+
+        <p>
+            <label for="tel">Телефон</label>
+            <input type="text" name="tel" id="tel">
+        </p>
+
+        <p>
+            <label for="site_type">Тип сайта</label>
+            <select id="site_type" name="site_type">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+            </select>
+        </p>
+
+
+        <p>
+            <label for="notificatons">Примечания</label><br/>
+            <textarea name="notificatons" id="notificatons" cols="30" rows="10"></textarea>
+        </p>
+
+
+        <fieldset id="design">
+            <legend>Дизайн</legend>
+
+            <p><input type="checkbox" id="subscribeNews"><label for="subscribeNews">Subscribe to newsletter?</label></p>
+            <p><input type="checkbox" id="subscribeNews"><label for="subscribeNews">Subscribe to newsletter?</label></p>
+            <p><input type="checkbox" id="subscribeNews"><label for="subscribeNews">Subscribe to newsletter?</label></p>
+            <p><input type="checkbox" id="subscribeNews"><label for="subscribeNews">Subscribe to newsletter?</label></p>
+            <p><input type="checkbox" id="subscribeNews"><label for="subscribeNews">Subscribe to newsletter?</label></p>
+            <p><input type="checkbox" id="subscribeNews"><label for="subscribeNews">Subscribe to newsletter?</label></p>
+
+            <p>
+
+                <label for="add_templates"><a href="#">Добавить шаблоны</a></label><br/>
+                <textarea name="add_templates" id="add_templates" cols="30" rows="10" placeholder='Добавте Ваши шаблоны через знак ","'></textarea>
+            </p>
+
+        </fieldset>
+
+        <fieldset id="programing">
+            <legend>Программирование</legend>
+
+            <p><input type="checkbox" id="subscribeNews"><label for="subscribeNews">Subscribe to newsletter?</label></p>
+            <p><input type="checkbox" id="subscribeNews"><label for="subscribeNews">Subscribe to newsletter?</label></p>
+            <p><input type="checkbox" id="subscribeNews"><label for="subscribeNews">Subscribe to newsletter?</label></p>
+            <p><input type="checkbox" id="subscribeNews"><label for="subscribeNews">Subscribe to newsletter?</label></p>
+            <p><input type="checkbox" id="subscribeNews"><label for="subscribeNews">Subscribe to newsletter?</label></p>
+            <p><input type="checkbox" id="subscribeNews"><label for="subscribeNews">Subscribe to newsletter?</label></p>
+
+            <p>
+
+                <label for="add_templates"><a href="#">Добавить шаблоны</a></label><br/>
+                <textarea name="add_templates" id="add_templates" cols="30" rows="10" placeholder='Добавте Ваши шаблоны через знак ","'></textarea>
+            </p>
+
+        </fieldset>
+
+        <p>
+            <label for="adaptive">Адаптив</label>
+            <input type="text" name="adaptive" id="adaptive"><span>%</span>
+        </p>
+
+        <p>
+            <label for="for_complicate">За сложность</label>
+            <input type="text" name="for_complicate" id="for_complicate"><span>%</span>
+        </p>
+
+        <p>
+            <label for="discount">Скидка</label>
+            <input type="text" name="discount" id="discount"><span>%</span>
+        </p>
+
+        <p>
+            <label for="quantity_of_payments">Кол-во платежей</label>
+            <input type="text" name="quantity_of_payments" id="quantity_of_payments">
+        </p>
+
+        <p>
+            <label for="final_price">Итоговая стоимость, грн.</label>
+            <input type="text" name="final_price" id="final_price">
+        </p>
+
+        <p>
+            <label for="secondname">Стоимость одного плаежа, грн.</label>
+            <input type="text" name="secondname" id="secondname">
+        </p>
 
 
 
