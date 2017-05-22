@@ -1,6 +1,6 @@
 <?php
 
-namespace Fresh\CalcBundle\SitesTypes;
+namespace Fresh\CalcBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 /**
@@ -21,4 +21,38 @@ class SitesTypes
      */
     protected $siteType;
 
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set siteType
+     *
+     * @param string $siteType
+     *
+     * @return SitesTypes
+     */
+    public function setSiteType($siteType)
+    {
+        $this->siteType = $siteType;
+
+        return $this;
+    }
+
+    /**
+     * Get siteType
+     *
+     * @return string
+     */
+    public function getSiteType()
+    {
+        return $this->siteType;
+    }
 }
