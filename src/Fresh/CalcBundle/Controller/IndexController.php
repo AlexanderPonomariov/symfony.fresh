@@ -32,7 +32,7 @@ class IndexController extends Controller
 
         $siteTypeParameters = $em->getRepository('FreshCalcBundle:Parameters')->getParametersForSiteType($siteType->getId());
 
-//        var_dump($siteTypeParameters);
+
 
 //        return $this->render('FreshCalcBundle:Index:index.html.twig',
 //            array(
@@ -40,6 +40,12 @@ class IndexController extends Controller
 //                'sitesTypes' => $siteTypeParameters
 //            )
 //        );
+        for ( $i=0; $i < count($siteTypeParameters); $i++ ) {
+            $siteTypeParameters[$i]['workType']['id'] = $em->getRepository('FreshCalcBundle:Parameters')->find($siteTypeParameters[$i]['id'])->getWorkTypes()->getId();
+           // echo '<pre>';var_dump($em->getRepository('FreshCalcBundle:WorkTypes')->find($siteTypeParameters[$i]['id'])->getWorkType());die;
+            $siteTypeParameters[$i]['workType']['workType'] = $em->getRepository('FreshCalcBundle:Parameters')->find($siteTypeParameters[$i]['id'])->getWorkTypes()->getWorkType();
+        }
+        //echo '<pre>';var_dump($siteTypeParameters);die;
         return new JsonResponse(array('sitesTypes' => $siteTypeParameters));
 
     }

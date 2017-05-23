@@ -2,6 +2,7 @@
 
 namespace Fresh\CalcBundle\Entity\Repository;
 
+use Doctrine\ORM\Query;
 /**
  * ParametersRepository
  *
@@ -18,6 +19,6 @@ class ParametersRepository extends \Doctrine\ORM\EntityRepository
             ->setParameter('site_type_id', $siteTypeId);
 
         return $qb->getQuery()
-            ->getResult();
+            ->getResult(Query::HYDRATE_ARRAY);
     }
 }
