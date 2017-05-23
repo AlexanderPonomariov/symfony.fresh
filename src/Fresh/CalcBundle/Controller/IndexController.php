@@ -4,6 +4,7 @@ namespace Fresh\CalcBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class IndexController extends Controller
 {
@@ -39,6 +40,7 @@ class IndexController extends Controller
 //                'sitesTypes' => $siteTypeParameters
 //            )
 //        );
-        return json_encode( array( 'sitesTypes' => $siteTypeParameters ) );
+        return new JsonResponse(array('sitesTypes' => $siteTypeParameters));
+
     }
 }

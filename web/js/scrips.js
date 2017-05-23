@@ -1,3 +1,3 @@
-/**
- * Created by SanIK on 23.05.2017.
- */
+$.get('parameter/41' , {} , function(data){
+    console.log(data);
+});
