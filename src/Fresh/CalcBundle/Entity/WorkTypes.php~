@@ -1,0 +1,30 @@
+<?php
+
+namespace Fresh\CalcBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+/**
+ * @ORM\Entity(repositoryClass="Fresh\CalcBundle\Entity\Repository\WorkTypesRepository")
+ * @ORM\Table(name="work_types")
+ */
+class WorkTypes
+{
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $workType;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Parameters", mappedBy="work_types")
+     */
+    protected $parameters;
+
+
+}

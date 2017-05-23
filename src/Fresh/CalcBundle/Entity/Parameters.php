@@ -43,7 +43,10 @@ class Parameters
      */
     protected $updated;
 
-
+    /**
+     * @ORM\ManyToOne(targetEntity="WorkTypes", inversedBy="parameters")
+     * @ORM\JoinColumn(name="work_type_id", referencedColumnName="id")
+     */
     protected $parameterType;
 
 
@@ -179,5 +182,29 @@ class Parameters
     public function getSiteType()
     {
         return $this->siteType;
+    }
+
+    /**
+     * Set parameterType
+     *
+     * @param \Fresh\CalcBundle\Entity\WorkTypes $parameterType
+     *
+     * @return Parameters
+     */
+    public function setParameterType(\Fresh\CalcBundle\Entity\WorkTypes $parameterType = null)
+    {
+        $this->parameterType = $parameterType;
+
+        return $this;
+    }
+
+    /**
+     * Get parameterType
+     *
+     * @return \Fresh\CalcBundle\Entity\WorkTypes
+     */
+    public function getParameterType()
+    {
+        return $this->parameterType;
     }
 }

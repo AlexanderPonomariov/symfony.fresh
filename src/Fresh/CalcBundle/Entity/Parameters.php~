@@ -43,7 +43,10 @@ class Parameters
      */
     protected $updated;
 
-
+    /**
+     * @ORM\ManyToOne(targetEntity="WorkTypes", inversedBy="parameters")
+     * @ORM\JoinColumn(name="work_type_id", referencedColumnName="id")
+     */
     protected $parameterType;
 
 

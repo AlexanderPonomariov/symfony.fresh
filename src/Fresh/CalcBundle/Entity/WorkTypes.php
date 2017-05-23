@@ -4,10 +4,10 @@ namespace Fresh\CalcBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 /**
- * @ORM\Entity(repositoryClass="Fresh\CalcBundle\Entity\Repository\SitesTypesRepository")
- * @ORM\Table(name="sites_types")
+ * @ORM\Entity(repositoryClass="Fresh\CalcBundle\Entity\Repository\WorkTypesRepository")
+ * @ORM\Table(name="work_types")
  */
-class SitesTypes
+class WorkTypes
 {
     /**
      * @ORM\Id
@@ -19,13 +19,21 @@ class SitesTypes
     /**
      * @ORM\Column(type="string")
      */
-    protected $siteType;
+    protected $workType;
 
     /**
-     * @ORM\OneToMany(targetEntity="Parameters", mappedBy="sites_types")
+     * @ORM\OneToMany(targetEntity="Parameters", mappedBy="work_types")
      */
     protected $parameters;
 
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->parameters = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -38,34 +46,27 @@ class SitesTypes
     }
 
     /**
-     * Set siteType
+     * Set workType
      *
-     * @param string $siteType
+     * @param string $workType
      *
-     * @return SitesTypes
+     * @return WorkTypes
      */
-    public function setSiteType($siteType)
+    public function setWorkType($workType)
     {
-        $this->siteType = $siteType;
+        $this->workType = $workType;
 
         return $this;
     }
 
     /**
-     * Get siteType
+     * Get workType
      *
      * @return string
      */
-    public function getSiteType()
+    public function getWorkType()
     {
-        return $this->siteType;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->parameters = new \Doctrine\Common\Collections\ArrayCollection();
+        return $this->workType;
     }
 
     /**
@@ -73,7 +74,7 @@ class SitesTypes
      *
      * @param \Fresh\CalcBundle\Entity\Parameters $parameter
      *
-     * @return SitesTypes
+     * @return WorkTypes
      */
     public function addParameter(\Fresh\CalcBundle\Entity\Parameters $parameter)
     {
