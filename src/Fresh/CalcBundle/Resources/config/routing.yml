@@ -3,3 +3,10 @@ fresh_calc_homepage:
     defaults: { _controller: FreshCalcBundle:Index:index }
     requirements:
         methods:  GET
+
+get_parameters:
+    path:     /parameter/{id}
+    defaults: { _controller: FreshCalcBundle:Index:showParameters }
+    requirements:
+        methods:  GET
+        id: \d+

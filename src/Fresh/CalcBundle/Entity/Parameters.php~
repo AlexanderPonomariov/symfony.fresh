@@ -26,7 +26,7 @@ class Parameters
      * @ORM\ManyToOne(targetEntity="SitesTypes", inversedBy="parameters")
      * @ORM\JoinColumn(name="site_type_id", referencedColumnName="id")
      */
-    protected $siteType;
+    protected $sites_types;
 
     /**
      * @ORM\Column(type="string")
@@ -47,140 +47,7 @@ class Parameters
      * @ORM\ManyToOne(targetEntity="WorkTypes", inversedBy="parameters")
      * @ORM\JoinColumn(name="work_type_id", referencedColumnName="id")
      */
-    protected $parameterType;
+    protected $work_types;
 
 
-
-
-
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set parameterName
-     *
-     * @param string $parameterName
-     *
-     * @return Parameters
-     */
-    public function setParameterName($parameterName)
-    {
-        $this->parameterName = $parameterName;
-
-        return $this;
-    }
-
-    /**
-     * Get parameterName
-     *
-     * @return string
-     */
-    public function getParameterName()
-    {
-        return $this->parameterName;
-    }
-
-    /**
-     * Set parameterValue
-     *
-     * @param string $parameterValue
-     *
-     * @return Parameters
-     */
-    public function setParameterValue($parameterValue)
-    {
-        $this->parameterValue = $parameterValue;
-
-        return $this;
-    }
-
-    /**
-     * Get parameterValue
-     *
-     * @return string
-     */
-    public function getParameterValue()
-    {
-        return $this->parameterValue;
-    }
-
-    /**
-     * Set active
-     *
-     * @param boolean $active
-     *
-     * @return Parameters
-     */
-    public function setActive($active)
-    {
-        $this->active = $active;
-
-        return $this;
-    }
-
-    /**
-     * Get active
-     *
-     * @return boolean
-     */
-    public function getActive()
-    {
-        return $this->active;
-    }
-
-    /**
-     * Set updated
-     *
-     * @param \DateTime $updated
-     *
-     * @return Parameters
-     */
-    public function setUpdated($updated)
-    {
-        $this->updated = $updated;
-
-        return $this;
-    }
-
-    /**
-     * Get updated
-     *
-     * @return \DateTime
-     */
-    public function getUpdated()
-    {
-        return $this->updated;
-    }
-
-    /**
-     * Set siteType
-     *
-     * @param \Fresh\CalcBundle\Entity\SitesTypes $siteType
-     *
-     * @return Parameters
-     */
-    public function setSiteType(\Fresh\CalcBundle\Entity\SitesTypes $siteType = null)
-    {
-        $this->siteType = $siteType;
-
-        return $this;
-    }
-
-    /**
-     * Get siteType
-     *
-     * @return \Fresh\CalcBundle\Entity\SitesTypes
-     */
-    public function getSiteType()
-    {
-        return $this->siteType;
-    }
 }

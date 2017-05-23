@@ -10,4 +10,14 @@ namespace Fresh\CalcBundle\Entity\Repository;
  */
 class ParametersRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getParametersForSiteType($siteTypeId)
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->select('c')
+            ->where('c.sites_types = :site_type_id')
+            ->setParameter('site_type_id', $siteTypeId);
+
+        return $qb->getQuery()
+            ->getResult();
+    }
 }

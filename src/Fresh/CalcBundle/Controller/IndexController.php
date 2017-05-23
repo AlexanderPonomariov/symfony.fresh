@@ -3,6 +3,7 @@
 namespace Fresh\CalcBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class IndexController extends Controller
 {
@@ -20,5 +21,24 @@ class IndexController extends Controller
                 'sitesTypes' => $sitesTypes
             )
         );
+    }
+
+    public function showParametersAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $siteType = $em->getRepository('FreshCalcBundle:SitesTypes')->find($id);
+
+        $siteTypeParameters = $em->getRepository('FreshCalcBundle:Parameters')->getParametersForSiteType($siteType->getId());
+
+//        var_dump($siteTypeParameters);
+
+//        return $this->render('FreshCalcBundle:Index:index.html.twig',
+//            array(
+//
+//                'sitesTypes' => $siteTypeParameters
+//            )
+//        );
+        return json_encode( array( 'sitesTypes' => $siteTypeParameters ) );
     }
 }

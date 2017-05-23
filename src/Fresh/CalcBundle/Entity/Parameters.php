@@ -26,7 +26,7 @@ class Parameters
      * @ORM\ManyToOne(targetEntity="SitesTypes", inversedBy="parameters")
      * @ORM\JoinColumn(name="site_type_id", referencedColumnName="id")
      */
-    protected $siteType;
+    protected $sites_types;
 
     /**
      * @ORM\Column(type="string")
@@ -47,10 +47,7 @@ class Parameters
      * @ORM\ManyToOne(targetEntity="WorkTypes", inversedBy="parameters")
      * @ORM\JoinColumn(name="work_type_id", referencedColumnName="id")
      */
-    protected $parameterType;
-
-
-
+    protected $work_types;
 
 
 
@@ -161,50 +158,50 @@ class Parameters
     }
 
     /**
-     * Set siteType
+     * Set sitesTypes
      *
-     * @param \Fresh\CalcBundle\Entity\SitesTypes $siteType
+     * @param \Fresh\CalcBundle\Entity\SitesTypes $sitesTypes
      *
      * @return Parameters
      */
-    public function setSiteType(\Fresh\CalcBundle\Entity\SitesTypes $siteType = null)
+    public function setSitesTypes(\Fresh\CalcBundle\Entity\SitesTypes $sitesTypes = null)
     {
-        $this->siteType = $siteType;
+        $this->sites_types = $sitesTypes;
 
         return $this;
     }
 
     /**
-     * Get siteType
+     * Get sitesTypes
      *
      * @return \Fresh\CalcBundle\Entity\SitesTypes
      */
-    public function getSiteType()
+    public function getSitesTypes()
     {
-        return $this->siteType;
+        return $this->sites_types;
     }
 
     /**
-     * Set parameterType
+     * Set workTypes
      *
-     * @param \Fresh\CalcBundle\Entity\WorkTypes $parameterType
+     * @param \Fresh\CalcBundle\Entity\WorkTypes $workTypes
      *
      * @return Parameters
      */
-    public function setParameterType(\Fresh\CalcBundle\Entity\WorkTypes $parameterType = null)
+    public function setWorkTypes(\Fresh\CalcBundle\Entity\WorkTypes $workTypes = null)
     {
-        $this->parameterType = $parameterType;
+        $this->work_types = $workTypes;
 
         return $this;
     }
 
     /**
-     * Get parameterType
+     * Get workTypes
      *
      * @return \Fresh\CalcBundle\Entity\WorkTypes
      */
-    public function getParameterType()
+    public function getWorkTypes()
     {
-        return $this->parameterType;
+        return $this->work_types;
     }
 }

@@ -28,6 +28,14 @@ class SitesTypes
 
 
     /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->parameters = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
      * Get id
      *
      * @return integer
@@ -59,13 +67,6 @@ class SitesTypes
     public function getSiteType()
     {
         return $this->siteType;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->parameters = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**

@@ -5,8 +5,8 @@
 {% endblock %}
 
 {% block body %}
-    {#{{ dump(sitesTypes) }}#}
-    <form action="#">
+    {{ dump(sitesTypes) }}
+    <form action="#" method="get">
 
         <p>
             <label for="company">Компания <em>*</em></label>
@@ -43,7 +43,7 @@
             <select id="site_type" name="site_type">
                 <option value=""></option>
                 {% for siteType in sitesTypes %}
-                    <option value="{{ siteType.id }}">{{ siteType.siteType }}</option>
+                    <option value="{{ siteType.id }}" data_url="{{ path('get_parameters', { 'id': siteType.id }) }}">{{ siteType.siteType }}</option>
                 {% endfor %}
             </select>
         </p>
