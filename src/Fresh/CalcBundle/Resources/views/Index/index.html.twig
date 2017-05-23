@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-
+    {#{{ dump(sitesTypes) }}#}
     <form action="#">
 
         <p>
@@ -41,12 +41,10 @@
         <p>
             <label for="site_type">Тип сайта</label>
             <select id="site_type" name="site_type">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-                <option>6</option>
+                <option value=""></option>
+                {% for siteType in sitesTypes %}
+                    <option value="{{ siteType.id }}">{{ siteType.siteType }}</option>
+                {% endfor %}
             </select>
         </p>
 
@@ -60,15 +58,28 @@
         <fieldset id="design">
             <legend>Дизайн</legend>
 
-            <p><input type="checkbox" id="subscribeNews"><label for="subscribeNews">Subscribe to newsletter?</label></p>
-            <p><input type="checkbox" id="subscribeNews"><label for="subscribeNews">Subscribe to newsletter?</label></p>
-            <p><input type="checkbox" id="subscribeNews"><label for="subscribeNews">Subscribe to newsletter?</label></p>
-            <p><input type="checkbox" id="subscribeNews"><label for="subscribeNews">Subscribe to newsletter?</label></p>
-            <p><input type="checkbox" id="subscribeNews"><label for="subscribeNews">Subscribe to newsletter?</label></p>
-            <p><input type="checkbox" id="subscribeNews"><label for="subscribeNews">Subscribe to newsletter?</label></p>
+            <p>
+                <input type="checkbox" id="subscribeNews"><label for="subscribeNews">Subscribe to newsletter?</label>
+                <input type="text" id="subscribeNews"><label for="subscribeNews">Subscribe to newsletter?</label>
+            </p>
+            <p>
+                <input type="checkbox" id="subscribeNews"><label for="subscribeNews">Subscribe to newsletter?</label>
+            </p>
+            <p>
+                <input type="checkbox" id="subscribeNews"><label for="subscribeNews">Subscribe to newsletter?</label>
+            </p>
+            <p>
+                <input type="checkbox" id="subscribeNews"><label for="subscribeNews">Subscribe to newsletter?</label>
+            </p>
+            <p>
+                <input type="checkbox" id="subscribeNews"><label for="subscribeNews">Subscribe to newsletter?</label>
+            </p>
+            <p>
+                <input type="checkbox" id="subscribeNews"><label for="subscribeNews">Subscribe to newsletter?</label>
+            </p>
+
 
             <p>
-
                 <label for="add_templates"><a href="#">Добавить шаблоны</a></label><br/>
                 <textarea name="add_templates" id="add_templates" cols="30" rows="10" placeholder='Добавте Ваши шаблоны через знак ","'></textarea>
             </p>

@@ -10,6 +10,15 @@ class IndexController extends Controller
     {
         $name = 'Hello Alex!!!! I am you firt frase!!!';
 
-        return $this->render('FreshCalcBundle:Index:index.html.twig', array('name' => $name));
+        $em = $this->getDoctrine()->getManager();
+
+        $sitesTypes = $em->getRepository('FreshCalcBundle:SitesTypes')->findAll();
+
+        return $this->render('FreshCalcBundle:Index:index.html.twig',
+            array(
+                'name' => $name,
+                'sitesTypes' => $sitesTypes
+            )
+        );
     }
 }

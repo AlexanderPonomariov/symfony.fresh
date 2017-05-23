@@ -5,16 +5,16 @@ namespace Fresh\CalcBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Fresh\CalcBundle\Entity\Repository\ParametersRepository")
  * @ORM\Table(name="parameters")
  */
 class Parameters
 {
     /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+ * @ORM\Id
+ * @ORM\Column(type="integer")
+ * @ORM\GeneratedValue(strategy="AUTO")
+ */
     protected $id;
 
     /**
@@ -22,7 +22,10 @@ class Parameters
      */
     protected $parameterName;
 
-
+    /**
+     * @ORM\ManyToOne(targetEntity="SitesTypes", inversedBy="parameters")
+     * @ORM\JoinColumn(name="site_type_id", referencedColumnName="id")
+     */
     protected $siteType;
 
     /**
@@ -152,5 +155,29 @@ class Parameters
     public function getUpdated()
     {
         return $this->updated;
+    }
+
+    /**
+     * Set siteType
+     *
+     * @param \Fresh\CalcBundle\Entity\SitesTypes $siteType
+     *
+     * @return Parameters
+     */
+    public function setSiteType(\Fresh\CalcBundle\Entity\SitesTypes $siteType = null)
+    {
+        $this->siteType = $siteType;
+
+        return $this;
+    }
+
+    /**
+     * Get siteType
+     *
+     * @return \Fresh\CalcBundle\Entity\SitesTypes
+     */
+    public function getSiteType()
+    {
+        return $this->siteType;
     }
 }

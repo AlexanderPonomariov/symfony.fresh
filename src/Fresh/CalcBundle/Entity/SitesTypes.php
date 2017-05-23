@@ -4,7 +4,7 @@ namespace Fresh\CalcBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Fresh\CalcBundle\Entity\Repository\SitesTypesRepository")
  * @ORM\Table(name="sites_types")
  */
 class SitesTypes
@@ -20,6 +20,11 @@ class SitesTypes
      * @ORM\Column(type="string")
      */
     protected $siteType;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Parameters", mappedBy="sites_types")
+     */
+    protected $parameters;
 
 
     /**
@@ -54,5 +59,46 @@ class SitesTypes
     public function getSiteType()
     {
         return $this->siteType;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->parameters = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add parameter
+     *
+     * @param \Fresh\CalcBundle\Entity\Parameters $parameter
+     *
+     * @return SitesTypes
+     */
+    public function addParameter(\Fresh\CalcBundle\Entity\Parameters $parameter)
+    {
+        $this->parameters[] = $parameter;
+
+        return $this;
+    }
+
+    /**
+     * Remove parameter
+     *
+     * @param \Fresh\CalcBundle\Entity\Parameters $parameter
+     */
+    public function removeParameter(\Fresh\CalcBundle\Entity\Parameters $parameter)
+    {
+        $this->parameters->removeElement($parameter);
+    }
+
+    /**
+     * Get parameters
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getParameters()
+    {
+        return $this->parameters;
     }
 }

@@ -4,7 +4,7 @@ namespace Fresh\CalcBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Fresh\CalcBundle\Entity\Repository\SitesTypesRepository")
  * @ORM\Table(name="sites_types")
  */
 class SitesTypes
@@ -21,4 +21,43 @@ class SitesTypes
      */
     protected $siteType;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Parameters", mappedBy="sites_types")
+     */
+    protected $parameters;
+
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set siteType
+     *
+     * @param string $siteType
+     *
+     * @return SitesTypes
+     */
+    public function setSiteType($siteType)
+    {
+        $this->siteType = $siteType;
+
+        return $this;
+    }
+
+    /**
+     * Get siteType
+     *
+     * @return string
+     */
+    public function getSiteType()
+    {
+        return $this->siteType;
+    }
 }
