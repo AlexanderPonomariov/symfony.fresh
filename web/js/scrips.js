@@ -7,17 +7,25 @@ $(document).on( 'click, select, input' , 'select#site_type option' , function(){
 });
 
 $(document).on( 'change' , 'select#site_type' , function(){
-console.log($(this).find('option:selected').val());
+
+    var selectedType = $(this);
+    var adaptive = false;
+    var for_complicate = false;
+
     $('#design .section, #programming .section').remove();
-    if ( $(this).find('option:selected').val() != 0 ) {
-        $('#design, #programming, #final_calculations').show();
-    } else {
-        $('#design, #programming, #final_calculations').hide();
-        return false;
-    }
 
     $.get( $(this).find('option:selected').data('queryUrl') , {} , function(data){
 
+        var finalCalculations = $('#final_calculations');
+
+        if ( selectedType.find('option:selected').val() != 0 ) {
+            $('#design, #programming, #final_calculations').show();
+        } else {
+            $('#design, #programming, #final_calculations').hide();
+            return false;
+        }
+
+        //console.log(data.sitesTypes);
         for( siteType in data.sitesTypes ) {
 
             var parameter = data.sitesTypes[siteType];
@@ -32,10 +40,52 @@ console.log($(this).find('option:selected').val());
             }
 
             if ( blockSelector ) {
-                $(blockSelector).prepend('<p class="section"><input type="checkbox" id="checkbox-'+parameter.id+'" data-parameter-id="'+parameter.id+'" checked><label for="checkbox-'+parameter.id+'" checked> '+parameter.parameterName+' </label><input type="text" id="'+parameter.id+'-value" value="'+parameter.parameterValue+'" placeholder="Введите значение" required></p>');
+                $(blockSelector).prepend('' +
+                    '<p class="section">' +
+                        '<input type="checkbox" id="checkbox-'+parameter.id+'" data-parameter-id="'+parameter.id+'" checked><label for="checkbox-'+parameter.id+'" checked> '+parameter.parameterName+' </label>' +
+                        '<input type="text" id="'+parameter.id+'-value" value="'+parameter.parameterValue+'" placeholder="Введите значение" required class="value"><label for="checkbox-'+parameter.id+'"> час.</label>' +
+                    '</p>'
+                );
+            }
+
+            if ( parameter.workType.id == 15 ) {
+                adaptive = true;
+                finalCalculations.find('#adaptive').closest('p').remove();
+                finalCalculations.find('div.adaptive').prepend('' +
+                    '<p>' +
+                        '<label for="adaptive">Адаптив</label><input type="text" name="adaptive" id="adaptive" value="'+parameter.parameterValue+'" class="value"><span>%</span>' +
+                    '</p>'
+                );
+            }
+
+            if ( parameter.workType.id == 16 ) {
+                for_complicate = true;
+                finalCalculations.find('#for_complicate').closest('p').remove();
+                finalCalculations.find('div.for_complicate').prepend(
+                    '<p>' +
+                        '<label for="for_complicate">За сложность</label><input type="text" name="for_complicate" id="for_complicate" value="'+parameter.parameterValue+'" class="value"><span>%</span>' +
+                    '</p>'
+                );
             }
         }
 
+        if ( !for_complicate ) {
+            finalCalculations.find('#for_complicate').closest('p').remove();
+            finalCalculations.find('div.for_complicate').prepend(
+                '<p>' +
+                    '<label for="for_complicate">За сложность</label><input type="text" name="for_complicate" id="for_complicate"><span>%</span>' +
+                '</p>'
+            );
+        }
+
+        if ( !adaptive ) {
+            finalCalculations.find('#adaptive').closest('p').remove();
+            finalCalculations.find('div.adaptive').prepend(
+                '<p>' +
+                    '<label for="adaptive">Адаптив</label><input type="text" name="adaptive" id="adaptive"><span>%</span>' +
+                '</p>'
+            );
+        }
 
     });
 });
@@ -47,6 +97,71 @@ $(document).on( 'click' , 'fieldset .add_templates' , function(e){
 
     i++;
 
-    $(this).closest('fieldset').append('<p class="section"><input type="checkbox" id="checkbox-new-'+i+'" checked><label for="checkbox-new-'+i+'"></label><input type="text" id="checkbox-new-'+i+'-name" placeholder="Введите название" required><input type="text" id="checkbox-new-'+i+'-value" placeholder="Введите значение" required></p>');
+    $(this).closest('fieldset').append(
+        '<p class="section">' +
+            '<input type="checkbox" id="checkbox-new-'+i+'" checked class="custom"><label for="checkbox-new-'+i+'"></label>' +
+            '<input type="text" id="checkbox-new-'+i+'-name" placeholder="Введите название" required>' +
+            '<input type="text" id="checkbox-new-'+i+'-value" placeholder="Введите значение" required class="value"><label for="checkbox-new-'+i+'-value" > час.</label>  ' +
+            '<a href="#" class="del-custom-param"> 	(&#8212;) </a>' +
+        '</p>'
+    );
 });
+
+$(document).on( 'click' , '.del-custom-param' , function(e){
+
+    e.preventDefault();
+
+    $(this).closest('p.section').remove();
+
+});
+
+$(document).on( 'click' , '.calculate-button' , function(e){
+
+    e.preventDefault();
+
+    var design=0;
+    var programming=0;
+    var adaptiveDesign=0;
+    var markUp=0;
+    var markUpDole=0.3;
+    var programmingFinal=0;
+    var markUp=0;
+    var totalTime=0;
+
+    $('#design').find('input:checked').each(function(){
+        design += parseInt($(this).siblings('input.value').val());
+    });
+    $('#programming').find('input:checked').each(function(){
+        programming += parseInt($(this).siblings('input.value').val());
+    });
+
+    adaptiveDesign = Math.ceil( design * ( +( $('#adaptive').val() ? $('#adaptive').val() : 1 ) ) / 100 );
+
+    programmingFinal = (+adaptiveDesign + +design) + programming - Math.ceil( ( +programming + +adaptiveDesign + +design )*markUpDole );
+
+    markUp = Math.ceil( ( +programming + +adaptiveDesign + +design )*markUpDole );
+
+    totalTime = Math.ceil( (markUp + programmingFinal + adaptiveDesign + design)*( 1 + $('#for_complicate').val()/100 )*( 1 - $('#discount').val()/100 ) );
+
+    totalPrice = totalTime*$('#hour_price').val();
+
+    pricePerOnePayment = totalPrice/$('#quantity_of_payments').val();
+
+    $('#price_per_one_payment').val(pricePerOnePayment);
+    $('#final_price').val(totalPrice);
+
+    console.log('design = ' + design);
+    console.log('adaptiveDesign = ' + adaptiveDesign);
+    console.log('design + adaptiveDesign = '+ (+adaptiveDesign + +design) );
+    console.log('programming = '+ programming);
+    console.log('markUp = ' + markUp);
+    console.log('programmingFinal = '+ programmingFinal );
+    console.log('totalTime = '+ totalTime );
+    console.log('totalPrice = '+ totalPrice );
+    console.log('pricePerOnePayment = '+ pricePerOnePayment );
+
+});
+
+
+
 

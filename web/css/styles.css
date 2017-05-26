@@ -1,3 +1,7 @@
 #design, #programming, #final_calculations {
     display: none;
 }
+
+a.del-custom-param {
+    text-decoration: none;
+}

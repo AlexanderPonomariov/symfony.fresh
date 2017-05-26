@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-    {{ dump(sitesTypes) }}
+    {#{{ dump(sitesTypes) }}#}
     <form action="#" method="get">
 
         <p>
@@ -67,7 +67,7 @@
         </fieldset>
 
         <fieldset id="programming">
-            <legend>Дизайн</legend>
+            <legend>Программирование</legend>
 
             <p>
                 <a href="#" class="add_templates">Добавить шаблоны</a>
@@ -95,15 +95,19 @@
 
         {#</fieldset>#}
         <section id="final_calculations">
-            <p>
-                <label for="adaptive">Адаптив</label>
-                <input type="text" name="adaptive" id="adaptive"><span>%</span>
-            </p>
+            <div class="adaptive">
+                <p>
+                    <label for="adaptive">Адаптив</label>
+                    <input type="text" name="adaptive" id="adaptive"><span>%</span>
+                </p>
+            </div>
 
-            <p>
-                <label for="for_complicate">За сложность</label>
-                <input type="text" name="for_complicate" id="for_complicate"><span>%</span>
-            </p>
+            <div class="for_complicate">
+                <p>
+                    <label for="for_complicate">За сложность</label>
+                    <input type="text" name="for_complicate" id="for_complicate"><span>%</span>
+                </p>
+            </div>
 
             <p>
                 <label for="discount">Скидка</label>
@@ -112,7 +116,12 @@
 
             <p>
                 <label for="quantity_of_payments">Кол-во платежей</label>
-                <input type="text" name="quantity_of_payments" id="quantity_of_payments">
+                <input type="text" name="quantity_of_payments" id="quantity_of_payments" value="1">
+            </p>
+
+            <p>
+                <label for="hour_price">Цена часа</label>
+                <input type="text" name="hour_price" id="hour_price" value="550"><span>%</span>
             </p>
 
             <p>
@@ -121,9 +130,11 @@
             </p>
 
             <p>
-                <label for="secondname">Стоимость одного плаежа, грн.</label>
-                <input type="text" name="secondname" id="secondname">
+                <label for="price_per_one_payment">Стоимость одного плаежа, грн.</label>
+                <input type="text" name="price_per_one_payment" id="price_per_one_payment">
             </p>
+
+            <input type="submit" class="button calculate-button" value="Посчитать">
 
         </section>
 
