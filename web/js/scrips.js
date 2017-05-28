@@ -31,11 +31,11 @@ $(document).on( 'change' , 'select#site_type' , function(){
             var parameter = data.sitesTypes[siteType];
             var blockSelector = '';
 
-            if ( parameter.workType.id == 13 ) {
+            if ( parameter.workType.id == 1 ) {
                 blockSelector = '#design';
             }
 
-            if ( parameter.workType.id == 14 ) {
+            if ( parameter.workType.id == 2 ) {
                 blockSelector = '#programming';
             }
 
@@ -48,7 +48,7 @@ $(document).on( 'change' , 'select#site_type' , function(){
                 );
             }
 
-            if ( parameter.workType.id == 15 ) {
+            if ( parameter.workType.id == 3 ) {
                 adaptive = true;
                 finalCalculations.find('#adaptive').closest('p').remove();
                 finalCalculations.find('div.adaptive').prepend('' +
@@ -58,7 +58,7 @@ $(document).on( 'change' , 'select#site_type' , function(){
                 );
             }
 
-            if ( parameter.workType.id == 16 ) {
+            if ( parameter.workType.id == 4 ) {
                 for_complicate = true;
                 finalCalculations.find('#for_complicate').closest('p').remove();
                 finalCalculations.find('div.for_complicate').prepend(
