@@ -139,13 +139,13 @@ $(document).on( 'click' , '.calculate-button' , function(e){
 
     programmingFinal = (+adaptiveDesign + +design) + programming - Math.ceil( ( +programming + +adaptiveDesign + +design )*markUpDole );
 
-    markUp = Math.ceil( ( +programming + +adaptiveDesign + +design )*markUpDole );
+    markUp = Math.ceil( ( +programming + +adaptiveDesign + +design ) * ( $("#mark_up").val()/100 ) );
 
     totalTime = Math.ceil( (markUp + programmingFinal + adaptiveDesign + design)*( 1 + $('#for_complicate').val()/100 )*( 1 - $('#discount').val()/100 ) );
 
     totalPrice = totalTime*$('#hour_price').val();
 
-    pricePerOnePayment = totalPrice/$('#quantity_of_payments').val();
+    pricePerOnePayment = +totalPrice/$('#quantity_of_payments').val();
 
     $('#price_per_one_payment').val(pricePerOnePayment);
     $('#final_price').val(totalPrice);
