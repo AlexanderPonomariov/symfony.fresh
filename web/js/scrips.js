@@ -1,4 +1,9 @@
 
+(function(){
+
+
+
+
 $(document).on( 'click, select, input' , 'select#site_type option' , function(){
     console.log($(this).data('url'));
     $.get( $(this).data('url') , {} , function(data){
@@ -183,15 +188,17 @@ $(document).on( 'click' , '.calculate-button' , function(e){
 
 function check_required_fields() {
     $('#calculator_form').find('input[required]').each(function(){
+        console.log($(this).val().length);
         if ( !$(this).val().length ) {
             $(this).addClass('error');
         }
     });
 
-    if ( $('#calculator_form').find('.error') ) return true;
+    if ( !$('#calculator_form').find('.error') ) return true;
 
 }
 
 
 
 
+})()
