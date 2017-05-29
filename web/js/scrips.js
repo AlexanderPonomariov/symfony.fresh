@@ -12,6 +12,8 @@ $(document).on( 'change' , 'select#site_type' , function(){
     var adaptive = false;
     var for_complicate = false;
 
+    check_required_fields();
+
     $('#design .section, #programming .section').remove();
 
     $.get( $(this).find('option:selected').data('queryUrl') , {} , function(data){
@@ -127,6 +129,14 @@ $(document).on( 'click' , '.calculate-button' , function(e){
     var programmingFinal=0;
     var markUp=0;
     var totalTime=0;
+    var markUpPrice = 0;
+    var programmingPrice = 0;
+    var designPrice = 0;
+
+    console.log(check_required_fields());
+
+    if ( check_required_fields() ) return false;
+
 
     $('#design').find('input:checked').each(function(){
         design += parseInt($(this).siblings('input.value').val());
@@ -143,12 +153,16 @@ $(document).on( 'click' , '.calculate-button' , function(e){
 
     totalTime = Math.ceil( (markUp + programmingFinal + adaptiveDesign + design)*( 1 + $('#for_complicate').val()/100 )*( 1 - $('#discount').val()/100 ) );
 
-    totalPrice = totalTime*$('#hour_price').val();
+    totalPrice = (Math.ceil(+totalTime*$('#hour_price').val()/100))*100;
 
     pricePerOnePayment = +totalPrice/$('#quantity_of_payments').val();
 
     $('#price_per_one_payment').val(pricePerOnePayment);
     $('#final_price').val(totalPrice);
+
+    markUpPrice = totalPrice*programming/( +programming + +adaptiveDesign + +design );
+    programmingPrice = totalPrice*adaptiveDesign/( +programming + +adaptiveDesign + +design );
+    designPrice = totalPrice*design/( +programming + +adaptiveDesign + +design );
 
     console.log('design = ' + design);
     console.log('adaptiveDesign = ' + adaptiveDesign);
@@ -159,8 +173,24 @@ $(document).on( 'click' , '.calculate-button' , function(e){
     console.log('totalTime = '+ totalTime );
     console.log('totalPrice = '+ totalPrice );
     console.log('pricePerOnePayment = '+ pricePerOnePayment );
+    console.log('markUpPrice = '+ markUpPrice );
+    console.log('programmingPrice = '+ programmingPrice );
+    console.log('designPrice = '+ designPrice );
+
 
 });
+
+
+function check_required_fields() {
+    $('#calculator_form').find('input[required]').each(function(){
+        if ( !$(this).val().length ) {
+            $(this).addClass('error');
+        }
+    });
+
+    if ( $('#calculator_form').find('.error') ) return true;
+
+}
 
 
 
