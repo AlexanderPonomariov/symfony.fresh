@@ -182,7 +182,7 @@ $(document).on( 'click' , '.calculate-button' , function(e){
     console.log('programmingPrice = '+ programmingPrice );
     console.log('designPrice = '+ designPrice );
 
-    $.post( '/generate_pdf' , $(this).closest('form').serialize() , function(data){});
+
 
 
 });
@@ -210,6 +210,19 @@ $(document).on( 'change, keydown' , '#calculator_form .error', function() {
     } 
     
 });
+
+$(document).on( 'click' , '.get_pdf_path' , function(e){
+    e.preventDefault();
+
+    var createPdfButton = $(this);
+
+    $.post( '/generate_pdf' , createPdfButton.closest('form').serialize() , function(data){
+        console.log(data);
+        createPdfButton.parent().append('<a href="'+data+'" download>Скачать</a>');
+
+    });
+});
+
 
 
 

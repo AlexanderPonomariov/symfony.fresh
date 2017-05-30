@@ -35,7 +35,9 @@
         "doctrine/doctrine-migrations-bundle": "dev-master",
         "doctrine/migrations": "dev-master",
         "knplabs/knp-snappy-bundle": "~1.4",
-        "h4cc/wkhtmltopdf-amd64": "0.11.0-RC1"
+        "h4cc/wkhtmltopdf-amd64": "0.11.0-RC1",
+        "whiteoctober/tcpdf-bundle": "dev-master"
+
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

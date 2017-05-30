@@ -9,3 +9,7 @@ a.del-custom-param {
 .error {
     box-shadow: 0 0 10px red;
 }
+
+.bold_p {
+    color: red;
+}
