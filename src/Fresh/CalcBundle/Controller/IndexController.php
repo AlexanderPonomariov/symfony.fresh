@@ -5,6 +5,9 @@ namespace Fresh\CalcBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+use Knp\Bundle\SnappyBundle\KnpSnappyBundle;
 
 class IndexController extends Controller
 {
@@ -47,6 +50,40 @@ class IndexController extends Controller
         }
         //echo '<pre>';var_dump($siteTypeParameters);die;
         return new JsonResponse(array('sitesTypes' => $siteTypeParameters));
+
+    }
+
+    public function generatePdfAction(Request $request)
+    {
+        //echo '<pre>';var_dump($request->request->get('company'));die;
+        $companyName = $request->request->get('company');
+
+
+        $html = $this->renderView('FreshCalcBundle:PDF:pdfdoc.html.twig', array(
+            'companyName'  => $companyName
+        ));
+
+        return new Response(
+            $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
+            200,
+            array(
+                'Content-Type'          => 'application/pdf',
+                'Content-Disposition'   => 'attachment; filename="file.pdf"'
+            )
+        );
+
+
+
+//        $this->get('knp_snappy.pdf')->generateFromHtml(
+//            $this->renderView(
+//                'FreshCalcBundle:PDF:pdfdoc.html.twig',
+//                array(
+//                    'companyName'  => $companyName
+//                )
+//            ),
+//            'c:\openserver/hello/file.pdf'
+//        );
+
 
     }
 }

@@ -182,6 +182,8 @@ $(document).on( 'click' , '.calculate-button' , function(e){
     console.log('programmingPrice = '+ programmingPrice );
     console.log('designPrice = '+ designPrice );
 
+    $.post( '/generate_pdf' , $(this).closest('form').serialize() , function(data){});
+
 
 });
 

@@ -10,3 +10,9 @@ get_parameters:
     requirements:
         methods:  GET
         id: \d+
+
+fresh_calc_generate_pdf:
+    path:     /generate_pdf
+    defaults: { _controller: FreshCalcBundle:Index:generatePdf }
+    requirements:
+        methods:  POST
