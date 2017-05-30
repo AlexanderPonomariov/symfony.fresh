@@ -218,8 +218,7 @@ $(document).on( 'click' , '.get_pdf_path' , function(e){
 
     $.post( '/generate_pdf' , createPdfButton.closest('form').serialize() , function(data){
         console.log(data);
-        createPdfButton.parent().append('<a href="'+data+'" download>Скачать</a>');
-
+        createPdfButton.parent().append('<a href="/'+data+'" download>Скачать</a>');
     });
 });
 

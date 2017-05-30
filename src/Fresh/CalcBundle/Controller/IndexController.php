@@ -103,10 +103,10 @@ class IndexController extends Controller
         //$pdf->SetMargins(20,20,40, true);
         $pdf->AddPage();
 
-        $filename = $_SERVER['DOCUMENT_ROOT'].'pdf_files/'.'commerce_sugestion_'.time().'.pdf';
+        $filename = 'pdf_files/commerce_sugestion_'.time().'.pdf';
 
         $pdf->writeHTMLCell($w = 0, $h = 0, $x = '', $y = '', $html, $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
-        $pdf->Output( $filename,'F');
+        $pdf->Output( $_SERVER['DOCUMENT_ROOT'].'web/'.$filename,'F');
 
         return $filename;
     }
