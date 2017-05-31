@@ -36,7 +36,8 @@
         "doctrine/migrations": "dev-master",
         "knplabs/knp-snappy-bundle": "~1.4",
         "h4cc/wkhtmltopdf-amd64": "0.11.0-RC1",
-        "whiteoctober/tcpdf-bundle": "dev-master"
+        "whiteoctober/tcpdf-bundle": "dev-master",
+        "tfox/mpdf-port-bundle": "1.3.*"
 
     },
     "require-dev": {

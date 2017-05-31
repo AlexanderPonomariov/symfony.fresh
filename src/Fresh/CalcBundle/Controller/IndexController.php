@@ -5,6 +5,8 @@ namespace Fresh\CalcBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use \TCPDF_FONTS;
+use TFox\MpdfPortBundle\TFoxMpdfPortBundle;
 
 class IndexController extends Controller
 {
@@ -53,9 +55,36 @@ class IndexController extends Controller
 
     public function generatePdfAction(Request $request)
     {
-        //echo '<pre>';var_dump($request->request->get('company'));die;
-//        $companyName = $request->request->get('company');
-        $companyName= 'hello Привет медвед';
+        //echo '<pre>';var_dump($request);die;
+        $companyName = $request->request->get('company');
+        $name = $request->request->get('name');
+        $surname = $request->request->get('surname');
+        $secondname = $request->request->get('secondname');
+        $email = $request->request->get('email');
+        $tel = $request->request->get('tel');
+        $site_type = $request->request->get('site_type');
+        $notificatons = $request->request->get('notificatons');
+
+        $design = $request->request->get('$design');
+        $adaptiveDesign = $request->request->get('adaptiveDesign');
+        $programming = $request->request->get('programming');
+        $markUp = $request->request->get('markUp');
+        $programmingFinal = $request->request->get('programmingFinal');
+        $totalTime = $request->request->get('totalTime');
+        $totalPrice = $request->request->get('totalPrice');
+        $pricePerOnePayment = $request->request->get('pricePerOnePayment');
+        $markUpPrice = $request->request->get('markUpPrice');
+        $programmingPrice = $request->request->get('programmingPrice');
+        $designPrice = $request->request->get('designPrice');
+
+
+
+//        $companyName= 'hello Привет медвед';
+//        return $this->render('FreshCalcBundle:PDF:pdfdoc.html.twig',
+//            array(
+//                'companyName'  => $companyName
+//            )
+//        );
 
         $html = $this->renderView('FreshCalcBundle:PDF:pdfdoc.html.twig', array(
             'companyName'  => $companyName
@@ -82,31 +111,90 @@ class IndexController extends Controller
 //            'c:\openserver/hello/file.pdf'
 //        );
 
-        $filename = $this->returnPDFResponseFromHTML($html);
+        $filename = $this->returnPDFResponseFromHTML($html, $companyName, $name);
 //echo '<pre>';var_dump($_SERVER['DOCUMENT_ROOT']);die;
         return new JsonResponse($filename);
 
+
+        // MPDF case
+
+//        $arguments = array(
+//            'constructorArgs' => array('','', 0, '', 15, 15, 16, 16, 9, 9, 'L'), //Constructor arguments. Numeric array. Don't forget about points 2 and 3 in Warning section!
+//            'writeHtmlMode' => null, //$mode argument for WriteHTML method
+//            'writeHtmlInitialise' => null, //$mode argument for WriteHTML method
+//            'writeHtmlClose' => null, //$close argument for WriteHTML method
+//            'outputFilename' => null, //$filename argument for Output method
+//            'outputDest' => null //$dest argument for Output method
+//        );
+//
+//        $mpdfService = $this->get('tfox.mpdfport');
+//        $mPDF = $mpdfService->getMpdf(array('','A4', 15, '', 0, 0, 0, 0, 9, 9, 'L'));
+//        $mPDF->WriteHTML($html);
+//        $mPDF->Output($_SERVER['DOCUMENT_ROOT'].'/pdf_files/qwee1.pdf', 'F');
+//
+//        return new JsonResponse();
+
     }
 
-    public function returnPDFResponseFromHTML($html){
-        //set_time_limit(30); uncomment this line according to your needs
-        // If you are not in a controller, retrieve of some way the service container and then retrieve it
-        //$pdf = $this->container->get("white_october.tcpdf")->create('vertical', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-        //if you are in a controlller use :
-        //echo '<pre>';var_dump($this->get("white_october.tcpdf")->create('vertical', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false));die;
+    public function returnPDFResponseFromHTML($html, $companyName='', $name=''){
+
         $pdf = $this->get("white_october.tcpdf")->create('L', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-        $pdf->SetAuthor('Our Code World');
-        $pdf->SetTitle(('Our Code World Title'));
-        $pdf->SetSubject('Our Code World Subject');
-        $pdf->setFontSubsetting(true);
-        $pdf->SetFont('dejavusans', '', 11, '', true);
-        //$pdf->SetMargins(20,20,40, true);
+
+        $fontname1 = TCPDF_FONTS::addTTFfont( $_SERVER['DOCUMENT_ROOT'].'fonts/PTC75F.ttf', 'TrueTypeUnicode', '', 96);
+
+        $pdf->SetFont($fontname1, '', 14, '', false);
+
+
         $pdf->AddPage();
+        $bMargin = $pdf->getBreakMargin();
+        $auto_page_break = $pdf->getAutoPageBreak();
+        $pdf->SetAutoPageBreak(false, 0);
+        $img_file = $_SERVER['DOCUMENT_ROOT'].'images/commerce_sugestion_1_page.jpg';
+        $pdf->Image($img_file, 0, 0, 297, 210, '', '', '', false, 1300, '', false, false, 0);
+        $pdf->SetAutoPageBreak($auto_page_break, $bMargin);
+        $pdf->writeHTMLCell( 100, $h = 0, 50, 116, '<p style="font-weight: bold;font-size: 13px;color: #222222;">по разработке сайта</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+        $pdf->writeHTMLCell( 100, $h = 0, 100, 116, '<p style="font-weight: bold;font-size: 13px;color: #222222;">'.$companyName.'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+
+
+        $pdf->AddPage();
+        $bMargin = $pdf->getBreakMargin();
+        $auto_page_break = $pdf->getAutoPageBreak();
+        $pdf->SetAutoPageBreak(false, 0);
+        $img_file = $_SERVER['DOCUMENT_ROOT'].'images/commerce_sugestion_2_page.jpg';
+        $pdf->Image($img_file, 0, 0, 297, 210, '', '', '', false, 1300, '', false, false, 0);
+        $pdf->SetAutoPageBreak($auto_page_break, $bMargin);
+        $pdf->writeHTMLCell( 100, $h = 0, 220, 40, '<a href="https://www.youtu.be/7NB4_TBkGkc" style="display: block;font-size: 5px;text-decoration: none"><p style="font-weight: bold;font-size: 13px;color: #222222;line-height: 0.95">УЗНАЙТЕ О НАС БОЛЬШЕ<br/>ВСЕГО ЗА 2 МИНУТЫ</p></a>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+        $pdf->writeHTMLCell( 100, 50, 220, 55, '<a href="https://www.youtu.be/7NB4_TBkGkc" style="display: block;font-size: 5px; padding: 25px;"><div style="width: 250px;height: 250px; padding: 250px;">https://www.youtu.be/7NB4_TBkGkc</div></a>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+        $pdf->writeHTMLCell( 100, 50, 199, 38, '<a href="https://www.youtu.be/7NB4_TBkGkc" style="display: block;font-size: 5px; padding: 25px;"><img src="'.$_SERVER['DOCUMENT_ROOT'].'images/watch.png" alt=""></a>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+        $pdf->writeHTMLCell( '' , $h = 0, 25, 20, '<p style="font-weight: bold;font-size: 28px;color: #F59D0C;text-transform: uppercase">ЗДРАВСТВУЙТЕ, '.$name.'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+
+
+        $pdf->AddPage();
+        $bMargin = $pdf->getBreakMargin();
+        $auto_page_break = $pdf->getAutoPageBreak();
+        $pdf->SetAutoPageBreak(false, 0);
+
+        $pdf->SetAutoPageBreak($auto_page_break, $bMargin);
+        $pdf->writeHTMLCell( '', 210, 0, 0, '<a href="https://www.youtu.be/7NB4_TBkGkc" style="display: block;font-size: 5px; padding: 25px;"><img src="'.$_SERVER['DOCUMENT_ROOT'].'images/diagonal_link_2.png" alt=""></a>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+
+
+
+
+        $pdf->writeHTMLCell( 100, $h = 0, 220, 40, '<a href="https://www.youtu.be/7NB4_TBkGkc" style="display: block;font-size: 5px;text-decoration: none"><p style="font-weight: bold;font-size: 13px;color: #222222;line-height: 0.95">УЗНАЙТЕ О НАС БОЛЬШЕ<br/>ВСЕГО ЗА 2 МИНУТЫ</p></a>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+        $pdf->writeHTMLCell( 100, 50, 220, 55, '<a href="https://www.youtu.be/7NB4_TBkGkc" style="display: block;font-size: 5px; padding: 25px;"><div style="width: 250px;height: 250px; padding: 250px;">https://www.youtu.be/7NB4_TBkGkc</div></a>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+        $pdf->writeHTMLCell( 100, 50, 199, 38, '<a href="https://www.youtu.be/7NB4_TBkGkc" style="display: block;font-size: 5px; padding: 25px;"><img src="'.$_SERVER['DOCUMENT_ROOT'].'images/watch.png" alt=""></a>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+        $pdf->writeHTMLCell( '' , $h = 0, 25, 20, '<p style="font-weight: bold;font-size: 28px;color: #F59D0C;text-transform: uppercase">ЗДРАВСТВУЙТЕ, '.$name.'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+
+
+
+
+
+//        $pdf->Cell(30, 0, 'Top-Center', 1, $ln=0, 'C', 0, '', 0, false, 'T', 'C');
+//        $pdf->Write(10, 'Google', 'http://www.google.com/', false, 'L', true);
+
 
         $filename = 'pdf_files/commerce_sugestion_'.time().'.pdf';
-
-        $pdf->writeHTMLCell($w = 0, $h = 0, $x = '', $y = '', $html, $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
-        $pdf->Output( $_SERVER['DOCUMENT_ROOT'].'web/'.$filename,'F');
+        $pdf->Output( $_SERVER['DOCUMENT_ROOT'].''.$filename,'F');
 
         return $filename;
     }

@@ -13,3 +13,7 @@ a.del-custom-param {
 .bold_p {
     color: red;
 }
+
+div.container {
+    background: url(../images/commerce_sugestion_1_page.jpg);
+}

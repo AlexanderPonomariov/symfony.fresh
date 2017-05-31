@@ -122,9 +122,6 @@ $(document).on( 'click' , '.del-custom-param' , function(e){
 
 });
 
-$(document).on( 'click' , '.calculate-button' , function(e){
-
-    e.preventDefault();
 
     var design=0;
     var programming=0;
@@ -137,6 +134,11 @@ $(document).on( 'click' , '.calculate-button' , function(e){
     var markUpPrice = 0;
     var programmingPrice = 0;
     var designPrice = 0;
+
+
+$(document).on( 'click' , '.calculate-button' , function(e){
+
+    e.preventDefault();
 
     console.log(check_required_fields());
 
@@ -168,6 +170,28 @@ $(document).on( 'click' , '.calculate-button' , function(e){
     markUpPrice = totalPrice*programming/( +programming + +adaptiveDesign + +design );
     programmingPrice = totalPrice*adaptiveDesign/( +programming + +adaptiveDesign + +design );
     designPrice = totalPrice*design/( +programming + +adaptiveDesign + +design );
+
+    $(this).closest('#final_calculations').append(
+        '<input type="hidden" id="calc_design" name="calc_design" value="'+design+'">'+
+        '<input type="hidden" id="calc_adaptiveDesign" name="calc_adaptiveDesign" value="'+adaptiveDesign+'">'+
+        '<input type="hidden" id="calc_programming" name="calc_programming" value="'+programming+'">'+
+        '<input type="hidden" id="calc_markUp" name="calc_markUp" value="'+markUp+'">'+
+        '<input type="hidden" id="calc_programmingFinal" name="calc_programmingFinal" value="'+programmingFinal+'">'+
+        '<input type="hidden" id="calc_totalTime" name="calc_totalTime" value="'+totalTime+'">'+
+        '<input type="hidden" id="calc_totalPrice" name="calc_totalPrice" value="'+totalPrice+'">'+
+        '<input type="hidden" id="calc_pricePerOnePayment" name="calc_pricePerOnePayment" value="'+pricePerOnePayment+'">'+
+        '<input type="hidden" id="calc_markUpPrice" name="calc_markUpPrice" value="'+markUpPrice+'">'+
+        '<input type="hidden" id="calc_programmingPrice" name="calc_" value="'+programmingPrice+'">'+
+        '<input type="hidden" id="calc_designPrice" name="calc_designPrice" value="'+designPrice+'">'
+
+    // '<input type="hidden" id="calc_" name="calc_" value="'++'">'+
+    // '<input type="hidden" id="calc_" name="calc_" value="'++'">'+
+    // '<input type="hidden" id="calc_" name="calc_" value="'++'">'+
+    // '<input type="hidden" id="calc_" name="calc_" value="'++'">'+
+    // '<input type="hidden" id="calc_" name="calc_" value="'++'">'+
+    // '<input type="hidden" id="calc_" name="calc_" value="'++'">'+
+    // '<input type="hidden" id="calc_" name="calc_" value="'++'">'+
+    );
 
     console.log('design = ' + design);
     console.log('adaptiveDesign = ' + adaptiveDesign);
@@ -214,7 +238,12 @@ $(document).on( 'change, keydown' , '#calculator_form .error', function() {
 $(document).on( 'click' , '.get_pdf_path' , function(e){
     e.preventDefault();
 
+    console.log('designPrice = '+ designPrice );
+
+
     var createPdfButton = $(this);
+
+    console.log( createPdfButton.closest('form') );
 
     $.post( '/generate_pdf' , createPdfButton.closest('form').serialize() , function(data){
         console.log(data);
