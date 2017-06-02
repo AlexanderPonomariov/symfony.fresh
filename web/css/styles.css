@@ -1,9 +1,21 @@
-#design, #programming, #final_calculations {
-    display: none;
+#design, #programming, #final_calculations, .fieldsets {
+    /*display: none;*/
+    width: 920px;
+    border-radius: 15px;
+    border-color: #5abf28;
+    padding-bottom: 25px;
 }
 
-a.del-custom-param {
+.fieldsets a.del-custom-param {
     text-decoration: none;
+    /* float: left; */
+    position: absolute;
+    top: calc(50% - 13px);
+    right: 20px;
+    display: block;
+    height: 30px;
+    width: 30px;
+    border: none;
 }
 
 .error {
@@ -16,4 +28,62 @@ a.del-custom-param {
 
 div.container {
     background: url(../images/commerce_sugestion_1_page.jpg);
+}
+
+
+.brif_form .contact_info .fieldsets .field {
+    float: none;
+}
+
+.brif_form .contact_info .fieldsets .section {
+    float: left;
+    padding-left: 30px;
+    position: relative;
+}
+
+.brif_form .contact_info .fieldsets .section input[type="checkbox"] {
+    position: absolute;
+    left: 5px;
+    width: 20px;
+    height: 20px;
+    top: calc(50% - 5px);
+}
+
+.brif_form .contact_info .fieldsets .field {
+    width: 270px;
+    position: relative;
+}
+
+.brif_form .contact_info .fieldsets .input {
+    width: 225px;
+}
+
+.brif_form .contact_info .fieldsets label.hours {
+    position: relative;
+    top: -25px;
+    right: -205px;
+}
+
+.brif_form .contact_info .fieldsets legend {
+    margin-left: 50px;
+    letter-spacing: 2px;
+    font: 18px Lucida Sans Unicode, Lucida Sans, Verdana, Arial, sans-serif;
+}
+
+.brif_form .contact_info .fieldsets .add-more {
+    clear: both;
+    margin: 20px;
+}
+
+.brif_form .contact_info .fieldsets .added .input[id$="name"] {
+    width: 180px;
+}
+
+.brif_form .contact_info .fieldsets .added .input[id$="value"] {
+    width: 120px;
+}
+
+.brif_form .contact_info .fieldsets .added .field {
+    width: 420px;
+    position: relative;
 }

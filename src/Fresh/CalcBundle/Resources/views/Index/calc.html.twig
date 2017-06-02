@@ -1,0 +1,135 @@
+
+{% extends 'FreshCalcBundle::base.html.twig' %}
+
+{% block title %}
+    Калькулятор - Fresh
+{% endblock %}
+
+{% block body1 %}
+
+
+<div id="i-l-app"><div id="i-l-app-mouse-text" style="display: none"></div><div id="i-l-app-color-picker"><div class="colors"><div class="color-0" data-color="0"></div><div class="color-1" data-color="1"></div><div class="color-2" data-color="2"></div><div class="color-3" data-color="3"></div><div class="color-4" data-color="4"></div><div class="color-5" data-color="5"></div><div class="color-6" data-color="6"></div><div class="color-7" data-color="7"></div></div><div id="_l_i-color-active" class="color-3"></div></div><div id="i-l-app-h-rule" data-type="h"></div><div id="i-l-app-v-rule" data-type="v"></div><div id="i-l-app-lines" class="color-3"></div></div><div class="brif_form email-r" style="top: 50%;">
+    <i class="close"></i>
+    <div class="header">
+        <div class="slides">
+            <div class="slides_in">
+                <!--<div rel="25%" class="active">Заявка на разработку сайта</div>
+                <div rel="50%">Почему такая цена?</div>-->
+                <div rel="100%">Узнать стоимость</div>
+            </div>
+        </div>
+    </div>
+    <div class="progress"><i style="width:100%"></i></div>
+    <div class="content">
+        <div class="content_in">
+            <div class="slides">
+                <div class="slide know_cost_slide">
+                    <div class="form contact_info">
+                        <div class="field">
+                            <label>Компания*</label>
+                            <input type="text" class="input" tabindex="1" name="company" id="company" required>
+                        </div>
+                        <div class="field">
+                            <label>Имя*</label>
+                            <input type="text" class="input" tabindex="1" name="name" id="name" required>
+                        </div>
+                        <div class="field">
+                            <label>Фамилия</label>
+                            <input type="text" class="input" tabindex="1"  name="surname" id="surname">
+                        </div>
+                        <div class="field">
+                            <label>Отчество</label>
+                            <input type="text" class="input" tabindex="1"  name="secondname" id="secondname">
+                        </div>
+
+                        <div class="field">
+                            <label>Эл. почта*</label>
+                            <input type="text" class="input" tabindex="2" name="email" id="email" required>
+                        </div>
+
+                        <div class="field">
+                            <label>Контактный телефон*</label>
+                            <input type="text" class="input" tabindex="4" name="tel" id="tel" placeholder="+12 (345)-678-91-00">
+                        </div>
+
+                        <div class="field">
+                            <label>Выберите тип сайта</label>
+                            <select name="site_type" class="input" tabindex="3" id="site_type">
+                                <option value="0"></option>
+                                {% for siteType in sitesTypes %}
+                                    <option value="{{ siteType.id }}" data-query-url="{{ path('get_parameters', { 'id': siteType.id }) }}">{{ siteType.siteType }}</option>
+                                {% endfor %}
+                            </select>
+                            {#<div class="newListSelected " tabindex="3">#}
+                                {#<div class="selectedTxt">Создание сайта</div>#}
+                                {#<div class="SSContainerDivWrapper" style="visibility: visible; top: 19px; height: 150px; left: 0px; display: none;">#}
+                                    {#<ul class="newList" style="height: 150px;">#}
+                                        {#<li><a href="JavaScript:void(0);" class="hiLite">Создание сайта</a></li>#}
+                                        {#<li><a href="JavaScript:void(0);">Разработка фирменного стиля</a></li>#}
+                                        {#<li><a href="JavaScript:void(0);">Создание логотипа</a></li>#}
+                                        {#<li><a href="JavaScript:void(0);">Разработка дизайна сайта</a></li>#}
+                                        {#<li><a href="JavaScript:void(0);">Фотосъёмка</a></li>#}
+                                        {#<li><a href="JavaScript:void(0);">Видео презентация</a></li>#}
+                                        {#<li><a href="JavaScript:void(0);">Брендирование авто</a></li>#}
+                                        {#<li><a href="JavaScript:void(0);">Дизайн упаковки</a></li>#}
+                                        {#<li><a href="JavaScript:void(0);"></a></li>#}
+                                        {#<li><a href="JavaScript:void(0);">Дизайн этикетки</a></li>#}
+                                        {#<li><a href="JavaScript:void(0);">Landing page</a></li>#}
+                                        {#<li><a href="JavaScript:void(0);">Email-маркетинг</a></li>#}
+                                    {#</ul>#}
+                                {#</div>#}
+                            {#</div>#}
+                        </div>
+
+                        <div class="field holder">
+                            <label>Дополнительная информация</label>
+                            <textarea tabindex="5" class="input"></textarea>
+                        </div>
+
+
+                        <fieldset id="design" class="fieldsets">
+                            <legend>Дизайн</legend>
+
+                            <p class="add-more">
+                                <a href="#" class="add_templates">Добавить шаблоны</a>
+                                {#<label for="add_templates"><a href="#">Добавить шаблоны</a></label><br/>#}
+                                {#<textarea name="add_templates" id="add_templates" cols="30" rows="10" placeholder='Добавте Ваши шаблоны через знак ","'></textarea>#}
+                            </p>
+
+                        </fieldset>
+
+                        <fieldset id="programming" class="fieldsets">
+                            <legend>Программирование</legend>
+
+                            <p class="add-more">
+                                <a href="#" class="add_templates">Добавить шаблоны</a>
+                                {#<label for="add_templates"><a href="#">Добавить шаблоны</a></label><br/>#}
+                                {#<textarea name="add_templates" id="add_templates" cols="30" rows="10" placeholder='Добавте Ваши шаблоны через знак ","'></textarea>#}
+                            </p>
+
+                        </fieldset>
+
+
+
+
+
+                        {#<div id="multi-label">#}
+        {#<span>#}
+                            {#Прикрепить файл#}
+        {#</span>#}
+                        {#</div>#}
+                        {#<div class="MultiFile-wrap" id="multi-button_wrap"><input type="file" id="multi-button" class="ru MultiFile-applied" name="files" value=""><div class="MultiFile-list" id="multi-button_wrap_list"></div></div>#}
+                    {#</div>#}
+                    {#<a class="big_button slide_next" data-id="670">#}
+                        {#<span>Отправить заявку</span><span class="big_button_corner"></span>#}
+                    {#</a>#}
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="footer"></div>
+</div>
+
+{% endblock %}
