@@ -18,7 +18,8 @@ class IndexController extends Controller
 
         $sitesTypes = $em->getRepository('FreshCalcBundle:SitesTypes')->findAll();
 
-        return $this->render('FreshCalcBundle:Index:index.html.twig',
+//        return $this->render('FreshCalcBundle:Index:index.html.twig',
+        return $this->render('FreshCalcBundle:Index:calc.html.twig',
             array(
                 'name' => $name,
                 'sitesTypes' => $sitesTypes,
