@@ -13,6 +13,8 @@ $(document).on( 'click, select, input' , 'select#site_type option' , function(){
 
 $(document).on( 'change' , 'select#site_type' , function(){
 
+    //console.log('hello');
+
     var selectedType = $(this);
     var adaptive = false;
     var for_complicate = false;
@@ -48,10 +50,10 @@ $(document).on( 'change' , 'select#site_type' , function(){
 
             if ( blockSelector ) {
                 $(blockSelector).prepend('' +
-                    '<p class="section">' +
-                        '<input type="checkbox" id="checkbox-'+parameter.id+'" data-parameter-id="'+parameter.id+'" checked><label for="checkbox-'+parameter.id+'" checked> '+parameter.parameterName+' </label>' +
-                        '<input type="text" id="'+parameter.id+'-value" value="'+parameter.parameterValue+'" placeholder="Введите значение" required class="value"><label for="checkbox-'+parameter.id+'"> час.</label>' +
-                    '</p>'
+                    '<div class="section">' +
+                        '<input type="checkbox" id="checkbox-'+parameter.id+'" data-parameter-id="'+parameter.id+'" checked><div class="field"><label for="checkbox-'+parameter.id+'"> '+parameter.parameterName+' </label>' +
+                        '<input type="text" id="'+parameter.id+'-value" value="'+parameter.parameterValue+'" placeholder="Введите значение" required class="value input"><label for="checkbox-'+parameter.id+'" class="hours"> час.</label></div>' +
+                    '</div>'
                 );
             }
 
@@ -105,12 +107,12 @@ $(document).on( 'click' , 'fieldset .add_templates' , function(e){
     i++;
 
     $(this).closest('fieldset').append(
-        '<p class="section">' +
-            '<input type="checkbox" id="checkbox-new-'+i+'" checked class="custom"><label for="checkbox-new-'+i+'"></label>' +
-            '<input type="text" id="checkbox-new-'+i+'-name" placeholder="Введите название" required>' +
-            '<input type="text" id="checkbox-new-'+i+'-value" placeholder="Введите значение" required class="value"><label for="checkbox-new-'+i+'-value" > час.</label>  ' +
+        '<div class="section added">' +
+            '<input type="checkbox" id="checkbox-new-'+i+'" checked class="custom"><div class="field"><label for="checkbox-new-'+i+'"></label>' +
+            '<input type="text" id="checkbox-new-'+i+'-name" placeholder="Введите название" required class="value input">' +
+            '<input type="text" id="checkbox-new-'+i+'-value" placeholder="Введите значение" required class="value input"><label for="checkbox-new-'+i+'-value" class="hours"> час.</label> </div> ' +
             '<a href="#" class="del-custom-param"> 	(&#8212;) </a>' +
-        '</p>'
+        '</div>'
     );
 });
 
