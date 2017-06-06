@@ -317,13 +317,13 @@ textarea.input {
 .brif_form .content{height:255px;}
 .know_cost_form .content{height:400px;}
 .send_popup .content{height:250px;}
-.brif_form .content_in{/*height:285px;*/margin-bottom:-30px;/*width:613px;*/overflow:hidden;position:relative;z-index:1;}
+.brif_form .content_in{/*height:285px;*/margin-bottom:-30px;/*width:613px;overflow:hidden*/;position:relative;z-index:1;}
 .know_cost_form .content_in{height:420px; margin-bottom: 0;}
 .send_popup .content_in{height:200px; margin-bottom: 0; font-size: 15px!important; line-height: 20px!important; letter-spacing: 0.2px;}
 .brif_form .content .slides{position:relative;z-index:10;/*height:285px;width:10000px;*/}
 .brif_form .content .slides .slide{float:left;/*width:613px;height:285px*/;position:relative;overflow:hidden;}
 .brif_form .footer{height:75px;width:713px;bottom:-75px;left:0;position:absolute;background:url(../i/new/popup_form.png) no-repeat 0 bottom;}
-.brif_form .progress{background:#dfdfdf;height:4px;border-top:1px solid #c3c3c3;border-bottom:1px solid #ffffff;margin:0 -32px;}
+.brif_form .progress{background:#dfdfdf;height:4px;border-top:1px solid #c3c3c3;border-bottom:1px solid #ffffff;margin: 0 -32px 35px;}
 .brif_form .progress i{background:#5abf28;height:4px;border-top:1px solid #349419;border-bottom:1px solid #ffffff;margin-top:-1px;display:block;}
 .brif_form .close{background:url(../i/new/controls.png) no-repeat -60px -1px;height:14px;width:14px;position:absolute;top:28px;right:32px;cursor:pointer;}
 .brif_form .close:hover{background-position:-60px -25px;}
@@ -414,8 +414,7 @@ textarea.input {
 .brif_form .more_info .title {font-size:13px;}
 .brif_form .more_info .field {margin:5px 0 12px;}
 .brif_form .more_info .field label span{padding-top:3px;font-size:14px;zoom:1;;}
-.brif_form .discount{float:left;color:#7b7b7b;font-size:12px;font-style:italic;margin: -7px 0 0 270px;/*margin:-10px 0 0 270px;/*2012.02.21*/}
-.brif_form .discount b{color:#545454;font-style:normal;}
+
 
 .brif_form .why-img {
     width: 112px;

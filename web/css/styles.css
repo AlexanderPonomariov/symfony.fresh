@@ -4,18 +4,26 @@
     border-radius: 15px;
     border-color: #5abf28;
     padding-bottom: 25px;
+    padding-left: 20px;
+    box-sizing: border-box;
 }
 
 .fieldsets a.del-custom-param {
     text-decoration: none;
     /* float: left; */
     position: absolute;
-    top: calc(50% - 13px);
+    top: calc(50% - 14px);
     right: 20px;
     display: block;
-    height: 30px;
-    width: 30px;
+    height: 20px;
+    width: 20px;
     border: none;
+    font-weight: bold;
+    color: red;
+    border: 1px solid #a5a5a5;
+    text-align: center;
+    border-radius: 2px;
+    background-color: #dedede;
 }
 
 .error {
@@ -50,15 +58,17 @@ div.container {
 }
 
 .brif_form .contact_info .fieldsets .field {
-    width: 270px;
+    width: 260px;
     position: relative;
+    display: inline-block;
 }
 
 .brif_form .contact_info .fieldsets .input {
     width: 225px;
 }
 
-.brif_form .contact_info .fieldsets label.hours {
+.brif_form .contact_info .fieldsets label.hours,
+.brif_form .contact_info .fieldsets label.field_label{
     position: relative;
     top: -25px;
     right: -205px;
@@ -84,6 +94,48 @@ div.container {
 }
 
 .brif_form .contact_info .fieldsets .added .field {
-    width: 420px;
+    width: 410px;
     position: relative;
+}
+
+.brif_form .contact_info .fieldsets .added label.hours {
+    right: -314px;
+}
+
+.brif_form .contact_info .fieldsets label.field_label.per_hour {
+    right: -190px;
+}
+
+.brif_form .contact_info .fieldsets .added.section input[type="checkbox"] {
+    top: calc(50% - 13px);
+}
+
+a.del-custom-param:before {
+    content: '';
+    border-bottom: 5px solid #424242;
+    position: absolute;
+    width: 14px;
+    height: 8px;
+    left: 3px;
+}
+
+fieldset#final_calculations .field {
+    margin-right: 35px;
+}
+
+fieldset#final_calculations .field:nth-child(3n+1) {
+    margin-right: 0px;
+}
+
+.button {
+    width: 250px;
+    margin: 20px;
+    height: 40px;
+    border: 2px solid #349419;
+    border-radius: 20px;
+    box-shadow: inset 0 0 20px 0px rgba(0,0,0,0.5), 8px 6px 7px 1px rgba(0,0,0,0.5);
+    -webkit-box-shadow: inset 0 0 20px 0px rgba(0,0,0,0.5), 8px 6px 7px 1px rgba(0,0,0,0.5);
+    -moz-box-shadow: inset 0 0 20px 0px rgba(0,0,0,0.5), 8px 6px 7px 1px rgba(0,0,0,0.5);
+    cursor: pointer;
+    outline: none;
 }

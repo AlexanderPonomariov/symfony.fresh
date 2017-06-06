@@ -19,7 +19,7 @@ $(document).on( 'change' , 'select#site_type' , function(){
     var adaptive = false;
     var for_complicate = false;
 
-    check_required_fields();
+    //check_required_fields();
 
     $('#design .section, #programming .section').remove();
 
@@ -62,7 +62,9 @@ $(document).on( 'change' , 'select#site_type' , function(){
                 finalCalculations.find('#adaptive').closest('p').remove();
                 finalCalculations.find('div.adaptive').prepend('' +
                     '<p>' +
-                        '<label for="adaptive">Адаптив</label><input type="text" name="adaptive" id="adaptive" value="'+parameter.parameterValue+'" class="value"><span>%</span>' +
+                        '<label for="adaptive">Адаптив</label>' +
+                        '<input type="text" class="input" name="adaptive" id="adaptive" value="'+parameter.parameterValue+'" class="value">' +
+                        '<label for="adaptive" class="field_label">%</label>' +
                     '</p>'
                 );
             }
@@ -72,7 +74,9 @@ $(document).on( 'change' , 'select#site_type' , function(){
                 finalCalculations.find('#for_complicate').closest('p').remove();
                 finalCalculations.find('div.for_complicate').prepend(
                     '<p>' +
-                        '<label for="for_complicate">За сложность</label><input type="text" name="for_complicate" id="for_complicate" value="'+parameter.parameterValue+'" class="value"><span>%</span>' +
+                        '<label for="for_complicate">За сложность</label>' +
+                        '<input type="text" class="input" name="for_complicate" id="for_complicate" value="'+parameter.parameterValue+'" class="value">' +
+                        '<label for="for_complicate" class="field_label">%</label>' +
                     '</p>'
                 );
             }
@@ -82,7 +86,9 @@ $(document).on( 'change' , 'select#site_type' , function(){
             finalCalculations.find('#for_complicate').closest('p').remove();
             finalCalculations.find('div.for_complicate').prepend(
                 '<p>' +
-                    '<label for="for_complicate">За сложность</label><input type="text" name="for_complicate" id="for_complicate"><span>%</span>' +
+                    '<label for="for_complicate">За сложность</label>' +
+                    '<input type="text" class="input" name="for_complicate" id="for_complicate">' +
+                    '<label for="for_complicate" class="field_label">%</label>' +
                 '</p>'
             );
         }
@@ -91,7 +97,9 @@ $(document).on( 'change' , 'select#site_type' , function(){
             finalCalculations.find('#adaptive').closest('p').remove();
             finalCalculations.find('div.adaptive').prepend(
                 '<p>' +
-                    '<label for="adaptive">Адаптив</label><input type="text" name="adaptive" id="adaptive"><span>%</span>' +
+                    '<label for="adaptive">Адаптив</label>' +
+                    '<input type="text" class="input" name="adaptive" id="adaptive">' +
+                    '<label for="adaptive" class="field_label">%</label>' +
                 '</p>'
             );
         }
@@ -109,9 +117,9 @@ $(document).on( 'click' , 'fieldset .add_templates' , function(e){
     $(this).closest('fieldset').append(
         '<div class="section added">' +
             '<input type="checkbox" id="checkbox-new-'+i+'" checked class="custom"><div class="field"><label for="checkbox-new-'+i+'"></label>' +
-            '<input type="text" id="checkbox-new-'+i+'-name" placeholder="Введите название" required class="value input">' +
-            '<input type="text" id="checkbox-new-'+i+'-value" placeholder="Введите значение" required class="value input"><label for="checkbox-new-'+i+'-value" class="hours"> час.</label> </div> ' +
-            '<a href="#" class="del-custom-param"> 	(&#8212;) </a>' +
+            '<input type="text" id="checkbox-new-'+i+'-name" placeholder="Название" required class="value input">' +
+            '<input type="text" id="checkbox-new-'+i+'-value" placeholder="Значение" required class="value input"><label for="checkbox-new-'+i+'-value" class="hours"> час.</label> </div> ' +
+            '<a href="#" class="del-custom-param"></a>' +
         '</div>'
     );
 });
@@ -120,7 +128,7 @@ $(document).on( 'click' , '.del-custom-param' , function(e){
 
     e.preventDefault();
 
-    $(this).closest('p.section').remove();
+    $(this).closest('.section').remove();
 
 });
 
@@ -140,18 +148,30 @@ $(document).on( 'click' , '.del-custom-param' , function(e){
 
 $(document).on( 'click' , '.calculate-button' , function(e){
 
+    design=0;
+    programming=0;
+    adaptiveDesign=0;
+    markUp=0;
+    markUpDole=0.3;
+    programmingFinal=0;
+    markUp=0;
+    totalTime=0;
+    markUpPrice = 0;
+    programmingPrice = 0;
+    designPrice = 0;
+
     e.preventDefault();
 
-    console.log(check_required_fields());
+    //console.log(check_required_fields());
 
-    if ( check_required_fields() ) return false;
+    //if ( check_required_fields() ) return false;
 
 
     $('#design').find('input:checked').each(function(){
-        design += parseInt($(this).siblings('input.value').val());
+        design += parseInt($(this).siblings('.field').find('input.value').val());
     });
     $('#programming').find('input:checked').each(function(){
-        programming += parseInt($(this).siblings('input.value').val());
+        programming += parseInt($(this).siblings('.field').find('input.value').val());
     });
 
     adaptiveDesign = Math.ceil( design * ( +( $('#adaptive').val() ? $('#adaptive').val() : 1 ) ) / 100 );
@@ -240,8 +260,9 @@ $(document).on( 'change, keydown' , '#calculator_form .error', function() {
 $(document).on( 'click' , '.get_pdf_path' , function(e){
     e.preventDefault();
 
-    console.log('designPrice = '+ designPrice );
+    if ( $('.download_pdf') ) $('.download_pdf').remove();
 
+    console.log('designPrice = '+ designPrice );
 
     var createPdfButton = $(this);
 
@@ -249,7 +270,7 @@ $(document).on( 'click' , '.get_pdf_path' , function(e){
 
     $.post( '/generate_pdf' , createPdfButton.closest('form').serialize() , function(data){
         console.log(data);
-        createPdfButton.parent().append('<a href="/'+data+'" download>Скачать</a>');
+        createPdfButton.parent().append('<a href="/'+data+'" download class="download_pdf">Скачать PDF</a>');
     });
 });
 
