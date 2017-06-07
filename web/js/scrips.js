@@ -168,10 +168,11 @@ $(document).on( 'click' , '.calculate-button' , function(e){
 
 
     $('#design').find('input:checked').each(function(){
-        design += parseInt($(this).siblings('.field').find('input.value').val());
+        design += parseInt($(this).siblings('.field').find('input.value[id$="value"]').val());
+        console.log($(this).siblings('.field').find('input.value[id$="value"]').val());
     });
     $('#programming').find('input:checked').each(function(){
-        programming += parseInt($(this).siblings('.field').find('input.value').val());
+        programming += parseInt($(this).siblings('.field').find('input.value[id$="value"]').val());
     });
 
     adaptiveDesign = Math.ceil( design * ( +( $('#adaptive').val() ? $('#adaptive').val() : 1 ) ) / 100 );
