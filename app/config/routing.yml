@@ -2,10 +2,6 @@ fresh_patenting:
     resource: "@FreshPatentingBundle/Resources/config/routing.yml"
     prefix:   /patenting
 
-fresh_document_calc:
-    resource: "@FreshDocumentCalcBundle/Resources/config/routing.yml"
-    prefix:   /patenting1
-
 fresh_calc:
     resource: "@FreshCalcBundle/Resources/config/routing.yml"
     prefix:   /
