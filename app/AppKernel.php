@@ -18,7 +18,7 @@ class AppKernel extends Kernel
 
             //   ***My Bundles***
             new Fresh\CalcBundle\FreshCalcBundle(),
-            new Fresh\DocumentCalcBundle\FreshDocumentCalcBundle(),
+            new Fresh\PatentingBundle\FreshPatentingBundle(),
             // *********************
 
             // new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
@@ -27,7 +27,6 @@ class AppKernel extends Kernel
             new WhiteOctober\TCPDFBundle\WhiteOctoberTCPDFBundle(),
             new TFox\MpdfPortBundle\TFoxMpdfPortBundle(),
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
-            new Fresh\PatentingBundle\FreshPatentingBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
