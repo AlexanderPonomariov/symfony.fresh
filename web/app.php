@@ -1,5 +1,5 @@
 <?php
-
+umask(0000);
 use Symfony\Component\HttpFoundation\Request;
 
 /** @var \Composer\Autoload\ClassLoader $loader */
