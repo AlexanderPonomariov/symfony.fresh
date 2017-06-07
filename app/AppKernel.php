@@ -15,13 +15,19 @@ class AppKernel extends Kernel
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+
+            //   ***My Bundles***
             new Fresh\CalcBundle\FreshCalcBundle(),
+            new Fresh\DocumentCalcBundle\FreshDocumentCalcBundle(),
+            // *********************
+
             // new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
             new WhiteOctober\TCPDFBundle\WhiteOctoberTCPDFBundle(),
             new TFox\MpdfPortBundle\TFoxMpdfPortBundle(),
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
+            new Fresh\PatentingBundle\FreshPatentingBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

@@ -1,0 +1,3 @@
+fresh_patenting_homepage:
+    path:     /
+    defaults: { _controller: FreshPatentingBundle:Patenting:index }
