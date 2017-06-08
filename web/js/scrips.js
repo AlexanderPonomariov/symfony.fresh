@@ -44,6 +44,10 @@ $(document).on( 'change' , 'select#site_type' , function(){
                 blockSelector = '#design';
             }
 
+            if ( parameter.workType.id == 3 ) {
+                blockSelector = '#mark_up';
+            }
+
             if ( parameter.workType.id == 2 ) {
                 blockSelector = '#programming';
             }
@@ -57,52 +61,52 @@ $(document).on( 'change' , 'select#site_type' , function(){
                 );
             }
 
-            if ( parameter.workType.id == 3 ) {
-                adaptive = true;
-                finalCalculations.find('#adaptive').closest('p').remove();
-                finalCalculations.find('div.adaptive').prepend('' +
-                    '<p>' +
-                        '<label for="adaptive">Адаптив</label>' +
-                        '<input type="text" class="input" name="adaptive" id="adaptive" value="'+parameter.parameterValue+'" class="value">' +
-                        '<label for="adaptive" class="field_label">%</label>' +
-                    '</p>'
-                );
-            }
-
-            if ( parameter.workType.id == 4 ) {
-                for_complicate = true;
-                finalCalculations.find('#for_complicate').closest('p').remove();
-                finalCalculations.find('div.for_complicate').prepend(
-                    '<p>' +
-                        '<label for="for_complicate">За сложность</label>' +
-                        '<input type="text" class="input" name="for_complicate" id="for_complicate" value="'+parameter.parameterValue+'" class="value">' +
-                        '<label for="for_complicate" class="field_label">%</label>' +
-                    '</p>'
-                );
-            }
+            // if ( parameter.workType.id == 3 ) {
+            //     adaptive = true;
+            //     finalCalculations.find('#adaptive').closest('p').remove();
+            //     finalCalculations.find('div.adaptive').prepend('' +
+            //         '<p>' +
+            //             '<label for="adaptive">Адаптив</label>' +
+            //             '<input type="text" class="input" name="adaptive" id="adaptive" value="'+parameter.parameterValue+'" class="value">' +
+            //             '<label for="adaptive" class="field_label">%</label>' +
+            //         '</p>'
+            //     );
+            // }
+            //
+            // if ( parameter.workType.id == 4 ) {
+            //     for_complicate = true;
+            //     finalCalculations.find('#for_complicate').closest('p').remove();
+            //     finalCalculations.find('div.for_complicate').prepend(
+            //         '<p>' +
+            //             '<label for="for_complicate">За сложность</label>' +
+            //             '<input type="text" class="input" name="for_complicate" id="for_complicate" value="'+parameter.parameterValue+'" class="value">' +
+            //             '<label for="for_complicate" class="field_label">%</label>' +
+            //         '</p>'
+            //     );
+            // }
         }
-
-        if ( !for_complicate ) {
-            finalCalculations.find('#for_complicate').closest('p').remove();
-            finalCalculations.find('div.for_complicate').prepend(
-                '<p>' +
-                    '<label for="for_complicate">За сложность</label>' +
-                    '<input type="text" class="input" name="for_complicate" id="for_complicate">' +
-                    '<label for="for_complicate" class="field_label">%</label>' +
-                '</p>'
-            );
-        }
-
-        if ( !adaptive ) {
-            finalCalculations.find('#adaptive').closest('p').remove();
-            finalCalculations.find('div.adaptive').prepend(
-                '<p>' +
-                    '<label for="adaptive">Адаптив</label>' +
-                    '<input type="text" class="input" name="adaptive" id="adaptive">' +
-                    '<label for="adaptive" class="field_label">%</label>' +
-                '</p>'
-            );
-        }
+        //
+        // if ( !for_complicate ) {
+        //     finalCalculations.find('#for_complicate').closest('p').remove();
+        //     finalCalculations.find('div.for_complicate').prepend(
+        //         '<p>' +
+        //             '<label for="for_complicate">За сложность</label>' +
+        //             '<input type="text" class="input" name="for_complicate" id="for_complicate">' +
+        //             '<label for="for_complicate" class="field_label">%</label>' +
+        //         '</p>'
+        //     );
+        // }
+        //
+        // if ( !adaptive ) {
+        //     finalCalculations.find('#adaptive').closest('p').remove();
+        //     finalCalculations.find('div.adaptive').prepend(
+        //         '<p>' +
+        //             '<label for="adaptive">Адаптив</label>' +
+        //             '<input type="text" class="input" name="adaptive" id="adaptive">' +
+        //             '<label for="adaptive" class="field_label">%</label>' +
+        //         '</p>'
+        //     );
+        // }
 
     });
 });
@@ -144,9 +148,12 @@ $(document).on( 'click' , '.del-custom-param' , function(e){
     var markUpPrice = 0;
     var programmingPrice = 0;
     var designPrice = 0;
+    var totalPrice = 0;
+    var pricePerOnePayment = 0;
 
 
-$(document).on( 'click' , '.calculate-button' , function(e){
+
+    $(document).on( 'click' , '.calculate-button' , function(e){
 
     design=0;
     programming=0;
@@ -159,6 +166,8 @@ $(document).on( 'click' , '.calculate-button' , function(e){
     markUpPrice = 0;
     programmingPrice = 0;
     designPrice = 0;
+    totalPrice = 0;
+    pricePerOnePayment = 0;
 
     e.preventDefault();
 
@@ -169,43 +178,53 @@ $(document).on( 'click' , '.calculate-button' , function(e){
 
     $('#design').find('input:checked').each(function(){
         design += parseInt($(this).siblings('.field').find('input.value[id$="value"]').val());
-        console.log($(this).siblings('.field').find('input.value[id$="value"]').val());
+        //console.log($(this).siblings('.field').find('input.value[id$="value"]').val());
     });
     $('#programming').find('input:checked').each(function(){
         programming += parseInt($(this).siblings('.field').find('input.value[id$="value"]').val());
     });
 
-    adaptiveDesign = Math.ceil( design * ( +( $('#adaptive').val() ? $('#adaptive').val() : 1 ) ) / 100 );
+    $('#mark_up').find('input:checked').each(function(){
+        markUp += parseInt($(this).siblings('.field').find('input.value[id$="value"]').val());
+    });
 
-    programmingFinal = (+adaptiveDesign + +design) + programming - Math.ceil( ( +programming + +adaptiveDesign + +design )*markUpDole );
+    // adaptiveDesign = Math.ceil( design * ( +( $('#adaptive').val() ? $('#adaptive').val() : 1 ) ) / 100 );
 
-    markUp = Math.ceil( ( +programming + +adaptiveDesign + +design ) * ( $("#mark_up").val()/100 ) );
+    adaptiveDesign = Math.round( (+design + +markUp) * ( $('#adaptive').val()/100 +1 ) );
 
-    totalTime = Math.ceil( (markUp + programmingFinal + adaptiveDesign + design)*( 1 + $('#for_complicate').val()/100 )*( 1 - $('#discount').val()/100 ) );
+    //programmingFinal = (+adaptiveDesign + +design) + programming - Math.ceil( ( +programming + +adaptiveDesign + +design )*markUpDole );
 
-    totalPrice = (Math.ceil(+totalTime*$('#hour_price').val()/100))*100;
+    //markUp = Math.ceil( ( +programming + +adaptiveDesign + +design ) * ( $("#mark_up").val()/100 ) );
+
+    //totalTime = Math.ceil( (markUp + programmingFinal + adaptiveDesign + design)*( 1 + $('#for_complicate').val()/100 )*( 1 - $('#discount').val()/100 ) );
+
+    totalTime = Math.round( (+adaptiveDesign + +programming) * ( 1 + $('#for_complicate').val()/100 ) );
+
+    //totalPrice = (Math.ceil(+totalTime*$('#hour_price').val()/100))*100;
+
+    totalPrice = totalTime * $('#hour_price').val();
 
     pricePerOnePayment = +totalPrice/$('#quantity_of_payments').val();
 
     $('#price_per_one_payment').val(pricePerOnePayment);
     $('#final_price').val(totalPrice);
 
-    markUpPrice = totalPrice*programming/( +programming + +adaptiveDesign + +design );
-    programmingPrice = totalPrice*adaptiveDesign/( +programming + +adaptiveDesign + +design );
-    designPrice = totalPrice*design/( +programming + +adaptiveDesign + +design );
+    // markUpPrice = totalPrice*programming/( +programming + +adaptiveDesign + +design );
+    // programmingPrice = totalPrice*adaptiveDesign/( +programming + +adaptiveDesign + +design );
+    // designPrice = totalPrice*design/( +programming + +adaptiveDesign + +design );
 
     $(this).closest('#final_calculations').append(
         '<input type="hidden" id="calc_design" name="calc_design" value="'+design+'">'+
         '<input type="hidden" id="calc_adaptiveDesign" name="calc_adaptiveDesign" value="'+adaptiveDesign+'">'+
         '<input type="hidden" id="calc_programming" name="calc_programming" value="'+programming+'">'+
         '<input type="hidden" id="calc_markUp" name="calc_markUp" value="'+markUp+'">'+
-        '<input type="hidden" id="calc_programmingFinal" name="calc_programmingFinal" value="'+programmingFinal+'">'+
+    //     '<input type="hidden" id="calc_programmingFinal" name="calc_programmingFinal" value="'+programmingFinal+'">'+
         '<input type="hidden" id="calc_totalTime" name="calc_totalTime" value="'+totalTime+'">'+
         '<input type="hidden" id="calc_totalPrice" name="calc_totalPrice" value="'+totalPrice+'">'+
-        '<input type="hidden" id="calc_pricePerOnePayment" name="calc_pricePerOnePayment" value="'+pricePerOnePayment+'">'+
-        '<input type="hidden" id="calc_markUpPrice" name="calc_markUpPrice" value="'+markUpPrice+'">'+
-        '<input type="hidden" id="calc_programmingPrice" name="calc_" value="'+programmingPrice+'">'+
-        '<input type="hidden" id="calc_designPrice" name="calc_designPrice" value="'+designPrice+'">'
+        '<input type="hidden" id="calc_pricePerOnePayment" name="calc_pricePerOnePayment" value="'+pricePerOnePayment+'">'
+    //     '<input type="hidden" id="calc_markUpPrice" name="calc_markUpPrice" value="'+markUpPrice+'">'+
+    //     '<input type="hidden" id="calc_programmingPrice" name="calc_" value="'+programmingPrice+'">'+
+    //     '<input type="hidden" id="calc_designPrice" name="calc_designPrice" value="'+designPrice+'">'
 
     // '<input type="hidden" id="calc_" name="calc_" value="'++'">'+
     // '<input type="hidden" id="calc_" name="calc_" value="'++'">'+
@@ -218,16 +237,16 @@ $(document).on( 'click' , '.calculate-button' , function(e){
 
     console.log('design = ' + design);
     console.log('adaptiveDesign = ' + adaptiveDesign);
-    console.log('design + adaptiveDesign = '+ (+adaptiveDesign + +design) );
+    // console.log('design + adaptiveDesign = '+ (+adaptiveDesign + +design) );
     console.log('programming = '+ programming);
     console.log('markUp = ' + markUp);
-    console.log('programmingFinal = '+ programmingFinal );
+    // console.log('programmingFinal = '+ programmingFinal );
     console.log('totalTime = '+ totalTime );
     console.log('totalPrice = '+ totalPrice );
     console.log('pricePerOnePayment = '+ pricePerOnePayment );
-    console.log('markUpPrice = '+ markUpPrice );
-    console.log('programmingPrice = '+ programmingPrice );
-    console.log('designPrice = '+ designPrice );
+    // console.log('markUpPrice = '+ markUpPrice );
+    // console.log('programmingPrice = '+ programmingPrice );
+    // console.log('designPrice = '+ designPrice );
 
 
 
@@ -243,7 +262,7 @@ function check_required_fields() {
         }
     });
 
-console.log($('#calculator_form').find('.error').length);
+//console.log($('#calculator_form').find('.error').length);
     if ( $('#calculator_form').find('.error').length ) return true;
 
 }

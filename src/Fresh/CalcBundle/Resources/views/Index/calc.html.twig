@@ -99,6 +99,17 @@
 
                         </fieldset>
 
+                        <fieldset id="mark_up" class="fieldsets">
+                            <legend>Верстка</legend>
+
+                            <p class="add-more">
+                                <a href="#" class="add_templates">Добавить шаблоны</a>
+                                    {#<label for="add_templates"><a href="#">Добавить шаблоны</a></label><br/>#}
+                                    {#<textarea name="add_templates" id="add_templates" cols="30" rows="10" placeholder='Добавте Ваши шаблоны через знак ","'></textarea>#}
+                            </p>
+
+                        </fieldset>
+
                         <fieldset id="programming" class="fieldsets">
                             <legend>Программирование</legend>
 
@@ -116,7 +127,7 @@
                             <div class="adaptive field">
                                 <p>
                                     <label for="adaptive">Адаптив</label>
-                                    <input type="text" class="input" name="adaptive" id="adaptive">
+                                    <input type="text" class="input" name="adaptive" id="adaptive" value="30">
                                     <label for="adaptive" class="field_label">%</label>
                                 </p>
                             </div>
@@ -124,7 +135,7 @@
                             <div class="for_complicate field">
                                 <p>
                                     <label for="for_complicate">За сложность</label>
-                                    <input type="text" class="input" name="for_complicate" id="for_complicate">
+                                    <input type="text" class="input" name="for_complicate" id="for_complicate" value="10">
                                     <label for="for_complicate" class="field_label">%</label>
                                 </p>
                             </div>
@@ -145,13 +156,13 @@
                                 </p>
                             </div>
 
-                            <div class="mark_up field">
-                                <p>
-                                    <label for="mark_up">Верстка</label>
-                                    <input type="text" class="input" name="mark_up" id="mark_up" value="30">
-                                    <label for="quantity_of_payments" class="field_label">%</label>
-                                </p>
-                            </div>
+                            {#<div class="mark_up field">#}
+                                {#<p>#}
+                                    {#<label for="mark_up">Верстка</label>#}
+                                    {#<input type="text" class="input" name="mark_up" id="mark_up" value="30">#}
+                                    {#<label for="quantity_of_payments" class="field_label">%</label>#}
+                                {#</p>#}
+                            {#</div>#}
 
                             <div class="hour_price field">
                                 <p>
@@ -161,21 +172,25 @@
                                 </p>
                             </div>
 
-                            <div class="final_price field">
-                                <p>
-                                    <label for="final_price">Итоговая стоимость, грн.</label>
-                                    <input type="text" class="input" name="final_price" id="final_price">
-                                    <label for="final_price" class="field_label">грн</label>
-                                </p>
+                            <div class="">
 
-                            </div>
+                                <div class="final_price field">
+                                    <p>
+                                        <label for="final_price">Итоговая стоимость, грн.</label>
+                                        <input type="text" class="input" name="final_price" id="final_price">
+                                        <label for="final_price" class="field_label">грн</label>
+                                    </p>
 
-                            <div class="price_per_one_payment field">
-                                <p>
-                                    <label for="price_per_one_payment">Стоимость одного плаежа, грн.</label>
-                                    <input type="text" class="input" name="price_per_one_payment" id="price_per_one_payment">
-                                    <label for="price_per_one_payment" class="field_label">грн</label>
-                                </p>
+                                </div>
+
+                                <div class="price_per_one_payment field">
+                                    <p>
+                                        <label for="price_per_one_payment">Стоимость одного плаежа, грн.</label>
+                                        <input type="text" class="input" name="price_per_one_payment" id="price_per_one_payment">
+                                        <label for="price_per_one_payment" class="field_label">грн</label>
+                                    </p>
+                                </div>
+
                             </div>
 
                             {#<input type="submit" class="button calculate-button" value="Посчитать">#}

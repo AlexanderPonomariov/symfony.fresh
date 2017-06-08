@@ -6,22 +6,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use \TCPDF_FONTS;
-use TFox\MpdfPortBundle\TFoxMpdfPortBundle;
 
 class IndexController extends Controller
 {
     public function indexAction($pdfLocation = null)
     {
-        $name = 'Hello Alex!!!! I am you firt frase!!!';
 
         $em = $this->getDoctrine()->getManager();
 
         $sitesTypes = $em->getRepository('FreshCalcBundle:SitesTypes')->findAll();
 
-//        return $this->render('FreshCalcBundle:Index:index.html.twig',
         return $this->render('FreshCalcBundle:Index:calc.html.twig',
             array(
-                'name' => $name,
                 'sitesTypes' => $sitesTypes,
                 'pdfLocation' => $pdfLocation
             )
@@ -36,14 +32,8 @@ class IndexController extends Controller
 
         $siteTypeParameters = $em->getRepository('FreshCalcBundle:Parameters')->getParametersForSiteType($siteType->getId());
 
+        //echo '<pre>';var_dump($siteTypeParameters);die;
 
-
-//        return $this->render('FreshCalcBundle:Index:index.html.twig',
-//            array(
-//
-//                'sitesTypes' => $siteTypeParameters
-//            )
-//        );
         for ( $i=0; $i < count($siteTypeParameters); $i++ ) {
             $siteTypeParameters[$i]['workType']['id'] = $em->getRepository('FreshCalcBundle:Parameters')->find($siteTypeParameters[$i]['id'])->getWorkTypes()->getId();
            // echo '<pre>';var_dump($em->getRepository('FreshCalcBundle:WorkTypes')->find($siteTypeParameters[$i]['id'])->getWorkType());die;
