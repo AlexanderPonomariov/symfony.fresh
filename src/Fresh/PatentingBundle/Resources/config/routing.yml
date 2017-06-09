@@ -1,3 +1,18 @@
 fresh_patenting_homepage:
     path:     /
     defaults: { _controller: FreshPatentingBundle:Patenting:index }
+
+
+fresh_patenting_get_organizations:
+    path:     /get-organizations
+    defaults: { _controller: FreshPatentingBundle:Patenting:getOrganizations }
+    requirements:
+        methods:  POST
+
+fresh_patenting_get_organization_data:
+     path:     /get-organization-data
+     defaults: { _controller: FreshPatentingBundle:Patenting:getOrganizationData }
+     requirements:
+         methods:  POST
+
+

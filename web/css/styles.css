@@ -139,3 +139,15 @@ fieldset#final_calculations .field:nth-child(3n+1) {
     cursor: pointer;
     outline: none;
 }
+
+fieldset.inside_fieldset {
+    margin: 0 20px 0 0;
+    border-radius: 15px;
+    padding-bottom: 25px;
+}
+
+.brif_form .contact_info fieldset.inside_fieldset legend {
+    margin-left: 5%;
+    letter-spacing: 1px;
+    font: 14px Lucida Sans Unicode, Lucida Sans, Verdana, Arial, sans-serif;
+}

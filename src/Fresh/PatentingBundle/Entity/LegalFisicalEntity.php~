@@ -1,0 +1,69 @@
+<?php
+namespace Fresh\PatentingBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="legal_fisical_entity")
+ */
+class LegalFisicalEntity
+
+{
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $isSelfOrganization;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $name;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $secondName;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $surname;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $address;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $identificationCode;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $passportSeries;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $passportNumber;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $passportOther;
+
+
+    
+
+
+}

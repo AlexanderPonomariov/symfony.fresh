@@ -1,0 +1,158 @@
+
+{% if organizationData is defined %}
+    {% set organizationType = organizationData.organizationType %}
+{% endif %}
+
+{% if organizationType == false %}
+
+    <fieldset id="organization_data fisical" class="fieldsets">
+        <legend>Физическое лицо</legend>
+
+        <div class="surname field">
+            <p>
+                <label for="surname">Фамилия</label>
+                <input type="text" class="input" name="surname" id="surname" {% if organizationData.surname is defined %}value="{{ organizationData.surname }}"{% endif %}>
+            </p>
+        </div>
+
+        <div class="name field">
+            <p>
+                <label for="name">Имя</label>
+                <input type="text" class="input" name="name" id="name" {% if organizationData.name is defined %}value="{{ organizationData.name }}"{% endif %}>
+            </p>
+        </div>
+
+        <div class="second_name field">
+            <p>
+                <label for="second_name">Отчество</label>
+                <input type="text" class="input" name="second_name" id="second_name" {% if organizationData.secondName is defined %}value="{{ organizationData.secondName }}"{% endif %}>
+            </p>
+        </div>
+
+        <div class="address field">
+            <p>
+                <label for="address">Адрес</label>
+                <input type="text" class="input" name="address" id="address" {% if organizationData.address is defined %}value="{{ organizationData.address }}"{% endif %}>
+            </p>
+        </div>
+
+        <div class="identification_code field">
+            <p>
+                <label for="identification_code">ЄДРПОУ</label>
+                <input type="text" class="input" name="identification_code" id="identification_code" {% if organizationData.identificationCode is defined %}value="{{ organizationData.identificationCode }}"{% endif %}>
+            </p>
+        </div>
+
+        <fieldset class="inside_fieldset">
+
+            <legend>Паспорт</legend>
+
+            <div class="passport_series field">
+                <p>
+                    <label for="passport_series">Серия</label>
+                    <input type="text" class="input" name="passport_series" id="passport_series" {% if organizationData.passportSeries is defined %}value="{{ organizationData.passportSeries }}"{% endif %}>
+                </p>
+            </div>
+
+            <div class="passport_number field">
+                <p>
+                    <label for="passport_number">Номер</label>
+                    <input type="text" class="input" name="passport_number" id="passport_number" {% if organizationData.passportNumber is defined %}value="{{ organizationData.passportNumber }}"{% endif %}>
+                </p>
+            </div>
+
+            <div class="passport_other field">
+                <p>
+                    <label for="passport_other">Выдан</label>
+                    <input type="text" class="input" name="passport_other" id="passport_other" {% if organizationData.passportOther is defined %}value="{{ organizationData.passportOther }}"{% endif %}>
+                </p>
+            </div>
+
+        </fieldset>
+
+        <div id="add_or_update">
+            <div class="section added field" >
+                <input type="checkbox" name="add_customer" id="add_customer" value="0" class="custom">Cохранить заказчика в справочник<br>
+            </div>
+            {% if organizationData is defined %}
+                <div class="section added field">
+                    <input type="checkbox" name="update_customer" id="update_customer" value="1" class="custom">Обновить заказчика в справочнике<br>
+                </div>
+            {% endif %}
+        </div>
+
+    </fieldset>
+
+{% else %}
+
+    <fieldset id="organization_data legal" class="fieldsets">
+        <legend>Юридическое лицо</legend>
+
+        <div class="organization_name field">
+            <p>
+                <label for="organization_name">Название</label>
+                <input type="text" class="input" name="organization_name" id="organization_name" {% if organizationData.organizationName is defined %}value="{{ organizationData.organizationName }}"{% endif %}>
+            </p>
+        </div>
+
+        <div class="address field">
+            <p>
+                <label for="address">Адрес</label>
+                <input type="text" class="input" name="address" id="address" {% if organizationData.address is defined %}value="{{ organizationData.address }}"{% endif %}>
+            </p>
+        </div>
+
+        <div class="identification_code field">
+            <p>
+                <label for="identification_code">ЄДРПОУ</label>
+                <input type="text" class="input" name="identification_code" id="identification_code" {% if organizationData.identificationCode is defined %}value="{{ organizationData.identificationCode }}"{% endif %}>
+            </p>
+        </div>
+
+        <fieldset class="inside_fieldset">
+
+            <legend>Директор</legend>
+
+            <div class="name field">
+                <p>
+                    <label for="name">Фамилия</label>
+                    <input type="text" class="input" name="name" id="name" {% if organizationData.surname is defined %}value="{{ organizationData.surname }}"{% endif %}>
+                </p>
+            </div>
+
+            <div class="second_name field">
+                <p>
+                    <label for="second_name">Имя</label>
+                    <input type="text" class="input" name="second_name" id="second_name" {% if organizationData.name is defined %}value="{{ organizationData.name }}"{% endif %}>
+                </p>
+            </div>
+
+            <div class="surname field">
+                <p>
+                    <label for="surname">Отчество</label>
+                    <input type="text" class="input" name="surname" id="surname" {% if organizationData.secondName is defined %}value="{{ organizationData.secondName }}"{% endif %}>
+                </p>
+            </div>
+
+        </fieldset>
+
+        <div id="add_or_update">
+            <div class="section added field">
+                <input type="checkbox" name="add_customer" id="add_customer" value="0" class="custom">Cохранить заказчика в
+                справочник<br>
+            </div>
+            {% if organizationData is defined %}
+                <div class="section added field">
+                    <input type="checkbox" name="update_customer" id="update_customer" value="1" class="custom">Обновить заказчика в справочнике<br>
+                </div>
+            {% endif %}
+
+        </div>
+
+    </fieldset>
+
+{% endif %}
+
+
+
+

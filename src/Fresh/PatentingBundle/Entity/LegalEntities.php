@@ -1,0 +1,358 @@
+<?php
+namespace Fresh\PatentingBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity(repositoryClass="Fresh\PatentingBundle\Entity\Repository\LegalEntitiesRepository")
+ * @ORM\Table(name="legal_entities")
+ * @ORM\HasLifecycleCallbacks()
+ */
+class LegalEntities
+
+{
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default":0})
+     */
+    protected $isSelfOrganization;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default":0})
+     */
+    protected $organizationType;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $name;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $secondName;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $surname;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $organizationName;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $address;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $identificationCode;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $passportSeries;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $passportNumber;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $passportOther;
+
+
+    
+
+
+
+
+
+
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set isSelfOrganization
+     *
+     * @param boolean $isSelfOrganization
+     *
+     * @return LegalEntities
+     */
+    public function setIsSelfOrganization($isSelfOrganization)
+    {
+        $this->isSelfOrganization = $isSelfOrganization;
+
+        return $this;
+    }
+
+    /**
+     * Get isSelfOrganization
+     *
+     * @return boolean
+     */
+    public function getIsSelfOrganization()
+    {
+        return $this->isSelfOrganization;
+    }
+
+    /**
+     * Set organizationType
+     *
+     * @param boolean $organizationType
+     *
+     * @return LegalEntities
+     */
+    public function setorganizationType($organizationType)
+    {
+        $this->organizationType = $organizationType;
+
+        return $this;
+    }
+
+    /**
+     * Get organizationType
+     *
+     * @return boolean
+     */
+    public function getorganizationType()
+    {
+        return $this->organizationType;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return LegalEntities
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set secondName
+     *
+     * @param string $secondName
+     *
+     * @return LegalEntities
+     */
+    public function setSecondName($secondName)
+    {
+        $this->secondName = $secondName;
+
+        return $this;
+    }
+
+    /**
+     * Get secondName
+     *
+     * @return string
+     */
+    public function getSecondName()
+    {
+        return $this->secondName;
+    }
+
+    /**
+     * Set surname
+     *
+     * @param string $surname
+     *
+     * @return LegalEntities
+     */
+    public function setSurname($surname)
+    {
+        $this->surname = $surname;
+
+        return $this;
+    }
+
+    /**
+     * Get surname
+     *
+     * @return string
+     */
+    public function getSurname()
+    {
+        return $this->surname;
+    }
+
+    /**
+     * Set organizationName
+     *
+     * @param string $organizationName
+     *
+     * @return LegalEntities
+     */
+    public function setOrganizationName($organizationName)
+    {
+        $this->organizationName = $organizationName;
+
+        return $this;
+    }
+
+    /**
+     * Get organizationName
+     *
+     * @return string
+     */
+    public function getOrganizationName()
+    {
+        return $this->organizationName;
+    }
+
+    /**
+     * Set address
+     *
+     * @param string $address
+     *
+     * @return LegalEntities
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * Get address
+     *
+     * @return string
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    /**
+     * Set identificationCode
+     *
+     * @param string $identificationCode
+     *
+     * @return LegalEntities
+     */
+    public function setIdentificationCode($identificationCode)
+    {
+        $this->identificationCode = $identificationCode;
+
+        return $this;
+    }
+
+    /**
+     * Get identificationCode
+     *
+     * @return string
+     */
+    public function getIdentificationCode()
+    {
+        return $this->identificationCode;
+    }
+
+    /**
+     * Set passportSeries
+     *
+     * @param string $passportSeries
+     *
+     * @return LegalEntities
+     */
+    public function setPassportSeries($passportSeries)
+    {
+        $this->passportSeries = $passportSeries;
+
+        return $this;
+    }
+
+    /**
+     * Get passportSeries
+     *
+     * @return string
+     */
+    public function getPassportSeries()
+    {
+        return $this->passportSeries;
+    }
+
+    /**
+     * Set passportNumber
+     *
+     * @param string $passportNumber
+     *
+     * @return LegalEntities
+     */
+    public function setPassportNumber($passportNumber)
+    {
+        $this->passportNumber = $passportNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get passportNumber
+     *
+     * @return string
+     */
+    public function getPassportNumber()
+    {
+        return $this->passportNumber;
+    }
+
+    /**
+     * Set passportOther
+     *
+     * @param string $passportOther
+     *
+     * @return LegalEntities
+     */
+    public function setPassportOther($passportOther)
+    {
+        $this->passportOther = $passportOther;
+
+        return $this;
+    }
+
+    /**
+     * Get passportOther
+     *
+     * @return string
+     */
+    public function getPassportOther()
+    {
+        return $this->passportOther;
+    }
+}
