@@ -15,4 +15,8 @@ fresh_patenting_get_organization_data:
      requirements:
          methods:  POST
 
-
+fresh_patenting_get_cntract_doc:
+     path:     /get-contract-doc
+     defaults: { _controller: FreshPatentingBundle:Patenting:createWordDocumentContract }
+     requirements:
+         methods:  POST

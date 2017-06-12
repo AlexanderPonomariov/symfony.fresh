@@ -15,7 +15,7 @@
             <div class="slides_in">
                 <!--<div rel="25%" class="active">Заявка на разработку сайта</div>
                 <div rel="50%">Почему такая цена?</div>-->
-                <div rel="100%">Узнать стоимость</div>
+                <div rel="100%">Rонструктор договора для регистрации ТМ и всех приложений к нему</div>
             </div>
         </div>
     </div>
@@ -24,13 +24,13 @@
         <div class="content_in">
             <div class="slides">
                 <div class="slide know_cost_slide">
-                    <form>
+                    <form id="patenting_form">
                         <div class="form contact_info">
 
                             <div class="field">
                                 <label>Исполнитель</label>
                                 {#{{ dump(selfOrganizations) }}#}
-                                <select name="site_type" class="input" tabindex="3" id="site_type">
+                                <select name="our_entity" class="input" tabindex="3" id="our_entity">
                                     {#<option value="1"></option>#}
                                     {% for selfOrganization in selfOrganizations %}
 
@@ -145,344 +145,70 @@
                                 </fieldset>
                             </div>
 
+                            <div class="field">
+                                <label>Тип цен</label>
+                                <select name="prices_type" class="input" tabindex="3" id="prices_type">
+                                    <option value="0">Cтандарт</option>
+                                    <option value="1">Партнер</option>
+                                </select>
+                            </div>
+
+                            <div class="field">
+                                <label>Срочность регистрации</label>
+                                <select name="registrations_urgency" class="input" tabindex="3" id="registrations_urgency">
+                                    <option value="0">Обычная</option>
+                                    <option value="1">Ускоренная</option>
+                                    <option value="1">Срочная</option>
+                                </select>
+                            </div>
+
+                            <div class="field">
+                                <label>Тип ТМ</label>
+                                <select name="trademarks_type" class="input" tabindex="3" id="trademarks_type">
+                                    <option value="0">Словесная</option>
+                                    <option value="1">Комбинированная</option>
+                                </select>
+                            </div>
+
+                            <div class="field">
+                                <label>Количество заявителей</label>
+                                <div class="fieldsets">
+
+                                    <div class="section added field" >
+                                        <input type="checkbox" name="declarants_quantity" id="declarants_quantity" value="0" class="custom">Более 1 заявителя<br>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="field holder">
+                                <label>Классы(вводить через запятую)</label>
+                                <textarea tabindex="5" class="input" id="trademarks_classes" name="trademarks_classes"></textarea>
+                            </div>
+
+                            <div class="field">
+                                <label>Нужен ли поиск</label>
+                                <div class="fieldsets">
+                                    <div class="section added field" >
+                                        <input type="checkbox" name="search_neaded" id="search_neaded" value="0" class="custom" checked>Поиск<br>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <label>Цветность</label>
+                                <div class="fieldsets">
+                                    <div class="section added field" >
+                                        <input type="checkbox" name="colority" id="colority" value="0" class="custom">Цветная<br>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button class="button create_сontract">Сформировать договор</button>
 
 
-                            {#<fieldset id="organization_data legal" class="fieldsets">#}
-                                {#<legend>Юридическое лицо</legend>#}
-
-                                {#<div class="organization_name field">#}
-                                    {#<p>#}
-                                        {#<label for="organization_name">Название</label>#}
-                                        {#<input type="text" class="input" name="organization_name" id="organization_name">#}
-                                    {#</p>#}
-                                {#</div>#}
-
-                                {#<div class="address field">#}
-                                    {#<p>#}
-                                        {#<label for="address">Адрес</label>#}
-                                        {#<input type="text" class="input" name="address" id="address">#}
-                                    {#</p>#}
-                                {#</div>#}
-
-                                {#<div class="identification_code field">#}
-                                    {#<p>#}
-                                        {#<label for="identification_code">ЄДРПОУ</label>#}
-                                        {#<input type="text" class="input" name="identification_code" id="identification_code">#}
-                                    {#</p>#}
-                                {#</div>#}
-
-                                {#<fieldset class="inside_fieldset">#}
-
-                                    {#<legend>Директор</legend>#}
-
-                                    {#<div class="name field">#}
-                                        {#<p>#}
-                                            {#<label for="name">Фамилия</label>#}
-                                            {#<input type="text" class="input" name="name" id="name">#}
-                                        {#</p>#}
-                                    {#</div>#}
-
-                                    {#<div class="second_name field">#}
-                                        {#<p>#}
-                                            {#<label for="second_name">Имя</label>#}
-                                            {#<input type="text" class="input" name="second_name" id="second_name">#}
-                                        {#</p>#}
-                                    {#</div>#}
-
-                                    {#<div class="surname field">#}
-                                        {#<p>#}
-                                            {#<label for="surname">Отчество</label>#}
-                                            {#<input type="text" class="input" name="surname" id="surname">#}
-                                        {#</p>#}
-                                    {#</div>#}
-
-                                {#</fieldset>#}
-
-                                {#<div class="field" id="add_or_update">#}
-                                    {#<input type="checkbox" name="add_customer" id="add_customer" value="0">Cохранить заказчика в справочник<br>#}
-                                    {#<input type="checkbox" name="update_customer" id="update_customer" value="1">Обновить заказчика в справочнике<br>#}
-                                {#</div>#}
-
-                                {#<div id="add_or_update">#}
-                                    {#<div class="section added field" >#}
-                                        {#<input type="checkbox" name="add_customer" id="add_customer" value="0" class="custom">Cохранить заказчика в справочник<br>#}
-                                    {#</div>#}
-
-                                    {#<div class="section added field">#}
-                                        {#<input type="checkbox" name="update_customer" id="update_customer" value="1" class="custom">Обновить заказчика в справочнике<br>#}
-                                    {#</div>#}
-                                {#</div>#}
-
-                            {#</fieldset>#}
-
-
-
-
-
-
-                            {#<fieldset id="organization_data fisical" class="fieldsets">#}
-                                {#<legend>Физическое лицо</legend>#}
-
-                                {#<div class="name field">#}
-                                    {#<p>#}
-                                        {#<label for="name">Фамилия</label>#}
-                                        {#<input type="text" class="input" name="name" id="name">#}
-                                    {#</p>#}
-                                {#</div>#}
-
-                                {#<div class="second_name field">#}
-                                    {#<p>#}
-                                        {#<label for="second_name">Имя</label>#}
-                                        {#<input type="text" class="input" name="second_name" id="second_name">#}
-                                    {#</p>#}
-                                {#</div>#}
-
-                                {#<div class="surname field">#}
-                                    {#<p>#}
-                                        {#<label for="surname">Отчество</label>#}
-                                        {#<input type="text" class="input" name="surname" id="surname">#}
-                                    {#</p>#}
-                                {#</div>#}
-
-                                {#<div class="address field">#}
-                                    {#<p>#}
-                                        {#<label for="address">Адрес</label>#}
-                                        {#<input type="text" class="input" name="address" id="address">#}
-                                    {#</p>#}
-                                {#</div>#}
-
-                                {#<div class="identification_code field">#}
-                                    {#<p>#}
-                                        {#<label for="identification_code">ЄДРПОУ</label>#}
-                                        {#<input type="text" class="input" name="identification_code" id="identification_code">#}
-                                    {#</p>#}
-                                {#</div>#}
-
-                                {#<fieldset class="inside_fieldset">#}
-
-                                    {#<legend>Паспорт</legend>#}
-
-                                    {#<div class="passport_series field">#}
-                                        {#<p>#}
-                                            {#<label for="passport_series">Серия</label>#}
-                                            {#<input type="text" class="input" name="passport_series" id="passport_series">#}
-                                        {#</p>#}
-                                    {#</div>#}
-
-                                    {#<div class="passport_number field">#}
-                                        {#<p>#}
-                                            {#<label for="passport_number">Номер</label>#}
-                                            {#<input type="text" class="input" name="passport_number" id="passport_number">#}
-                                        {#</p>#}
-                                    {#</div>#}
-
-                                    {#<div class="passport_other field">#}
-                                        {#<p>#}
-                                            {#<label for="passport_other">Выдан</label>#}
-                                            {#<input type="text" class="input" name="passport_other" id="passport_other">#}
-                                        {#</p>#}
-                                    {#</div>#}
-
-                                {#</fieldset>#}
-
-                                {#<div id="add_or_update">#}
-                                    {#<div class="section added field" >#}
-                                        {#<input type="checkbox" name="add_customer" id="add_customer" value="0" class="custom">Cохранить заказчика в справочник<br>#}
-                                    {#</div>#}
-
-                                    {#<div class="section added field">#}
-                                        {#<input type="checkbox" name="update_customer" id="update_customer" value="1" class="custom">Обновить заказчика в справочнике<br>#}
-                                    {#</div>#}
-                                {#</div>#}
-
-                            {#</fieldset>#}
-
-
-
-
-
-
-
-
-
-
-                        {#<div class="field">#}
-                            {#<label>Компания*</label>#}
-                            {#<input type="text" class="input" tabindex="1" name="company" id="company" required>#}
-                        {#</div>#}
-                        {#<div class="field">#}
-                            {#<label>Имя*</label>#}
-                            {#<input type="text" class="input" tabindex="1" name="name" id="name" required>#}
-                        {#</div>#}
-                        {#<div class="field">#}
-                            {#<label>Фамилия</label>#}
-                            {#<input type="text" class="input" tabindex="1"  name="surname" id="surname">#}
-                        {#</div>#}
-                        {#<div class="field">#}
-                            {#<label>Отчество</label>#}
-                            {#<input type="text" class="input" tabindex="1"  name="secondname" id="secondname">#}
-                        {#</div>#}
-
-                        {#<div class="field">#}
-                            {#<label>Эл. почта*</label>#}
-                            {#<input type="text" class="input" tabindex="2" name="email" id="email" required>#}
-                        {#</div>#}
-
-                        {#<div class="field">#}
-                            {#<label>Контактный телефон*</label>#}
-                            {#<input type="text" class="input" tabindex="4" name="tel" id="tel" placeholder="+12 (345)-678-91-00">#}
-                        {#</div>#}
-
-                        <div class="field">
-                            <label>Выберите тип сайта</label>
-                            <select name="site_type" class="input" tabindex="3" id="site_type">
-                                <option value="0"></option>
-                                {#{% for siteType in sitesTypes %}#}
-                                    {#<option value="{{ siteType.id }}" data-query-url="{{ path('get_parameters', { 'id': siteType.id }) }}">{{ siteType.siteType }}</option>#}
-                                {#{% endfor %}#}
-                            </select>
-                            {#<div class="newListSelected " tabindex="3">#}
-                                {#<div class="selectedTxt">Создание сайта</div>#}
-                                {#<div class="SSContainerDivWrapper" style="visibility: visible; top: 19px; height: 150px; left: 0px; display: none;">#}
-                                    {#<ul class="newList" style="height: 150px;">#}
-                                        {#<li><a href="JavaScript:void(0);" class="hiLite">Создание сайта</a></li>#}
-                                        {#<li><a href="JavaScript:void(0);">Разработка фирменного стиля</a></li>#}
-                                        {#<li><a href="JavaScript:void(0);">Создание логотипа</a></li>#}
-                                        {#<li><a href="JavaScript:void(0);">Разработка дизайна сайта</a></li>#}
-                                        {#<li><a href="JavaScript:void(0);">Фотосъёмка</a></li>#}
-                                        {#<li><a href="JavaScript:void(0);">Видео презентация</a></li>#}
-                                        {#<li><a href="JavaScript:void(0);">Брендирование авто</a></li>#}
-                                        {#<li><a href="JavaScript:void(0);">Дизайн упаковки</a></li>#}
-                                        {#<li><a href="JavaScript:void(0);"></a></li>#}
-                                        {#<li><a href="JavaScript:void(0);">Дизайн этикетки</a></li>#}
-                                        {#<li><a href="JavaScript:void(0);">Landing page</a></li>#}
-                                        {#<li><a href="JavaScript:void(0);">Email-маркетинг</a></li>#}
-                                    {#</ul>#}
-                                {#</div>#}
-                            {#</div>#}
                         </div>
-
-                        <div class="field holder">
-                            <label>Дополнительная информация</label>
-                            <textarea tabindex="5" class="input"></textarea>
-                        </div>
-
-
-                        <fieldset id="design" class="fieldsets">
-                            <legend>Дизайн</legend>
-
-                            <p class="add-more">
-                                <a href="#" class="add_templates">Добавить шаблоны</a>
-                                {#<label for="add_templates"><a href="#">Добавить шаблоны</a></label><br/>#}
-                                {#<textarea name="add_templates" id="add_templates" cols="30" rows="10" placeholder='Добавте Ваши шаблоны через знак ","'></textarea>#}
-                            </p>
-
-                        </fieldset>
-
-                        <fieldset id="programming" class="fieldsets">
-                            <legend>Программирование</legend>
-
-                            <p class="add-more">
-                                <a href="#" class="add_templates">Добавить шаблоны</a>
-                                {#<label for="add_templates"><a href="#">Добавить шаблоны</a></label><br/>#}
-                                {#<textarea name="add_templates" id="add_templates" cols="30" rows="10" placeholder='Добавте Ваши шаблоны через знак ","'></textarea>#}
-                            </p>
-
-                        </fieldset>
-
-                        <fieldset id="final_calculations" class="fieldsets">
-                            <legend>Дополнительные параметры</legend>
-
-                            <div class="adaptive field">
-                                <p>
-                                    <label for="adaptive">Адаптив</label>
-                                    <input type="text" class="input" name="adaptive" id="adaptive">
-                                    <label for="adaptive" class="field_label">%</label>
-                                </p>
-                            </div>
-
-                            <div class="for_complicate field">
-                                <p>
-                                    <label for="for_complicate">За сложность</label>
-                                    <input type="text" class="input" name="for_complicate" id="for_complicate">
-                                    <label for="for_complicate" class="field_label">%</label>
-                                </p>
-                            </div>
-
-                            <div class="discount field">
-                                <p>
-                                    <label for="discount">Скидка</label>
-                                    <input type="text" class="input" name="discount" id="discount">
-                                    <label for="discount" class="field_label">%</label>
-                                </p>
-                            </div>
-
-                            <div class="quantity_of_payments field">
-                                <p>
-                                    <label for="quantity_of_payments">Кол-во платежей</label>
-                                    <input type="text" class="input" name="quantity_of_payments" id="quantity_of_payments" value="1">
-                                    <label for="quantity_of_payments" class="field_label">шт.</label>
-                                </p>
-                            </div>
-
-                            <div class="mark_up field">
-                                <p>
-                                    <label for="mark_up">Верстка</label>
-                                    <input type="text" class="input" name="mark_up" id="mark_up" value="30">
-                                    <label for="quantity_of_payments" class="field_label">%</label>
-                                </p>
-                            </div>
-
-                            <div class="hour_price field">
-                                <p>
-                                    <label for="hour_price">Цена часа</label>
-                                    <input type="text" class="input" name="hour_price" id="hour_price" value="550">
-                                    <label for="hour_price" class="field_label per_hour">грн/час</label>
-                                </p>
-                            </div>
-
-                            <div class="final_price field">
-                                <p>
-                                    <label for="final_price">Итоговая стоимость, грн.</label>
-                                    <input type="text" class="input" name="final_price" id="final_price">
-                                    <label for="final_price" class="field_label">грн</label>
-                                </p>
-
-                            </div>
-
-                            <div class="price_per_one_payment field">
-                                <p>
-                                    <label for="price_per_one_payment">Стоимость одного плаежа, грн.</label>
-                                    <input type="text" class="input" name="price_per_one_payment" id="price_per_one_payment">
-                                    <label for="price_per_one_payment" class="field_label">грн</label>
-                                </p>
-                            </div>
-
-                            {#<input type="submit" class="button calculate-button" value="Посчитать">#}
-
-                            {#<button class="button get_pdf_path">Сформировать PDF</button>#}
-
-                        </fieldset>
-
-                        <input type="submit" class="button calculate-button" value="Посчитать">
-
-                        <button class="button get_pdf_path">Сформировать PDF</button>
-
-
-
-                        {#<div id="multi-label">#}
-        {#<span>#}
-                            {#Прикрепить файл#}
-        {#</span>#}
-                        {#</div>#}
-                        {#<div class="MultiFile-wrap" id="multi-button_wrap"><input type="file" id="multi-button" class="ru MultiFile-applied" name="files" value=""><div class="MultiFile-list" id="multi-button_wrap_list"></div></div>#}
-                    {#</div>#}
-                    {#<a class="big_button slide_next" data-id="670">#}
-                        {#<span>Отправить заявку</span><span class="big_button_corner"></span>#}
-                    {#</a>#}
-
-                </div>
                     </form>
+                </div>
             </div>
         </div>
 

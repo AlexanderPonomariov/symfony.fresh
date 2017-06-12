@@ -29,7 +29,7 @@
 
             for ( var i in data.organizations ) {
                 if ( data.organizations[i].organizationType == false ) {
-                    organizations += '<option value="' + data.organizations[i].id + '">ФОП ' + data.organizations[i].surname + ' ' + data.organizations[i].name + ' ' +data.organizations[i].secondName + '</option>';
+                    organizations += '<option value="' + data.organizations[i].id + '">' + data.organizations[i].surname + ' ' + data.organizations[i].name + ' ' +data.organizations[i].secondName + '</option>';
 
                 } else {
                     organizations += '<option value="' + data.organizations[i].id + '">' + data.organizations[i].organizationName + '</option>';
@@ -95,7 +95,19 @@
 //=====================================================================================================
 
 
+    $(document).on( 'click' , '#patenting_form .create_сontract' , function(e){
 
+        e.preventDefault();
+
+        var createContract = $(this);
+
+        $.post( 'get-contract-doc' , createContract.closest('form').serialize() , function(data){
+
+            console.log(data);
+
+        });
+
+    });
 
 
 })()
