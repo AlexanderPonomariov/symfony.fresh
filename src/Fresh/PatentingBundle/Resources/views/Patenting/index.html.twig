@@ -15,7 +15,7 @@
             <div class="slides_in">
                 <!--<div rel="25%" class="active">Заявка на разработку сайта</div>
                 <div rel="50%">Почему такая цена?</div>-->
-                <div rel="100%">Rонструктор договора для регистрации ТМ и всех приложений к нему</div>
+                <div rel="100%">Конструктор договора для регистрации ТМ и всех приложений к нему</div>
             </div>
         </div>
     </div>
@@ -34,8 +34,8 @@
                                     {#<option value="1"></option>#}
                                     {% for selfOrganization in selfOrganizations %}
 
-                                        {% if selfOrganization.organizationType == true %}
-                                            <option value="{{ selfOrganization.id }}">{{ selfOrganization.surname }} {{ selfOrganization.name }} {{ selfOrganization.secondName }}</option>
+                                        {% if selfOrganization.organizationType == false %}
+                                            <option value="{{ selfOrganization.id }}">ФОП {{ selfOrganization.surname }} {{ selfOrganization.name }} {{ selfOrganization.secondName }}</option>
                                         {% else %}
                                             <option value="{{ selfOrganization.id }}">{{ selfOrganization.organizationName }}</option>
                                         {% endif %}
@@ -60,7 +60,7 @@
                                     {% for organization in organizations %}
 
                                         {% if organization.organizationType == false %}
-                                            <option value="{{ organization.id }}">ФОП {{ organization.surname }} {{ organization.name }} {{ organization.secondName }}</option>
+                                            <option value="{{ organization.id }}">{{ organization.surname }} {{ organization.name }} {{ organization.secondName }}</option>
                                         {% else %}
                                             <option value="{{ organization.id }}">{{ organization.organizationName }}</option>
                                         {% endif %}
@@ -158,7 +158,7 @@
                                 <select name="registrations_urgency" class="input" tabindex="3" id="registrations_urgency">
                                     <option value="0">Обычная</option>
                                     <option value="1">Ускоренная</option>
-                                    <option value="1">Срочная</option>
+                                    <option value="2">Срочная</option>
                                 </select>
                             </div>
 
@@ -189,7 +189,7 @@
                                 <label>Нужен ли поиск</label>
                                 <div class="fieldsets">
                                     <div class="section added field" >
-                                        <input type="checkbox" name="search_neaded" id="search_neaded" value="0" class="custom" checked>Поиск<br>
+                                        <input type="checkbox" name="search_neaded" id="search_neaded" value="1" class="custom" checked>Поиск<br>
                                     </div>
                                 </div>
                             </div>
@@ -198,12 +198,14 @@
                                 <label>Цветность</label>
                                 <div class="fieldsets">
                                     <div class="section added field" >
-                                        <input type="checkbox" name="colority" id="colority" value="0" class="custom">Цветная<br>
+                                        <input type="checkbox" name="colority" id="colority" value="1" class="custom">Цветная<br>
                                     </div>
                                 </div>
                             </div>
 
-                            <button class="button create_сontract">Сформировать договор</button>
+                            <div class="field">
+                                <button class="button create_сontract">Сформировать договор</button>
+                            </div>
 
 
                         </div>

@@ -73,6 +73,11 @@ class LegalEntities
      */
     protected $passportOther;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Contracts", mappedBy="legal_entities")
+     */
+    protected $parameters;
+
 
     
 
@@ -354,5 +359,46 @@ class LegalEntities
     public function getPassportOther()
     {
         return $this->passportOther;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->parameters = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add parameter
+     *
+     * @param \Fresh\PatentingBundle\Entity\Contracts $parameter
+     *
+     * @return LegalEntities
+     */
+    public function addParameter(\Fresh\PatentingBundle\Entity\Contracts $parameter)
+    {
+        $this->parameters[] = $parameter;
+
+        return $this;
+    }
+
+    /**
+     * Remove parameter
+     *
+     * @param \Fresh\PatentingBundle\Entity\Contracts $parameter
+     */
+    public function removeParameter(\Fresh\PatentingBundle\Entity\Contracts $parameter)
+    {
+        $this->parameters->removeElement($parameter);
+    }
+
+    /**
+     * Get parameters
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getParameters()
+    {
+        return $this->parameters;
     }
 }
