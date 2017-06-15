@@ -101,13 +101,44 @@
 
         var createContract = $(this);
 
+        createContract.closest('.buttons-block').find('.download_sample').remove();
+
         $.post( 'get-contract-doc' , createContract.closest('form').serialize() , function(data){
 
             console.log(data);
+            createContract.closest('.buttons-block').append('<a href="/'+data.archive +'" download class="download_sample button create_сontract">Скачать образец договора</a>');
+            createContract.closest('.buttons-block').append('<a class="download_sample button create_сontract save_client_and_contract">Сохранить/Обновить</a>');
 
         });
 
     });
+
+    $(document).on( 'click' , '#patenting_form .save_client_and_contract' , function(e){
+
+        e.preventDefault();
+
+        var createContract = $(this);
+
+        createContract.closest('.buttons-block').find('.download_sample').remove();
+
+        $.post( 'save' , createContract.closest('form').serialize() , function(data){
+
+            console.log(data);
+            createContract.closest('.buttons-block').append('<a href="/'+data.archive +'" download class="download_sample button create_сontract">Скачать образец договора</a>');
+            createContract.closest('.buttons-block').append('<a class="download_sample button create_сontract save_client_and_contract">Сохранить/Обновить</a>');
+
+        });
+
+    });
+
+    $(document).on( 'click' , '#patenting_form #add_customer:checked' , function(e){
+
+
+    });
+
+
+
+
 
 
 })()

@@ -173,13 +173,20 @@ class PatentingController extends Controller
 
 
         $savePath = $_SERVER['DOCUMENT_ROOT'].'/patenting_documents/';
-        //mkdir($savePath.'temporary');
-        $contract->saveAs($savePath.'temporary/contract_1.docx');
-        $proxy->saveAs($savePath.'temporary/proxy_1.docx');
+
+        if ( !file_exists ( $savePath.'temporary' ) ) {
+            mkdir($savePath.'temporary');
+        }
+        if ( file_exists ( $savePath.'archives/contract-sample.zip' ) ) {
+            unlink ($savePath.'archives/contract-sample.zip' );
+        }
+
+        $contract->saveAs($savePath.'temporary/contract.docx');
+        $proxy->saveAs($savePath.'temporary/proxy.docx');
 
         $zip = new \ZipArchive;
         //$zip->open($savePath.'/archives/contract-'.$contractNumber.'.zip', \ZipArchive::CREATE);
-        $zip->open($savePath.'/archives/contract-sample.zip', \ZipArchive::CREATE);
+        $zip->open($savePath.'archives/contract-sample.zip', \ZipArchive::CREATE);
         $zip->addFile($savePath.'temporary/proxy.docx', 'proxy-for-contract-'.$contractNumber.'.docx');
         $zip->addFile($savePath.'temporary/contract.docx', 'contract-'.$contractNumber.'.docx' );
 
@@ -192,14 +199,13 @@ class PatentingController extends Controller
             $request->request->get('search_neaded'),
             $request->request->get('colority'),
             $contractNumber
-
         );
 
-
+        $zip->addFile($savePath.'temporary/'.$specification , $specification );
 
         $zip->close();
 
-        //$this->dirDel($savePath.'temporary');
+        $this->dirDel($savePath.'temporary');
 
         return new JsonResponse(array(
             'archive' => $savePath.'/archives/contract-'.$contractNumber.'.zip',
@@ -231,7 +237,6 @@ class PatentingController extends Controller
                 'registartionType' => $trademarks_type,
             ));
 
-
         $payCollectionForSearchPrice = $pricesByData[0]->getPrice() + ( $countTrademarksClasses-1 ) * ( $pricesByData[1]->getPrice() );
         $formalizationOfApplicationPrice = $pricesByData[3]->getPrice() + ( $countTrademarksClasses-1 ) * ( $pricesByData[4]->getPrice() );
         $payFeeForFilingApplicationPrice = $pricesByData[5]->getPrice() + ( $countTrademarksClasses-1 ) * ( $pricesByData[6]->getPrice() ) + ( $colority ? $additionalPrices[0]->getPrice() : 0 ) + ( $declarants_quantity ? $additionalPrices[2]->getPrice() : 0 ) * $countTrademarksClasses;
@@ -241,8 +246,6 @@ class PatentingController extends Controller
         $payFeeForPublicationPrice = $payFeeForPublication->getPrice() + ( $countTrademarksClasses-1 ) * ( $payFeeForPublicationOther->getPrice() ) + ( $colority ? $additionalPrices[1]->getPrice() : 0 );
         $forGetingCertificate = $registrations_urgency == 1 ? $pricesByData[10] : $pricesByData[13] ;
         $payFeeForAcceleratedRegistartionPrice = $pricesByData[8]->getPrice() + ( $countTrademarksClasses-1 ) * ( $pricesByData[9]->getPrice() );
-
-
 
         if( $registrations_urgency == 1/*Standart*/ && $search_neaded/*With search*/ ) {
 
@@ -311,9 +314,9 @@ class PatentingController extends Controller
 
         $a = ( $declarants_quantity ? $additionalPrices[2]->getPrice() : 0 );
 
-        $specification->saveAs($savePath.'specification.docx');
+        $specification->saveAs($savePath.'temporary/specification-'.$contractNumber.'.docx');
 
-        echo '<pre>';var_dump($pricesByData);die;
+        return 'specification-'.$contractNumber.'.docx';
 
     }
 
@@ -335,6 +338,37 @@ class PatentingController extends Controller
         }
         closedir( $d );
         rmdir ( $dir );
+    }
+
+    public function saveAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $ourEntityId = $request->request->get('our_entity');
+
+        $ourEntity = $em->getRepository('FreshPatentingBundle:LegalEntities')->findBy(array('id' => $ourEntityId));
+
+        $lastContractNumber = $em->getRepository('FreshPatentingBundle:Contracts')->getMaxId();
+        $contractNumber = ($ourEntity[0]->getPassportSeries()).'-'. (++$lastContractNumber[1]);
+
+
+
+
+
+
+
+
+
+        $contractAdd  = new Contracts();
+        $contractAdd->setContractNumber($contractNumber);
+        if ( $request->request->get('organizations') ) {
+            $legalEntity = $em->getRepository('FreshPatentingBundle:LegalEntities')->find($request->request->get('organizations'));
+            $contractAdd->setEntity($legalEntity);
+        }
+        $em->persist($contractAdd);
+        $em->flush();
+
+
     }
 
 

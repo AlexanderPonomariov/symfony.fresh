@@ -20,3 +20,9 @@ fresh_patenting_get_cntract_doc:
      defaults: { _controller: FreshPatentingBundle:Patenting:createWordDocumentContract }
      requirements:
          methods:  POST
+
+fresh_patenting_save:
+     path:     /save
+     defaults: { _controller: FreshPatentingBundle:Patenting:save }
+     requirements:
+         methods:  POST

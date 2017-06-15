@@ -151,3 +151,18 @@ fieldset.inside_fieldset {
     letter-spacing: 1px;
     font: 14px Lucida Sans Unicode, Lucida Sans, Verdana, Arial, sans-serif;
 }
+
+.field.buttons-block {
+    clear: both;
+    width: 94% !important;
+}
+
+a.download_sample.button {
+    display: inline-block;
+    text-align: center;
+    line-height: 36px;
+    border: 2px solid #349419;
+    color: black;
+    height: 36px;
+    width: 246px;
+}

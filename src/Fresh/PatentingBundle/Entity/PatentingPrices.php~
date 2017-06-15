@@ -179,4 +179,28 @@ class PatentingPrices
     {
         return $this->class;
     }
+
+    /**
+     * Set registartionUrgency
+     *
+     * @param integer $registartionUrgency
+     *
+     * @return PatentingPrices
+     */
+    public function setRegistartionUrgency($registartionUrgency)
+    {
+        $this->registartionUrgency = $registartionUrgency;
+
+        return $this;
+    }
+
+    /**
+     * Get registartionUrgency
+     *
+     * @return integer
+     */
+    public function getRegistartionUrgency()
+    {
+        return $this->registartionUrgency;
+    }
 }
