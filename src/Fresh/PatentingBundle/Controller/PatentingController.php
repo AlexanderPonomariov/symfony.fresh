@@ -16,6 +16,8 @@ use Symfony\Component\Validator\Constraints\DateTime;
 
 class PatentingController extends Controller
 {
+    protected $monthUkr = ['','cічня', 'лютого','березеня','квітня','травня','червня','липеня','серпня','вересня','жовтня','листопада','грудня',];
+
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
@@ -31,6 +33,7 @@ class PatentingController extends Controller
             )
         );
     }
+
 
     public function getOrganizationsAction(Request $request)
     {
@@ -48,6 +51,7 @@ class PatentingController extends Controller
         return new JsonResponse(array('organizations' => $organizations, 'organizationTypeHtml' => $organizationTypeHtml));
     }
 
+
     public function getOrganizationDataAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
@@ -63,9 +67,10 @@ class PatentingController extends Controller
 
     }
 
+
     public function createWordDocumentContractAction(Request $request)
     {
-        echo '<pre>';var_dump($request->request);die;
+//        echo '<pre>';var_dump($request->request);die;
 
         $em = $this->getDoctrine()->getManager();
 
@@ -97,7 +102,7 @@ class PatentingController extends Controller
 
         }
 
-        $monthUkr = ['','Січень', 'Лютий','Березень','Квітень','Травень','Червень','Липень','Серпень','Вересень','Жовтень','Листопад','Грудень',];
+        $monthUkr = $this->monthUkr;
         $date = new \DateTime();
         $contractDate = '«'.( $date->format('d') ).'» '.( $monthUkr[$date->format('n')] ).' '.( $date->format('Y') );
 
@@ -168,22 +173,33 @@ class PatentingController extends Controller
 
 
         $savePath = $_SERVER['DOCUMENT_ROOT'].'/patenting_documents/';
-        mkdir($savePath.'temporary');
+        //mkdir($savePath.'temporary');
         $contract->saveAs($savePath.'temporary/contract_1.docx');
         $proxy->saveAs($savePath.'temporary/proxy_1.docx');
 
         $zip = new \ZipArchive;
-        $zip->open($savePath.'/archives/contract-'.$contractNumber.'.zip', \ZipArchive::CREATE);
+        //$zip->open($savePath.'/archives/contract-'.$contractNumber.'.zip', \ZipArchive::CREATE);
+        $zip->open($savePath.'/archives/contract-sample.zip', \ZipArchive::CREATE);
         $zip->addFile($savePath.'temporary/proxy.docx', 'proxy-for-contract-'.$contractNumber.'.docx');
         $zip->addFile($savePath.'temporary/contract.docx', 'contract-'.$contractNumber.'.docx' );
 
+        $specification = $this->createSpecification(
+            $request->request->get('prices_type'),
+            $request->request->get('registrations_urgency'),
+            $request->request->get('trademarks_type'),
+            $request->request->get('trademarks_classes'),
+            $request->request->get('declarants_quantity'),
+            $request->request->get('search_neaded'),
+            $request->request->get('colority'),
+            $contractNumber
 
+        );
 
 
 
         $zip->close();
 
-        $this->dirDel($savePath.'temporary');
+        //$this->dirDel($savePath.'temporary');
 
         return new JsonResponse(array(
             'archive' => $savePath.'/archives/contract-'.$contractNumber.'.zip',
@@ -191,6 +207,116 @@ class PatentingController extends Controller
         ));
 
     }
+
+
+    protected function createSpecification( $prices_type, $registrations_urgency, $trademarks_type, $trademarks_classes, $declarants_quantity = false, $search_neaded = false, $colority = false, $contractNumber ) {
+
+        //echo '<pre>';var_dump($prices_type);var_dump($registrations_urgency);var_dump($trademarks_type);var_dump($trademarks_classes);var_dump($declarants_quantity);var_dump($search_neaded);var_dump($colority);die;
+
+        $templatesPath = $_SERVER['DOCUMENT_ROOT'].'/patenting_templates/';
+        $savePath = $_SERVER['DOCUMENT_ROOT'].'/patenting_documents/';
+
+        $trademarksClasses = array_diff( explode ( ',' , $trademarks_classes ) , array('') );
+
+        $countTrademarksClasses = count( $trademarksClasses );
+
+        $em = $this->getDoctrine()->getManager();
+
+        $additionalPrices = $em->getRepository('FreshPatentingBundle:PatentingPrices')->findBy(array('registartionUrgency' => 0));
+
+        $pricesByData = $em->getRepository('FreshPatentingBundle:PatentingPrices')
+            ->findBy(array(
+                'registartionUrgency' => $registrations_urgency,
+                'isPartner' => $prices_type,
+                'registartionType' => $trademarks_type,
+            ));
+
+
+        $payCollectionForSearchPrice = $pricesByData[0]->getPrice() + ( $countTrademarksClasses-1 ) * ( $pricesByData[1]->getPrice() );
+        $formalizationOfApplicationPrice = $pricesByData[3]->getPrice() + ( $countTrademarksClasses-1 ) * ( $pricesByData[4]->getPrice() );
+        $payFeeForFilingApplicationPrice = $pricesByData[5]->getPrice() + ( $countTrademarksClasses-1 ) * ( $pricesByData[6]->getPrice() ) + ( $colority ? $additionalPrices[0]->getPrice() : 0 ) + ( $declarants_quantity ? $additionalPrices[2]->getPrice() : 0 ) * $countTrademarksClasses;
+        $taxForCertification = $registrations_urgency == 1 ? $pricesByData[7] : $pricesByData[10] ;
+        $payFeeForPublication = $registrations_urgency == 1 ? $pricesByData[8] : $pricesByData[11] ;
+        $payFeeForPublicationOther =  $registrations_urgency == 1 ? $pricesByData[9] : $pricesByData[12] ;
+        $payFeeForPublicationPrice = $payFeeForPublication->getPrice() + ( $countTrademarksClasses-1 ) * ( $payFeeForPublicationOther->getPrice() ) + ( $colority ? $additionalPrices[1]->getPrice() : 0 );
+        $forGetingCertificate = $registrations_urgency == 1 ? $pricesByData[10] : $pricesByData[13] ;
+        $payFeeForAcceleratedRegistartionPrice = $pricesByData[8]->getPrice() + ( $countTrademarksClasses-1 ) * ( $pricesByData[9]->getPrice() );
+
+
+
+        if( $registrations_urgency == 1/*Standart*/ && $search_neaded/*With search*/ ) {
+
+            $specification = new TemplateProcessor($templatesPath.'specification_standart_with_search.docx');
+
+            $totalPrice = $payCollectionForSearchPrice + $pricesByData[2]->getPrice() + $formalizationOfApplicationPrice + $payFeeForFilingApplicationPrice + $payFeeForPublicationPrice + $taxForCertification->getPrice() + $forGetingCertificate->getPrice();
+
+        } else if ( $registrations_urgency == 1/*Urgent*/ && !$search_neaded/*Without search*/ ) {
+
+            $specification = new TemplateProcessor($templatesPath.'specification_standart_without_search.docx');
+
+            $totalPrice = $formalizationOfApplicationPrice + $payFeeForFilingApplicationPrice + $payFeeForPublicationPrice + $taxForCertification->getPrice() + $forGetingCertificate->getPrice();
+
+        } else if ( $registrations_urgency == 2/*Accelerated*/ ) {
+
+            $specification = new TemplateProcessor($templatesPath.'specification_urgent.docx');
+
+            $totalPrice = $pricesByData[2]->getPrice() + $payCollectionForSearchPrice + $formalizationOfApplicationPrice + $payFeeForFilingApplicationPrice + $pricesByData[7]->getPrice() + $payFeeForAcceleratedRegistartionPrice + $payFeeForPublicationPrice + $taxForCertification->getPrice() + $forGetingCertificate->getPrice();
+
+        } else if ( $registrations_urgency == 3/*Accelerated*/ ) {
+
+            $specification = new TemplateProcessor($templatesPath.'specification_accelerated.docx');
+
+            $totalPrice = $formalizationOfApplicationPrice + $pricesByData[2]->getPrice() + $formalizationOfApplicationPrice + $payFeeForFilingApplicationPrice + $pricesByData[7]->getPrice() + $payFeeForAcceleratedRegistartionPrice + $payFeeForPublicationPrice + $taxForCertification->getPrice() + $forGetingCertificate->getPrice();
+        }
+
+        $monthUkr = $this->monthUkr;
+        $date = new \DateTime();
+        $specificationDate = '«'.( $date->format('d') ).'» '.( $monthUkr[$date->format('n')] ).' '.( $date->format('Y') );
+
+        $specification->setValue('specification_date', $specificationDate );
+        $specification->setValue('contract_number', $contractNumber );
+        $specification->setValue('classes', implode ( ';' , $trademarksClasses ) );
+
+        $specification->setValue('pay_collection_for_search', $pricesByData[0]->getServiceName() );
+        $specification->setValue('pay_collection_for_search_price', $payCollectionForSearchPrice );
+
+        $specification->setValue('preliminary_search', $pricesByData[2]->getServiceName() );
+        $specification->setValue('preliminary_search_price', $pricesByData[2]->getPrice() );
+
+        $specification->setValue('formalization_of_application', $pricesByData[3]->getServiceName() );
+        $specification->setValue('formalization_of_application_price', $formalizationOfApplicationPrice );
+
+        $specification->setValue('pay_fee_for_filing_application', $pricesByData[5]->getServiceName() );
+        $specification->setValue('pay_fee_for_filing_application_price', $payFeeForFilingApplicationPrice );
+
+        $specification->setValue('tax_for_certification', $taxForCertification->getServiceName() );
+        $specification->setValue('tax_for_certification_price', $taxForCertification->getPrice() );
+
+        $specification->setValue('pay_fee_for_publication', $payFeeForPublication->getServiceName()  );
+        $specification->setValue('pay_fee_for_publication_price', $payFeeForPublicationPrice );
+
+        $specification->setValue('for_geting_certificate', $forGetingCertificate->getServiceName() );
+        $specification->setValue('for_geting_certificate_price', $forGetingCertificate->getPrice() );
+
+        $specification->setValue('formalization_of_documents_on_accelerating', $pricesByData[7]->getServiceName() );
+        $specification->setValue('formalization_of_documents_on_accelerating_price', $pricesByData[7]->getPrice() );
+
+        $specification->setValue('pay_fee_for_accelerated_registartion', $pricesByData[8]->getServiceName()  );
+        $specification->setValue('pay_fee_for_accelerated_registartion_price', $payFeeForAcceleratedRegistartionPrice );
+
+        $specification->setValue('total_price', $totalPrice );
+
+
+        //${${pay_fee_for_accelerated_registartion_price}},
+
+        $a = ( $declarants_quantity ? $additionalPrices[2]->getPrice() : 0 );
+
+        $specification->saveAs($savePath.'specification.docx');
+
+        echo '<pre>';var_dump($pricesByData);die;
+
+    }
+
 
     protected function dirDel ($dir)
     {

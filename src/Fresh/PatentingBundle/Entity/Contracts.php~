@@ -4,7 +4,7 @@ namespace Fresh\PatentingBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="Fresh\PatentingBundle\Entity\Repository\LegalEntitiesRepository")
+ * @ORM\Entity(repositoryClass="Fresh\PatentingBundle\Entity\Repository\ContractsRepository")
  * @ORM\Table(name="contracts")
  * @ORM\HasLifecycleCallbacks()
  */
