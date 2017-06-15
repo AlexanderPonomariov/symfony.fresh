@@ -106,7 +106,7 @@
         $.post( 'get-contract-doc' , createContract.closest('form').serialize() , function(data){
 
             console.log(data);
-            createContract.closest('.buttons-block').append('<a href="/'+data.archive +'" download class="download_sample button create_сontract">Скачать образец договора</a>');
+            createContract.closest('.buttons-block').append('<a href="/'+data.archive +'" download class="download_sample button">Скачать образец договора</a>');
             createContract.closest('.buttons-block').append('<a class="download_sample button create_сontract save_client_and_contract">Сохранить/Обновить</a>');
 
         });
@@ -124,8 +124,8 @@
         $.post( 'save' , createContract.closest('form').serialize() , function(data){
 
             console.log(data);
-            createContract.closest('.buttons-block').append('<a href="/'+data.archive +'" download class="download_sample button create_сontract">Скачать образец договора</a>');
-            createContract.closest('.buttons-block').append('<a class="download_sample button create_сontract save_client_and_contract">Сохранить/Обновить</a>');
+            createContract.closest('.buttons-block').append('<a href="/'+data.archive +'" download class="download_sample button">Скачать образец договора</a>');
+            createContract.closest('.buttons-block').append('<a class="download_sample button save_client_and_contract">Сохранить/Обновить</a>');
 
         });
 

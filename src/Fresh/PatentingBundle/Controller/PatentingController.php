@@ -78,7 +78,7 @@ class PatentingController extends Controller
 
         $ourEntity = $em->getRepository('FreshPatentingBundle:LegalEntities')->findBy(array('id' => $ourEntityId));
 
-        $templatesPath = $_SERVER['DOCUMENT_ROOT'].'/patenting_templates/';
+        $templatesPath = $_SERVER['DOCUMENT_ROOT'].'/web/patenting_templates/';
 
         if( !$ourEntity[0]->getorganizationType()/*phisical*/ && !$request->request->get('legal_entity_type')/*phisical*/ ) {
 
@@ -162,17 +162,17 @@ class PatentingController extends Controller
         $lastContractNumber = $em->getRepository('FreshPatentingBundle:Contracts')->getMaxId();
         $contractNumber = ($ourEntity[0]->getPassportSeries()).'-'. (++$lastContractNumber[1]);
         $contract->setValue('contract_number', $contractNumber );
-        $contractAdd  = new Contracts();
-        $contractAdd->setContractNumber($contractNumber);
-        if ( $request->request->get('organizations') ) {
-            $legalEntity = $em->getRepository('FreshPatentingBundle:LegalEntities')->find($request->request->get('organizations'));
-            $contractAdd->setEntity($legalEntity);
-        }
-        $em->persist($contractAdd);
-        $em->flush();
+        // $contractAdd  = new Contracts();
+        // $contractAdd->setContractNumber($contractNumber);
+        // if ( $request->request->get('organizations') ) {
+        //     $legalEntity = $em->getRepository('FreshPatentingBundle:LegalEntities')->find($request->request->get('organizations'));
+        //     $contractAdd->setEntity($legalEntity);
+        // }
+        // $em->persist($contractAdd);
+        // $em->flush();
 
 
-        $savePath = $_SERVER['DOCUMENT_ROOT'].'/patenting_documents/';
+        $savePath = $_SERVER['DOCUMENT_ROOT'].'/web/patenting_documents/';
 
         if ( !file_exists ( $savePath.'temporary' ) ) {
             mkdir($savePath.'temporary');
@@ -208,7 +208,7 @@ class PatentingController extends Controller
         $this->dirDel($savePath.'temporary');
 
         return new JsonResponse(array(
-            'archive' => $savePath.'/archives/contract-'.$contractNumber.'.zip',
+            'archive' => 'web/patenting_documents/archives/contract-sample.zip',
             'contract_number' => $contractNumber,
         ));
 
@@ -219,8 +219,8 @@ class PatentingController extends Controller
 
         //echo '<pre>';var_dump($prices_type);var_dump($registrations_urgency);var_dump($trademarks_type);var_dump($trademarks_classes);var_dump($declarants_quantity);var_dump($search_neaded);var_dump($colority);die;
 
-        $templatesPath = $_SERVER['DOCUMENT_ROOT'].'/patenting_templates/';
-        $savePath = $_SERVER['DOCUMENT_ROOT'].'/patenting_documents/';
+        $templatesPath = $_SERVER['DOCUMENT_ROOT'].'/web/patenting_templates/';
+        $savePath = $_SERVER['DOCUMENT_ROOT'].'/web/patenting_documents/';
 
         $trademarksClasses = array_diff( explode ( ',' , $trademarks_classes ) , array('') );
 
