@@ -3,6 +3,7 @@
 namespace Fresh\PatentingBundle\Controller;
 
 use Fresh\PatentingBundle\Entity\Contracts;
+use Fresh\PatentingBundle\Entity\LegalEntities;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -57,9 +58,11 @@ class PatentingController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $organizationData = $em->getRepository('FreshPatentingBundle:LegalEntities')->find($request->request->get('orgId'));
+        $contracts = $em->getRepository('FreshPatentingBundle:Contracts')->findBy(array( 'entity' => $request->request->get('orgId') ) );
 
         $organizationTypeHtml = $this->renderView('FreshPatentingBundle:Patenting:organization_data_forms.html.twig', array(
-            'organizationData'  => $organizationData
+            'organizationData'  => $organizationData,
+            'contracts'  => $contracts,
         ));
 
         //echo '<pre>';var_dump($organizationTypeHtml);die;
@@ -342,6 +345,8 @@ class PatentingController extends Controller
 
     public function saveAction(Request $request)
     {
+//        echo '<pre>';var_dump($request->request);die;
+
         $em = $this->getDoctrine()->getManager();
 
         $ourEntityId = $request->request->get('our_entity');
@@ -349,25 +354,61 @@ class PatentingController extends Controller
         $ourEntity = $em->getRepository('FreshPatentingBundle:LegalEntities')->findBy(array('id' => $ourEntityId));
 
         $lastContractNumber = $em->getRepository('FreshPatentingBundle:Contracts')->getMaxId();
+
         $contractNumber = ($ourEntity[0]->getPassportSeries()).'-'. (++$lastContractNumber[1]);
 
 
 
+        if ( !$request->request->get('organizations') || $request->request->get('update_customer') || $request->request->get('add_customer') ) {
+//            echo '<pre>';var_dump(( !$request->request->get('organizations') || $request->request->get('add_customer') ));die;
+            $newLegalEntity = ( !$request->request->get('organizations') || $request->request->get('add_customer') ) ? new LegalEntities() : $em->getRepository('FreshPatentingBundle:LegalEntities')->find( $request->request->get('organizations') );
 
+            $newLegalEntity->setorganizationType($request->request->get('legal_entity_type'));
+            $newLegalEntity->setIsSelfOrganization(false);
+            $newLegalEntity->setName($request->request->get('name'));
+            $newLegalEntity->setSecondName($request->request->get('second_name'));
+            $newLegalEntity->setSurname($request->request->get('surname'));
+            $newLegalEntity->setAddress($request->request->get('address'));
+            $newLegalEntity->setIdentificationCode($request->request->get('identification_code'));
 
+            if ( $request->request->get('legal_entity_type') /*Legal*/ ) {
 
+                $newLegalEntity->setOrganizationName($request->request->get('organization_name'));
 
+            } else { /*Phisical*/
 
+                $newLegalEntity->setOrganizationName(false);
+                $newLegalEntity->setPassportSeries($request->request->get('passport_series'));
+                $newLegalEntity->setPassportNumber($request->request->get('passport_number'));
+                $newLegalEntity->setPassportOther($request->request->get('passport_other'));
+
+            }
+
+            $em->persist($newLegalEntity);
+            $em->flush();
+
+        }
 
         $contractAdd  = new Contracts();
         $contractAdd->setContractNumber($contractNumber);
-        if ( $request->request->get('organizations') ) {
+        if ( $request->request->get('organizations') && !$request->request->get('add_customer') ) {
             $legalEntity = $em->getRepository('FreshPatentingBundle:LegalEntities')->find($request->request->get('organizations'));
+            $contractAdd->setEntity($legalEntity);
+        } else {
+            $lastLegalEntityId = $em->getRepository('FreshPatentingBundle:LegalEntities')->getMaxId();
+            $legalEntity = $em->getRepository('FreshPatentingBundle:LegalEntities')->find($lastLegalEntityId[1]);
             $contractAdd->setEntity($legalEntity);
         }
         $em->persist($contractAdd);
         $em->flush();
 
+        $newArchivaName = $_SERVER['DOCUMENT_ROOT'].'/web/patenting_documents/archives/contract-'.$contractNumber.'.zip';
+        rename ( $_SERVER['DOCUMENT_ROOT'].'/web/patenting_documents/archives/contract-sample.zip' , $newArchivaName );
+
+        return new JsonResponse(array(
+            'message' => 'Данные сохранены',
+            'archive' => 'web/patenting_documents/archives/contract-'.$contractNumber.'.zip',
+        ));
 
     }
 

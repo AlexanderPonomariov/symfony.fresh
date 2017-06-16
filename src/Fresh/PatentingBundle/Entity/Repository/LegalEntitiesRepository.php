@@ -28,4 +28,11 @@ class LegalEntitiesRepository extends \Doctrine\ORM\EntityRepository
             ->getResult(Query::HYDRATE_ARRAY);
     }
 
+    public function getMaxId()
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->select('MAX(u.id)');
+        return $qb->getQuery()->getSingleResult();
+    }
+
 }

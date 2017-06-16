@@ -21,6 +21,7 @@
 //=====================================================================================================
 // This function returns clear organization data
 //=====================================================================================================
+
     function getOrganizationClearData() {
 
         $.post( 'get-organizations' , { orgType : $('#legal_entity_type input:checked').val() } , function(data){
@@ -51,6 +52,7 @@
 //=====================================================================================================
 // Fill organization data is saved customer was selected
 //=====================================================================================================
+
     $(document).on( 'change' , 'select#organizations' , function(){
 
         var selectedType = $(this);
@@ -74,6 +76,7 @@
 //=====================================================================================================
 //
 //=====================================================================================================
+
     $(document).on( 'click' , '#organization_data #add_or_update input[type="checkbox"]' , function(){
 
         var container = $(this).closest('#add_or_update');
@@ -95,6 +98,10 @@
 //=====================================================================================================
 
 
+//=====================================================================================================
+//
+//=====================================================================================================
+
     $(document).on( 'click' , '#patenting_form .create_сontract' , function(e){
 
         e.preventDefault();
@@ -107,29 +114,45 @@
 
             console.log(data);
             createContract.closest('.buttons-block').append('<a href="/'+data.archive +'" download class="download_sample button">Скачать образец договора</a>');
-            createContract.closest('.buttons-block').append('<a class="download_sample button create_сontract save_client_and_contract">Сохранить/Обновить</a>');
-
-        });
-
-    });
-
-    $(document).on( 'click' , '#patenting_form .save_client_and_contract' , function(e){
-
-        e.preventDefault();
-
-        var createContract = $(this);
-
-        createContract.closest('.buttons-block').find('.download_sample').remove();
-
-        $.post( 'save' , createContract.closest('form').serialize() , function(data){
-
-            console.log(data);
-            createContract.closest('.buttons-block').append('<a href="/'+data.archive +'" download class="download_sample button">Скачать образец договора</a>');
             createContract.closest('.buttons-block').append('<a class="download_sample button save_client_and_contract">Сохранить/Обновить</a>');
 
         });
 
     });
+//=====================================================================================================
+//  END
+//=====================================================================================================
+
+
+//=====================================================================================================
+//
+//=====================================================================================================
+
+    $(document).on( 'click' , '#patenting_form .save_client_and_contract' , function(e){
+
+        e.preventDefault();
+
+        var savaContract = $(this);
+
+        savaContract.closest('.buttons-block').find('.download_sample:not(.save_client_and_contract)').remove();
+
+        //createContract.closest('.buttons-block').find('.download_sample').remove();
+
+        $.post( 'save' , savaContract.closest('form').serialize() , function(data){
+
+            console.log(data);
+
+            savaContract.closest('.buttons-block').append('<a href="/'+data.archive +'" download class="download_sample button">Скачать договор</a>');
+            // createContract.closest('.buttons-block').append('<a class="download_sample button save_client_and_contract">Сохранить/Обновить</a>');
+
+        });
+
+    });
+//=====================================================================================================
+//  END
+//=====================================================================================================
+
+
 
     $(document).on( 'click' , '#patenting_form #add_customer:checked' , function(e){
 

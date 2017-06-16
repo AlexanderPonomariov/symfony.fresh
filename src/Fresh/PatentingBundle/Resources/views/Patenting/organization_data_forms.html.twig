@@ -71,15 +71,28 @@
         </fieldset>
 
         <div id="add_or_update">
-            <div class="section added field" >
-                <input type="checkbox" name="add_customer" id="add_customer" value="0" class="custom">Cохранить заказчика в справочник<br>
-            </div>
             {% if organizationData is defined %}
+                <div class="section added field">
+                    <input type="checkbox" name="add_customer" id="add_customer" value="1" class="custom">Cохранить как нового заказчика в справочник<br>
+                </div>
                 <div class="section added field">
                     <input type="checkbox" name="update_customer" id="update_customer" value="1" class="custom">Обновить заказчика в справочнике<br>
                 </div>
             {% endif %}
         </div>
+
+        {% if contracts is defined %}
+            {#{{ dump(contracts) }}#}
+            <div class="field">
+                <select name="contracts" class="input" tabindex="3" id="contracts">
+                    <option value="0">Новый договор</option>
+
+                    {% for contract in contracts %}
+                        <option value="{{ contract.id }}">{{ contract.contractNumber }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        {% endif %}
 
     </fieldset>
 
@@ -137,17 +150,29 @@
         </fieldset>
 
         <div id="add_or_update">
-            <div class="section added field">
-                <input type="checkbox" name="add_customer" id="add_customer" value="0" class="custom">Cохранить заказчика в
-                справочник<br>
-            </div>
             {% if organizationData is defined %}
+                <div class="section added field">
+                    <input type="checkbox" name="add_customer" id="add_customer" value="1" class="custom">Cохранить как нового заказчика в справочник<br>
+                </div>
                 <div class="section added field">
                     <input type="checkbox" name="update_customer" id="update_customer" value="1" class="custom">Обновить заказчика в справочнике<br>
                 </div>
             {% endif %}
 
         </div>
+
+        {% if contracts is defined %}
+            {#{{ dump(contracts) }}#}
+            <div class="field">
+                <select name="contracts" class="input" tabindex="3" id="contracts">
+                    <option value="0">Новый договор</option>
+
+                    {% for contract in contracts %}
+                        <option value="{{ contract.id }}">{{ contract.contractNumber }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        {% endif %}
 
     </fieldset>
 
