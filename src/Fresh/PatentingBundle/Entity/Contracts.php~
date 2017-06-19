@@ -30,6 +30,12 @@ class Contracts
     protected $entity;
 
     /**
+     * @ORM\Column(type="integer", options={"default":0})
+     */
+    protected $attachmentNumber;
+
+
+    /**
      * Get id
      *
      * @return integer

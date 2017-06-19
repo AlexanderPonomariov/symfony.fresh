@@ -30,6 +30,12 @@ class Contracts
     protected $entity;
 
     /**
+     * @ORM\Column(type="integer", options={"default":0})
+     */
+    protected $attachmentNumber;
+
+
+    /**
      * Get id
      *
      * @return integer
@@ -85,5 +91,29 @@ class Contracts
     public function getEntity()
     {
         return $this->entity;
+    }
+
+    /**
+     * Set attachmentNumber
+     *
+     * @param integer $attachmentNumber
+     *
+     * @return Contracts
+     */
+    public function setAttachmentNumber($attachmentNumber)
+    {
+        $this->attachmentNumber = $attachmentNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get attachmentNumber
+     *
+     * @return integer
+     */
+    public function getAttachmentNumber()
+    {
+        return $this->attachmentNumber;
     }
 }

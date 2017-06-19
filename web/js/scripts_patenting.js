@@ -132,17 +132,17 @@
 
         e.preventDefault();
 
-        var savaContract = $(this);
+        var saveContract = $(this);
 
-        savaContract.closest('.buttons-block').find('.download_sample:not(.save_client_and_contract)').remove();
+        saveContract.closest('.buttons-block').find('.download_sample:not(.save_client_and_contract)').remove();
 
         //createContract.closest('.buttons-block').find('.download_sample').remove();
 
-        $.post( 'save' , savaContract.closest('form').serialize() , function(data){
+        $.post( 'save' , saveContract.closest('form').serialize() , function(data){
 
             console.log(data);
 
-            savaContract.closest('.buttons-block').append('<a href="/'+data.archive +'" download class="download_sample button">Скачать договор</a>');
+            saveContract.closest('.buttons-block').append('<a href="/'+data.archive +'" download class="download_sample button">Скачать договор</a>');
             // createContract.closest('.buttons-block').append('<a class="download_sample button save_client_and_contract">Сохранить/Обновить</a>');
 
         });
