@@ -6,6 +6,8 @@
     padding-bottom: 25px;
     padding-left: 20px;
     box-sizing: border-box;
+    position: relative;
+    margin-top: 10px;
 }
 
 .fieldsets a.del-custom-param {
@@ -78,6 +80,20 @@ div.container {
     margin-left: 50px;
     letter-spacing: 2px;
     font: 18px Lucida Sans Unicode, Lucida Sans, Verdana, Arial, sans-serif;
+}
+
+legend.hour-price {
+    position: absolute;
+    right: 30px;
+    top: -35px;
+}
+
+legend.hour-price label {
+    position: relative;
+    top: 30px;
+    left: 80px;
+    z-index: 10;
+    letter-spacing: 1px;
 }
 
 .brif_form .contact_info .fieldsets .add-more {
