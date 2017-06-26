@@ -74,6 +74,7 @@ class PatentingController extends Controller
     public function createWordDocumentContractAction(Request $request)
     {
         //echo '<pre>';var_dump($request->request);die;
+        mb_internal_encoding("UTF-8");
 
         $em = $this->getDoctrine()->getManager();
 
@@ -234,6 +235,7 @@ class PatentingController extends Controller
     protected function createSpecification( $prices_type, $registrations_urgency, $trademarks_type, $trademarks_classes, $declarants_quantity = false, $search_neaded = false, $colority = false, $contractNumber, $contractNumberExisting, $customerShortName, $ourShortName ) {
 
         //echo '<pre>';var_dump($prices_type);var_dump($registrations_urgency);var_dump($trademarks_type);var_dump($trademarks_classes);var_dump($declarants_quantity);var_dump($search_neaded);var_dump($colority);die;
+        mb_internal_encoding("UTF-8");
 
         $contractNumber = $contractNumberExisting ? $contractNumberExisting : $contractNumber ;
 
@@ -376,7 +378,7 @@ class PatentingController extends Controller
 
     protected function createAttachment( $name , $secondName , $surname , $address , $trademarks_classes , $contractNumber , $contractNumberExisting , $date , $ourShortName )
     {
-
+		mb_internal_encoding("UTF-8");
         $em = $this->getDoctrine()->getManager();
 
         $templatesPath = $_SERVER['DOCUMENT_ROOT'].'/web/patenting_templates/attachment/';
@@ -419,7 +421,7 @@ class PatentingController extends Controller
     public function saveAction(Request $request)
     {
 //        echo '<pre>';var_dump($request->request);die;
-
+		mb_internal_encoding("UTF-8");
         $em = $this->getDoctrine()->getManager();
 
         $ourEntityId = $request->request->get('our_entity');
