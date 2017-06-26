@@ -384,6 +384,10 @@ class PatentingController extends Controller
 
         $contractNumber = $contractNumberExisting ? $contractNumberExisting : $contractNumber ;
 
+        $trademarksClasses = array_diff( explode ( ',' , $trademarks_classes ) , array('') );
+
+        $trademarksClassesString = implode( ',' , $trademarksClasses );
+
         if ( $contractNumberExisting ) {
             $attachmentNumberByContract = $em->getRepository('FreshPatentingBundle:Contracts')->findBy(array('contractNumber' => $contractNumberExisting ));
             $number = $attachmentNumberByContract[0]->getAttachmentNumber() + 1;
@@ -396,6 +400,8 @@ class PatentingController extends Controller
         $attachment->setValue('contract_number', $contractNumber );
         $attachment->setValue('attachment_date', $date );
         $attachment->setValue('attachment_number', 2*$number );
+        $attachment->setValue('trademark_classes', $trademarksClassesString );
+
 
         $attachment->setValue('surname', $surname );
         $attachment->setValue('name', $name );
