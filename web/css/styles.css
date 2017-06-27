@@ -182,3 +182,86 @@ a.download_sample.button {
     height: 36px;
     width: 246px;
 }
+
+.brif_form .contact_info .fieldsets .field.work_stages {
+    width: 50%;
+    display: block;
+}
+
+.brif_form .contact_info .fieldsets .field.work_stages select {
+    width: 100%;
+}
+
+
+
+
+
+
+
+
+
+
+
+.dropdown dd,
+.dropdown dt {
+    margin: 0px;
+    padding: 0px;
+}
+
+.dropdown ul {
+    margin: -1px 0 0 0;
+}
+
+.dropdown dd {
+    position: relative;
+}
+
+.dropdown dt a {
+    display: block;
+    width: 100%;
+    margin: 0 0 15px 0;
+}
+
+.dropdown dt a span,
+.multiSel span {
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+    line-height: 40px;
+    color: #000;
+}
+
+.dropdown dd ul {
+    background-color: #e1e1e1;
+    border: 0;
+    color: #000;
+    display: none;
+    left: 0px;
+    padding: 10px 15px 2px 15px;
+    position: absolute;
+    width: 100%;
+    list-style: none;
+    height: 180px;
+    overflow: auto;
+    z-index: 1;
+    box-sizing: border-box;
+}
+
+.dropdown dd ul li {
+    margin: 5px auto;
+}
+
+.dropdown span.value {
+    display: none;
+}
+
+.dropdown dd ul li a {
+    padding: 5px;
+    display: block;
+}
+
+.dropdown dd ul li a:hover {
+    background-color: #fff;
+}
+

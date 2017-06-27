@@ -56,7 +56,7 @@ $(document).on( 'change' , 'select#site_type' , function(){
                 $(blockSelector).prepend('' +
                     '<div class="section">' +
                         '<input type="checkbox" id="checkbox-'+parameter.id+'" data-parameter-id="'+parameter.id+'" checked><div class="field"><label for="checkbox-'+parameter.id+'"> '+parameter.parameterName+' </label>' +
-                        '<input type="text" id="'+parameter.id+'-value" value="'+parameter.parameterValue+'" placeholder="Введите значение" required class="value input"><label for="checkbox-'+parameter.id+'" class="hours"> час.</label></div>' +
+                        '<input type="text" id="'+parameter.id+'-value" name="'+parameter.id+'-value" value="'+parameter.parameterValue+'" placeholder="Введите значение" required class="value input"><label for="checkbox-'+parameter.id+'" class="hours"> час.</label></div>' +
                     '</div>'
                 );
             }
@@ -120,9 +120,9 @@ $(document).on( 'click' , 'fieldset .add_templates' , function(e){
 
     $(this).closest('fieldset').append(
         '<div class="section added">' +
-            '<input type="checkbox" id="checkbox-new-'+i+'" checked class="custom"><div class="field"><label for="checkbox-new-'+i+'"></label>' +
-            '<input type="text" id="checkbox-new-'+i+'-name" placeholder="Название" required class="value input">' +
-            '<input type="text" id="checkbox-new-'+i+'-value" placeholder="Значение" required class="value input"><label for="checkbox-new-'+i+'-value" class="hours"> час.</label> </div> ' +
+            '<input type="checkbox" id="checkbox-new-'+i+'" name="checkbox-new-'+i+'" checked class="custom"><div class="field"><label for="checkbox-new-'+i+'"></label>' +
+            '<input type="text" id="checkbox-new-'+i+'-name" name="checkbox-new-'+i+'-name" placeholder="Название" required class="value input">' +
+            '<input type="text" id="checkbox-new-'+i+'-value" name="checkbox-new-'+i+'-value" placeholder="Значение" required class="value input"><label for="checkbox-new-'+i+'-value" class="hours"> час.</label> </div> ' +
             '<a href="#" class="del-custom-param"></a>' +
         '</div>'
     );
@@ -190,7 +190,7 @@ $(document).on( 'click' , '.del-custom-param' , function(e){
 
     // adaptiveDesign = Math.ceil( design * ( +( $('#adaptive').val() ? $('#adaptive').val() : 1 ) ) / 100 );
 
-    adaptiveDesign = Math.round( (+design + +markUp) * ( $('#adaptive').val()/100 +1 ) );
+    adaptiveDesign = Math.round( (+design*$('#design .hour_price input').val() + +markUp*$('#mark_up .hour_price input').val() ) * ( $('#adaptive').val()/100 +1 ) );
 
     //programmingFinal = (+adaptiveDesign + +design) + programming - Math.ceil( ( +programming + +adaptiveDesign + +design )*markUpDole );
 
@@ -293,6 +293,66 @@ $(document).on( 'click' , '.get_pdf_path' , function(e){
         createPdfButton.parent().append('<a href="/'+data+'" download class="download_pdf">Скачать PDF</a>');
     });
 });
+
+
+
+
+
+    $(document).on('click',".dropdown dt a", function(e) {
+        e.preventDefault();
+        $(".dropdown dd ul").slideToggle('fast');
+    });
+
+    $(document).on('click',".dropdown dd ul li a", function() {
+        $(".dropdown dd ul").hide();
+    });
+
+    function getSelectedValue(id) {
+        return $("#" + id).find("dt a span.value").html();
+    }
+
+    $(document).bind('click', function(e) {
+        var $clicked = $(e.target);
+        if (!$clicked.parents().hasClass("dropdown")) $(".dropdown dd ul").hide();
+    });
+
+    $(document).ready(function() {
+
+        $('.mutliSelect input[type="checkbox"]').each(function(){
+
+            var title = $(this).val() + ",";
+            var checkedRows = $('.multiSel input').val();
+
+            if ($(this).is(':checked')) {
+                $('.multiSel input').val( checkedRows + title );
+            }
+        });
+    });
+
+
+    $(document).on('click','.mutliSelect input[type="checkbox"]', function() {
+
+        var title = $(this).val() + ",";
+
+        var checkedRows = $('.multiSel input').val();
+
+        if ($(this).is(':checked')) {
+            // var html = '<span title="' + title + '">' + title + '</span>';
+            // $('.multiSel').append(html);
+            // $(".hida").hide();
+
+            $('.multiSel input').val( checkedRows + title );
+        } else {
+            // $('span[title="' + title + '"]').remove();
+            // var ret = $(".hida");
+            // $('.dropdown dt a').append(ret);
+
+            $('.multiSel input').val( checkedRows.replace( title, '' ) );
+
+        }
+    });
+
+
 
 
 

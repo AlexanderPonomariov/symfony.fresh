@@ -123,6 +123,43 @@
                         <fieldset id="final_calculations" class="fieldsets">
                             <legend>Дополнительные параметры</legend>
 
+                            <div class="field work_stages">
+
+                                <dl class="dropdown">
+                                    <dt>
+                                        <a href="#" class="button">
+                                            <span class="hida">Этапы работ</span>
+                                            <p class="multiSel">
+                                                <input type="hidden" name="work_stages">
+                                            </p>
+                                        </a>
+                                    </dt>
+
+                                    <dd>
+                                        <div class="mutliSelect">
+                                            <ul>
+                                                {#{{ dump(work_stages) }}#}
+                                                {% for key, work_stage in work_stages %}
+                                                    <li><input type="checkbox" value="{{ key }}"/>{{ work_stage }}</li>
+                                                {% endfor %}
+
+
+                                                {#<li><input type="checkbox" value="1" checked/>Написание технического задания;</li>#}
+                                                {#<li><input type="checkbox" value="2" />Разработка дизайна десктопной версии (разрешение экрана более или равно 1 200 px);</li>#}
+                                                {#<li><input type="checkbox" value="3" />Разработка дизайна планшетной версии (разрешения экрана более 768 px и менее 1 200 px);</li>#}
+                                                {#<li><input type="checkbox" value="4" />Разработка дизайна мобильной версии (разрешения экрана более 320 px и менее 768 px);</li>#}
+                                                {#<li><input type="checkbox" value="5" />Адаптивная верстка сайта (3 основных разрешения экрана);</li>#}
+                                                {#<li><input type="checkbox" value="6" checked/>Программирование сайта;</li>#}
+                                                {#<li><input type="checkbox" value="7" />Тестирование сайта;</li>#}
+                                                {#<li><input type="checkbox" value="8" />Установка аналитики;</li>#}
+                                            </ul>
+                                        </div>
+                                    </dd>
+
+                                </dl>
+
+                            </div>
+
                             <div class="adaptive field">
                                 <p>
                                     <label for="adaptive">Адаптив</label>

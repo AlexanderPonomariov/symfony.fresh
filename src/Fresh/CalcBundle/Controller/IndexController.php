@@ -9,6 +9,18 @@ use \TCPDF_FONTS;
 
 class IndexController extends Controller
 {
+
+    protected $workStages = [
+        'Написание технического задания;',
+        'Разработка дизайна десктопной версии (разрешение экрана более или равно 1 200 px);',
+        'Разработка дизайна планшетной версии (разрешения экрана более 768 px и менее 1 200 px);',
+        'Разработка дизайна мобильной версии (разрешения экрана более 320 px и менее 768 px);',
+        'Адаптивная верстка сайта (3 основных разрешения экрана);',
+        'Программирование сайта;',
+        'Тестирование сайта;',
+        'Установка аналитики;',
+    ];
+
     public function indexAction($pdfLocation = null)
     {
 
@@ -16,10 +28,13 @@ class IndexController extends Controller
 
         $sitesTypes = $em->getRepository('FreshCalcBundle:SitesTypes')->findAll();
 
+
+
         return $this->render('FreshCalcBundle:Index:calc.html.twig',
             array(
                 'sitesTypes' => $sitesTypes,
-                'pdfLocation' => $pdfLocation
+                'pdfLocation' => $pdfLocation,
+                'work_stages' => $this->workStages,
             )
         );
     }
@@ -46,7 +61,7 @@ class IndexController extends Controller
 
     public function generatePdfAction(Request $request)
     {
-        //echo '<pre>';var_dump($request);die;
+        echo '<pre>';var_dump($request->request);die;
         $companyName = $request->request->get('company');
         $name = $request->request->get('name');
         $surname = $request->request->get('surname');
@@ -55,6 +70,7 @@ class IndexController extends Controller
         $tel = $request->request->get('tel');
         $site_type = $request->request->get('site_type');
         $notificatons = $request->request->get('notificatons');
+        $choosedWorkStages = $request->request->get('work_stages');
 
         $design = $request->request->get('$design');
         $adaptiveDesign = $request->request->get('adaptiveDesign');
@@ -70,64 +86,17 @@ class IndexController extends Controller
 
 
 
-//        $companyName= 'hello Привет медвед';
-//        return $this->render('FreshCalcBundle:PDF:pdfdoc.html.twig',
-//            array(
-//                'companyName'  => $companyName
-//            )
-//        );
-
         $html = $this->renderView('FreshCalcBundle:PDF:pdfdoc.html.twig', array(
             'companyName'  => $companyName
         ));
 
-//        return new Response(
-//            $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
-//            200,
-//            array(
-//                'Content-Type'          => 'application/pdf',
-//                'Content-Disposition'   => 'attachment; filename="file.pdf"'
-//            )
-//        );
+        $filename = $this->returnPDFResponseFromHTML($html, $companyName, $name, $choosedWorkStages);
 
-
-
-//        $this->get('knp_snappy.pdf')->generateFromHtml(
-//            $this->renderView(
-//                'FreshCalcBundle:PDF:pdfdoc.html.twig',
-//                array(
-//                    'companyName'  => $companyName
-//                )
-//            ),
-//            'c:\openserver/hello/file.pdf'
-//        );
-
-        $filename = $this->returnPDFResponseFromHTML($html, $companyName, $name);
-//echo '<pre>';var_dump($_SERVER['DOCUMENT_ROOT']);die;
         return new JsonResponse($filename);
-
-
-        // MPDF case
-
-//        $arguments = array(
-//            'constructorArgs' => array('','', 0, '', 15, 15, 16, 16, 9, 9, 'L'), //Constructor arguments. Numeric array. Don't forget about points 2 and 3 in Warning section!
-//            'writeHtmlMode' => null, //$mode argument for WriteHTML method
-//            'writeHtmlInitialise' => null, //$mode argument for WriteHTML method
-//            'writeHtmlClose' => null, //$close argument for WriteHTML method
-//            'outputFilename' => null, //$filename argument for Output method
-//            'outputDest' => null //$dest argument for Output method
-//        );
-//
-//        $mpdfService = $this->get('tfox.mpdfport');
-//        $mPDF = $mpdfService->getMpdf(array('','A4', 15, '', 0, 0, 0, 0, 9, 9, 'L'));
-//        $mPDF->WriteHTML($html);
-//        $mPDF->Output($_SERVER['DOCUMENT_ROOT'].'/pdf_files/qwee1.pdf', 'F');
-//
-//        return new JsonResponse();
 
     }
 
-    public function returnPDFResponseFromHTML($html, $companyName='', $name=''){
+    public function returnPDFResponseFromHTML($html, $companyName='', $name='' , $choosedWorkStages='' ){
 
         $pdf = $this->get("white_october.tcpdf")->create('L', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
@@ -171,6 +140,40 @@ class IndexController extends Controller
         $pdf->Link(0, 0, 149, 210, 'https://youtu.be/7NB4_TBkGkc');
         $pdf->Link(149, 0, 149, 210, 'https://youtu.be/Fh9TsoCk7DY');
         $pdf->Link(142, 79, 52, 52, 'http://fresh-d.biz/');
+
+//Страница основных этапов работ (4 стр.)
+        $pdf->AddPage();
+        $bMargin = $pdf->getBreakMargin();
+        $auto_page_break = $pdf->getAutoPageBreak();
+        $pdf->SetAutoPageBreak(false, 0);
+        $img_file = $_SERVER['DOCUMENT_ROOT'].'web/images/main_stages_of_work.jpg';
+        $pdf->Image($img_file, 0, 0, 297, 210, '', '', '', false, 1300, '', false, false, 0);
+
+        $choosedWorkStagesArr = array_diff( explode( ',' , $choosedWorkStages ) , array('') );
+
+        $workStageHeight=65;
+        $workStages = $this->workStages;
+        foreach ( $choosedWorkStagesArr as $workStage) {
+            $workStageHeight += 10;
+            $pdf->writeHTMLCell( '' , '', 50, $workStageHeight, '<p style="font-size: 10px;color: #222222;">&bull; '.$workStages[$workStage].'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //Сайт Агро-Союз http://agroritet.com (4 стр.)
         $pdf->AddPage();

@@ -73,18 +73,6 @@ class LegalEntities
      */
     protected $passportOther;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Contracts", mappedBy="legal_entities")
-     */
-    protected $parameters;
-
-
-    
-
-
-
-
-
 
 
     /**

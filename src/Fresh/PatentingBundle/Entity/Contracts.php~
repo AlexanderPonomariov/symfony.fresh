@@ -92,4 +92,28 @@ class Contracts
     {
         return $this->entity;
     }
+
+    /**
+     * Set attachmentNumber
+     *
+     * @param integer $attachmentNumber
+     *
+     * @return Contracts
+     */
+    public function setAttachmentNumber($attachmentNumber)
+    {
+        $this->attachmentNumber = $attachmentNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get attachmentNumber
+     *
+     * @return integer
+     */
+    public function getAttachmentNumber()
+    {
+        return $this->attachmentNumber;
+    }
 }
