@@ -69,13 +69,75 @@
                         </div>
 
 
+
+                        <fieldset id="first_step" class="fieldsets">
+                            <legend>Смета по разработке (Этап 1)</legend>
+                            <legend class="hour-price">
+                                <div class="hour_price field title">
+                                    <p>
+                                         <label for="hour_price">Стоимость часа, грн.</label>
+                                         <input type="text" class="input" name="first_step_hour_price" id="first_step_hour_price" value="550" maxlength="8">
+                                     </p>
+                                </div>
+                            </legend>
+
+                            <div class="section"><input type="checkbox" id="first_step-1" checked="">
+                                <div class="field">
+                                    <label for="first_step-1">Организация рабочих групп по web-
+                                        разработке, сбор требований и материалов</label>
+                                    <input type="text" id="first_step-1" name="first_step-1" value="5" placeholder="Введите значение" required="" class="value input">
+                                    <label for="first_step-1" class="hours"> час.</label>
+                                </div>
+                            </div>
+
+                            <div class="section"><input type="checkbox" id="first_step-2" checked="">
+                                <div class="field">
+                                    <label for="first_step-2">Написание ТЗ на разработку сайта</label>
+                                    <input type="text" id="first_step-2" name="first_step-2" value="3" placeholder="Введите значение" required="" class="value input">
+                                    <label for="first_step-2" class="hours"> час.</label>
+                                </div>
+                            </div>
+
+                            <div class="field first_step executors">
+
+                                <dl class="dropdown">
+                                    <dt>
+                                        <a href="#" class="button">
+                                            <span class="hida">Исполнители</span>
+                                            <p class="multiSel">
+                                                <input type="hidden" name="first_step_executors">
+                                            </p>
+                                        </a>
+                                    </dt>
+
+                                    <dd>
+                                        <div class="mutliSelect">
+                                            <ul>
+                                                {#{{ dump(work_stages) }}#}
+                                                {% for key, executor in executors %}
+                                                    <li><input type="checkbox" value="{{ key }}"/>{{ executor[1] }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </dd>
+
+                                </dl>
+
+                            </div>
+
+
+
+
+                        </fieldset>
+
+
                         <fieldset id="design" class="fieldsets">
                             <legend>Дизайн</legend>
                             <legend class="hour-price">
                                 <div class="hour_price field title">
                                     <p>
-                                        <label for="hour_price">Стоимость часа, грн.</label>
-                                        <input type="text" class="input" name="hour_price" id="hour_price" value="550" maxlength="8">
+                                        <label for="design_hour_price">Стоимость часа, грн.</label>
+                                        <input type="text" class="input" name="design_hour_price" id="design_hour_price" value="550" maxlength="8">
                                     </p>
                                 </div>
                             </legend>
@@ -92,7 +154,7 @@
                                 <div class="hour_price field title">
                                     <p>
                                         <label for="hour_price">Стоимость часа, грн.</label>
-                                        <input type="text" class="input" name="hour_price" id="hour_price" value="550" maxlength="8">
+                                        <input type="text" class="input" name="mark_up_hour_price" id="mark_up_hour_price" value="550" maxlength="8">
                                     </p>
                                 </div>
                             </legend>
@@ -109,7 +171,7 @@
                                 <div class="hour_price field title">
                                     <p>
                                         <label for="hour_price">Стоимость часа, грн.</label>
-                                        <input type="text" class="input" name="hour_price" id="hour_price" value="550" maxlength="8">
+                                        <input type="text" class="input" name="programming_hour_price" id="programming_hour_price" value="550" maxlength="8">
                                     </p>
                                 </div>
                             </legend>
@@ -142,16 +204,6 @@
                                                 {% for key, work_stage in work_stages %}
                                                     <li><input type="checkbox" value="{{ key }}"/>{{ work_stage }}</li>
                                                 {% endfor %}
-
-
-                                                {#<li><input type="checkbox" value="1" checked/>Написание технического задания;</li>#}
-                                                {#<li><input type="checkbox" value="2" />Разработка дизайна десктопной версии (разрешение экрана более или равно 1 200 px);</li>#}
-                                                {#<li><input type="checkbox" value="3" />Разработка дизайна планшетной версии (разрешения экрана более 768 px и менее 1 200 px);</li>#}
-                                                {#<li><input type="checkbox" value="4" />Разработка дизайна мобильной версии (разрешения экрана более 320 px и менее 768 px);</li>#}
-                                                {#<li><input type="checkbox" value="5" />Адаптивная верстка сайта (3 основных разрешения экрана);</li>#}
-                                                {#<li><input type="checkbox" value="6" checked/>Программирование сайта;</li>#}
-                                                {#<li><input type="checkbox" value="7" />Тестирование сайта;</li>#}
-                                                {#<li><input type="checkbox" value="8" />Установка аналитики;</li>#}
                                             </ul>
                                         </div>
                                     </dd>

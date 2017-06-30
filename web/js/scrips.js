@@ -41,22 +41,22 @@ $(document).on( 'change' , 'select#site_type' , function(){
             var blockSelector = '';
 
             if ( parameter.workType.id == 1 ) {
-                blockSelector = '#design';
+                blockSelector = 'design';
             }
 
             if ( parameter.workType.id == 3 ) {
-                blockSelector = '#mark_up';
+                blockSelector = 'mark_up';
             }
 
             if ( parameter.workType.id == 2 ) {
-                blockSelector = '#programming';
+                blockSelector = 'programming';
             }
 
             if ( blockSelector ) {
-                $(blockSelector).prepend('' +
+                $('#'+blockSelector).prepend('' +
                     '<div class="section">' +
-                        '<input type="checkbox" id="checkbox-'+parameter.id+'" data-parameter-id="'+parameter.id+'" checked><div class="field"><label for="checkbox-'+parameter.id+'"> '+parameter.parameterName+' </label>' +
-                        '<input type="text" id="'+parameter.id+'-value" name="'+parameter.id+'-value" value="'+parameter.parameterValue+'" placeholder="Введите значение" required class="value input"><label for="checkbox-'+parameter.id+'" class="hours"> час.</label></div>' +
+                        '<input type="checkbox" id="'+parameter.id+'-'+blockSelector+'-checkbox" name="'+parameter.id+'-'+blockSelector+'-checkbox" data-parameter-id="'+parameter.id+'" checked><div class="field"><label for="checkbox-'+parameter.id+'"> '+parameter.parameterName+' </label>' +
+                        '<input type="text" id="'+parameter.id+'-'+blockSelector+'-value" name="'+parameter.id+'-'+blockSelector+'-value" value="'+parameter.parameterValue+'" placeholder="Введите значение" required class="value input"><label for="checkbox-'+parameter.id+'" class="hours"> час.</label></div>' +
                     '</div>'
                 );
             }
@@ -116,13 +116,16 @@ $(document).on( 'click' , 'fieldset .add_templates' , function(e){
 
     e.preventDefault();
 
+    var workType = $(this).closest('fieldset').prop('id');
+    // console.log(workType);
+
     i++;
 
     $(this).closest('fieldset').append(
         '<div class="section added">' +
-            '<input type="checkbox" id="checkbox-new-'+i+'" name="checkbox-new-'+i+'" checked class="custom"><div class="field"><label for="checkbox-new-'+i+'"></label>' +
-            '<input type="text" id="checkbox-new-'+i+'-name" name="checkbox-new-'+i+'-name" placeholder="Название" required class="value input">' +
-            '<input type="text" id="checkbox-new-'+i+'-value" name="checkbox-new-'+i+'-value" placeholder="Значение" required class="value input"><label for="checkbox-new-'+i+'-value" class="hours"> час.</label> </div> ' +
+            '<input type="checkbox" id="'+i+'-'+workType+'-checkbox-new" name="'+i+'-'+workType+'-checkbox-new" checked class="custom"><div class="field"><label for="checkbox-new-'+i+'"></label>' +
+            '<input type="text" id="'+i+'-'+workType+'-new-name" name="'+i+'-'+workType+'-new-name" placeholder="Название" required class="value input">' +
+            '<input type="text" id="'+i+'-'+workType+'-new-value" name="'+i+'-'+workType+'-new-value" placeholder="Значение" required class="value input"><label for="checkbox-new-'+i+'-value" class="hours"> час.</label> </div> ' +
             '<a href="#" class="del-custom-param"></a>' +
         '</div>'
     );
@@ -190,7 +193,7 @@ $(document).on( 'click' , '.del-custom-param' , function(e){
 
     // adaptiveDesign = Math.ceil( design * ( +( $('#adaptive').val() ? $('#adaptive').val() : 1 ) ) / 100 );
 
-    adaptiveDesign = Math.round( (+design*$('#design .hour_price input').val() + +markUp*$('#mark_up .hour_price input').val() ) * ( $('#adaptive').val()/100 +1 ) );
+    adaptiveDesign = Math.round( (+design*$('#design .hour_price #design_hour_price').val() + +markUp*$('#mark_up .hour_price mark_up_hour_price').val() ) * ( $('#adaptive').val()/100 +1 ) );
 
     //programmingFinal = (+adaptiveDesign + +design) + programming - Math.ceil( ( +programming + +adaptiveDesign + +design )*markUpDole );
 
@@ -300,7 +303,7 @@ $(document).on( 'click' , '.get_pdf_path' , function(e){
 
     $(document).on('click',".dropdown dt a", function(e) {
         e.preventDefault();
-        $(".dropdown dd ul").slideToggle('fast');
+        $(this).closest('.dropdown').find("dd ul").slideToggle('fast');
     });
 
     $(document).on('click',".dropdown dd ul li a", function() {
@@ -334,19 +337,11 @@ $(document).on( 'click' , '.get_pdf_path' , function(e){
 
         var title = $(this).val() + ",";
 
-        var checkedRows = $('.multiSel input').val();
+        var checkedRows = $(this).closest('.dropdown').find('.multiSel input').val();
 
         if ($(this).is(':checked')) {
-            // var html = '<span title="' + title + '">' + title + '</span>';
-            // $('.multiSel').append(html);
-            // $(".hida").hide();
-
             $('.multiSel input').val( checkedRows + title );
         } else {
-            // $('span[title="' + title + '"]').remove();
-            // var ret = $(".hida");
-            // $('.dropdown dt a').append(ret);
-
             $('.multiSel input').val( checkedRows.replace( title, '' ) );
 
         }

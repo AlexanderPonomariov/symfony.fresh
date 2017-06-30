@@ -21,6 +21,18 @@ class IndexController extends Controller
         'Установка аналитики;',
     ];
 
+
+    protected $executors = [
+        ['технический директор','Сердюк Алексей'],
+        ['арт- директор','Талдыкин Юрий'],
+        ['иллюстратор','Мороз Антон'],
+        ['ведущий дизайнер супервизор','Талдыкин Виталий'],
+        ['менеджер проекта','Даниил Папуша'],
+        ['верстальщик','Дудников Олег'],
+        ['программист','Слончаков Сергей'],
+    ];
+
+
     public function indexAction($pdfLocation = null)
     {
 
@@ -35,6 +47,7 @@ class IndexController extends Controller
                 'sitesTypes' => $sitesTypes,
                 'pdfLocation' => $pdfLocation,
                 'work_stages' => $this->workStages,
+                'executors' => $this->executors,
             )
         );
     }
@@ -47,7 +60,7 @@ class IndexController extends Controller
 
         $siteTypeParameters = $em->getRepository('FreshCalcBundle:Parameters')->getParametersForSiteType($siteType->getId());
 
-        //echo '<pre>';var_dump($siteTypeParameters);die;
+        //echo '<pre>';var_dump($siteTypeParameters1);die;
 
         for ( $i=0; $i < count($siteTypeParameters); $i++ ) {
             $siteTypeParameters[$i]['workType']['id'] = $em->getRepository('FreshCalcBundle:Parameters')->find($siteTypeParameters[$i]['id'])->getWorkTypes()->getId();
@@ -61,7 +74,8 @@ class IndexController extends Controller
 
     public function generatePdfAction(Request $request)
     {
-        echo '<pre>';var_dump($request->request);die;
+
+//        echo '<pre>';var_dump( $request->request );die;
         $companyName = $request->request->get('company');
         $name = $request->request->get('name');
         $surname = $request->request->get('surname');
@@ -90,13 +104,43 @@ class IndexController extends Controller
             'companyName'  => $companyName
         ));
 
-        $filename = $this->returnPDFResponseFromHTML($html, $companyName, $name, $choosedWorkStages);
+        $filename = $this->returnPDFResponseFromHTML($html, $companyName, $name, $choosedWorkStages, $request);
 
         return new JsonResponse($filename);
 
     }
 
-    public function returnPDFResponseFromHTML($html, $companyName='', $name='' , $choosedWorkStages='' ){
+    public function returnPDFResponseFromHTML($html, $companyName='', $name='' , $choosedWorkStages='' , $request){
+//        echo '<pre>';var_dump($request->request);die;
+
+        $em = $this->getDoctrine()->getManager();
+
+        foreach ( $request->request as $key => $value ) {
+
+            if ( strripos( $key, 'design' )  ) {
+                if ( strripos( $key, 'new' ) ) {
+                    $designCustomArr[$key] = $value;
+                } else {
+                    $designArr[preg_replace( '/\D/', '' , $key )][] = $value;
+                }
+
+            } elseif ( strripos( $key, 'programming' ) ) {
+
+                if ( strripos( $key, 'new' ) ) {
+                    $programmingCustomArr[$key] = $value;
+                } else {
+                    $programmingArr[preg_replace( '/\D/', '' , $key )][] = $value;
+                }
+
+            } elseif ( strripos( $key, 'mark_up' ) ) {
+                if ( strripos( $key, 'new' ) ) {
+                    $mark_upCustomArr[$key] = $value;
+                } else {
+                    $mark_upArr[preg_replace( '/\D/', '' , $key )][] = $value;
+                }
+            }
+
+        }
 
         $pdf = $this->get("white_october.tcpdf")->create('L', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
@@ -158,12 +202,42 @@ class IndexController extends Controller
             $pdf->writeHTMLCell( '' , '', 50, $workStageHeight, '<p style="font-size: 10px;color: #222222;">&bull; '.$workStages[$workStage].'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
         }
 
+//Смета по разработке (Этап 1) (5 стр.)
+        $pdf->AddPage();
+        $bMargin = $pdf->getBreakMargin();
+        $auto_page_break = $pdf->getAutoPageBreak();
+        $pdf->SetAutoPageBreak(false, 0);
+        $img_file = $_SERVER['DOCUMENT_ROOT'].'web/images/first-step.jpg';
+        $pdf->Image($img_file, 0, 0, 297, 210, '', '', '', false, 1300, '', false, false, 0);
+
+        $firstStepExecutorsArr = array_diff( explode( ',' , $request->request->get('first_step_executors') ) , array('') );
+
+        $firstStepExecutorHeight=44;
+        $executors = $this->executors;
+        foreach ( $firstStepExecutorsArr as $firstStepExecutor ) {
+            $firstStepExecutorHeight += 10;
+
+            $pdf->writeHTMLCell( '' , '', 147, $firstStepExecutorHeight, '<p style="font-size: 10px;color: #222222;font-weight: lighter;">'.$executors[$firstStepExecutor][1].'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+            $pdf->writeHTMLCell( '' , '', 147, $firstStepExecutorHeight+5, '<p style="font-size: 7px;color: #222222;font-weight:100;">'.$executors[$firstStepExecutor][0].'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+        }
+
+        $pdf->writeHTMLCell( '' , '', 207, 55, '<p style="font-size: 10px;color: #222222;">'.( $request->request->get('first_step-1') ).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+        $pdf->writeHTMLCell( '' , '', 240, 55, '<p style="font-size: 10px;color: #222222;">'.( ( $request->request->get('first_step-1') )*( $request->request->get('first_step_hour_price') ) ).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+
+        $pdf->writeHTMLCell( '' , '', 207, 68, '<p style="font-size: 10px;color: #222222;">'.( $request->request->get('first_step-2') ).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+        $pdf->writeHTMLCell( '' , '', 240, 68, '<p style="font-size: 10px;color: #222222;">'.( ( $request->request->get('first_step-2') )*( $request->request->get('first_step_hour_price') ) ).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+
+        $pdf->writeHTMLCell( '' , '', 207, 78, '<p style="font-weight: bold;font-size: 10px;color: #222222;">'.(( $request->request->get('first_step-1') )+( $request->request->get('first_step-2') )).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+        $pdf->writeHTMLCell( '' , '', 240, 78, '<p style="font-weight: bold;font-size: 10px;color: #222222;">'.( ( $request->request->get('first_step-2')+$request->request->get('first_step-1') )*( $request->request->get('first_step_hour_price') ) ).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
 
 
 
 
 
+        echo '<pre>';var_dump($designArr);die;
 
+
+//        $siteTypeParameters1 = $em->getRepository('FreshCalcBundle:Parameters')->getParametersByIds([]);
 
 
 

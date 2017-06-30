@@ -21,4 +21,16 @@ class ParametersRepository extends \Doctrine\ORM\EntityRepository
         return $qb->getQuery()
             ->getResult(Query::HYDRATE_ARRAY);
     }
+
+    public function getParametersByIds( $parametersIds )
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->select('c')
+            ->where('c.id IN (:parametersIds)')
+            ->setParameter('parametersIds', $parametersIds);
+
+
+        return $qb->getQuery()
+            ->getResult(Query::HYDRATE_ARRAY);
+    }
 }
