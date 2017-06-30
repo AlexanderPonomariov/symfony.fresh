@@ -137,6 +137,7 @@ class PatentingController extends Controller
             $contract->setValue('our_second_name_short', mb_substr($ourEntity[0]->getSecondName(), 0, 1));
             $contract->setValue('our_surname', $ourEntity[0]->getSurname());
             $contract->setValue('our_identification_code', $ourEntity[0]->getIdentificationCode());
+            $contract->setValue('our_basis', $ourEntity[0]->getPassportOther());
 
             $contract->setValue('contract_date', $contractDate);
             $contract->setValue('contract_end_date', $date->format('Y') + 2);
