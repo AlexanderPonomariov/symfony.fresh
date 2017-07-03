@@ -1,0 +1,16 @@
+<table style="font-size:11pt;">
+    {#{{ dump(designFinishArr) }}#}
+    {% for value in designFinishArr %}
+        <tr>
+            <td width="400" height="17">{{ value.name }}</td>
+            <td width="100" align="center">{{ value.value }}</td>
+            <td width="120" align="center">{{ value.price }}</td>
+        </tr>
+    {% endfor %}
+
+    <tr>
+        <td width="400" height="17" style="font-size:11pt;font-weight:lighter;">{{ total.name }}</td>
+        <td width="100" align="center" style="font-size:11pt;font-weight:bold;"><b>{{ total.value }}</b></td>
+        <td width="120" align="center" style="font-size:11pt;font-weight:bold;"><i>{{ total.price }}</i></td>
+    </tr>
+</table>

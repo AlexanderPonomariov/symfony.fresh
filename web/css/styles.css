@@ -265,3 +265,8 @@ a.download_sample.button {
     background-color: #fff;
 }
 
+.executors {
+    display: block !important;
+    clear: both;
+}
+

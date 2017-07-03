@@ -340,9 +340,9 @@ $(document).on( 'click' , '.get_pdf_path' , function(e){
         var checkedRows = $(this).closest('.dropdown').find('.multiSel input').val();
 
         if ($(this).is(':checked')) {
-            $('.multiSel input').val( checkedRows + title );
+            $(this).closest('.dropdown').find('.multiSel input').val( checkedRows + title );
         } else {
-            $('.multiSel input').val( checkedRows.replace( title, '' ) );
+            $(this).closest('.dropdown').find('.multiSel input').val( checkedRows.replace( title, '' ) );
 
         }
     });

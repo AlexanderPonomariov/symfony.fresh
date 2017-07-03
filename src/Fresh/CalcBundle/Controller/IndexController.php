@@ -32,6 +32,9 @@ class IndexController extends Controller
         ['программист','Слончаков Сергей'],
     ];
 
+    protected $for_complicate;
+
+    protected $adaptive;
 
     public function indexAction($pdfLocation = null)
     {
@@ -98,7 +101,8 @@ class IndexController extends Controller
         $programmingPrice = $request->request->get('programmingPrice');
         $designPrice = $request->request->get('designPrice');
 
-
+        $this->for_complicate = 1+($request->request->get("for_complicate")/100);
+        $this->adaptive = $request->request->get("adaptive")/100;
 
         $html = $this->renderView('FreshCalcBundle:PDF:pdfdoc.html.twig', array(
             'companyName'  => $companyName
@@ -112,6 +116,13 @@ class IndexController extends Controller
 
     public function returnPDFResponseFromHTML($html, $companyName='', $name='' , $choosedWorkStages='' , $request){
 //        echo '<pre>';var_dump($request->request);die;
+
+        $designArr = [];
+        $designCustomArr = [];
+        $programmingCustomArr = [];
+        $programmingArr = [];
+        $mark_upCustomArr = [];
+        $mark_upArr = [];
 
         $em = $this->getDoctrine()->getManager();
 
@@ -145,6 +156,7 @@ class IndexController extends Controller
         $pdf = $this->get("white_october.tcpdf")->create('L', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
         $fontname1 = TCPDF_FONTS::addTTFfont( $_SERVER['DOCUMENT_ROOT'].'web/fonts/PTC75F.ttf', 'TrueTypeUnicode', '', 96);
+        $fontname2 = TCPDF_FONTS::addTTFfont( $_SERVER['DOCUMENT_ROOT'].'web/fonts/PTC55F.ttf', 'TrueTypeUnicode', '', 96);
 
         $pdf->SetFont($fontname1, '', 14, '', false);
 
@@ -231,10 +243,98 @@ class IndexController extends Controller
         $pdf->writeHTMLCell( '' , '', 240, 78, '<p style="font-weight: bold;font-size: 10px;color: #222222;">'.( ( $request->request->get('first_step-2')+$request->request->get('first_step-1') )*( $request->request->get('first_step_hour_price') ) ).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
 
 
+//Смета разработки дизайна (Этап 2) (6 стр.)
+        $design_hour_price = $request->request->get("design_hour_price");
+        $designFinishArr = $this -> getResultArr( $designArr , $designCustomArr , $design_hour_price );
+
+//        foreach ($designArr as $paramId => $paramValue) {
+//
+//            if ( $paramValue[0] != 'on' || !$paramValue[1] ) {
+//                unset($designArr[$paramId]);
+//                continue;
+//            }
+//
+//            $designArr[$paramId] = $paramValue[1];
+//            $designIdsArr[] = $paramId;
+//        }
+//
+//        $parametersNames = $em->getRepository('FreshCalcBundle:Parameters')->getParametersByIds($designIdsArr);
+//
+//        foreach ( $parametersNames as $parametersNamesVal) {
+//
+//            $designFinishArr[$parametersNamesVal['id']]['name'] = $parametersNamesVal['parameterName'];
+//            $designFinishArr[$parametersNamesVal['id']]['value'] = $designArr[$parametersNamesVal['id']];
+//        }
+//
+//        if ( $designCustomArr ) {
+//
+//            foreach ( $designCustomArr as $customParamKey => $customParamValue) {
+//
+//                $customParamId = explode( '-' , $customParamKey );
+//
+//                $designCustomArrNew[$customParamId[0]][] = $customParamValue;
+//            }
+//
+//            foreach ( $designCustomArrNew as $customParamKeyNew => $customParamValueNew ) {
+//
+//                if ( $customParamValueNew[0] != 'on' || !$customParamValueNew[2] || !$customParamValueNew[1] ) continue;
+//
+//                $designFinishArr[$customParamKeyNew.'-new']['name'] = $customParamValueNew[1];
+//                $designFinishArr[$customParamKeyNew.'-new']['value'] = $customParamValueNew[2];
+//            }
+//        }
+//
+        $pdf->SetFont($fontname2, '', 14, '', false);
+
+        if ( count($designFinishArr) <= 18 ) {
+
+            $pdf->AddPage();
+            $bMargin = $pdf->getBreakMargin();
+            $auto_page_break = $pdf->getAutoPageBreak();
+            $pdf->SetAutoPageBreak(false, 0);
+            $img_file = $_SERVER['DOCUMENT_ROOT'].'web/images/design-single.jpg';
+            $pdf->Image($img_file, 0, 0, 297, 210, '', '', '', false, 1300, '', false, false, 0);
+
+            $totalDesign = 0;
+
+            foreach ( $designFinishArr as $designFinishVal ) {
+
+                $totalDesign += $designFinishVal["value"];
+
+            }
+
+            $adaptiveDesign = round($totalDesign*($this->adaptive));
+            array_push($designFinishArr, [ 'name'=>'Адаптивная версия дизайна', 'value'=>$adaptiveDesign, 'price'=>$adaptiveDesign*$design_hour_price] );
+
+            $html123 = $this->renderView('FreshCalcBundle:PDF:tableTemplate.html.twig', array(
+                'designFinishArr'  => $designFinishArr,
+                'total' => [ 'name'=>'ИТОГО 2Й ЭТАП', 'value'=>$totalDesign+$adaptiveDesign, 'price'=>($totalDesign+$adaptiveDesign)*$design_hour_price ]
+            ));
+
+            $pdf->writeHTMLCell( '' , '', 49, 55, $html123, $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
 
 
 
-        echo '<pre>';var_dump($designArr);die;
+        } elseif ( count($designFinishArr) > 18 && count($designFinishArr) <= 36 ) {
+
+        } else {
+
+        }
+
+        $pdf->SetFont($fontname1, '', 14, '', false);
+        $designExecutorsArr = array_diff( explode( ',' , $request->request->get('design_executors') ) , array('') );
+
+        $designExecutorsHeight=44;
+        $executors = $this->executors;
+        foreach ( $designExecutorsArr as $designExecutor ) {
+            $designExecutorsHeight += 10;
+
+            $pdf->writeHTMLCell( '' , '', 147, $designExecutorsHeight, '<p style="font-size: 10px;color: #222222;font-weight: lighter;">'.$executors[$designExecutor][1].'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+            $pdf->writeHTMLCell( '' , '', 147, $designExecutorsHeight+5, '<p style="font-size: 7px;color: #222222;font-weight:100;">'.$executors[$designExecutor][0].'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+        }
+
+
+//        echo '<pre>';var_dump($designFinishArr);die;
 
 
 //        $siteTypeParameters1 = $em->getRepository('FreshCalcBundle:Parameters')->getParametersByIds([]);
@@ -407,6 +507,65 @@ class IndexController extends Controller
 
         return $filename;
     }
+
+
+
+
+    protected function getResultArr( $fixadParametersArr=[] , $customParametersArr=[] , $hourPrice )
+    {
+        $forComplicate = $this->for_complicate;
+
+        $em = $this->getDoctrine()->getManager();
+        if ( $fixadParametersArr ) {
+
+            foreach ($fixadParametersArr as $paramId => $paramValue) {
+
+                if ( $paramValue[0] != 'on' || !$paramValue[1] ) {
+                    unset($fixadParametersArr[$paramId]);
+                    continue;
+                }
+
+                $parametersArr[$paramId] = $paramValue[1];
+                $designIdsArr[] = $paramId;
+            }
+
+            $parametersNames = $em->getRepository('FreshCalcBundle:Parameters')->getParametersByIds($designIdsArr);
+
+            foreach ( $parametersNames as $parametersNamesVal) {
+
+                $finishArr[$parametersNamesVal['id']]['name'] = $parametersNamesVal['parameterName'];
+                $finishArr[$parametersNamesVal['id']]['value'] = round($parametersArr[$parametersNamesVal['id']]*$forComplicate);
+                $finishArr[$parametersNamesVal['id']]['price'] = round($parametersArr[$parametersNamesVal['id']]*$forComplicate)*$hourPrice;
+            }
+        }
+
+
+        if ( $customParametersArr ) {
+
+            foreach ( $customParametersArr as $customParamKey => $customParamValue) {
+
+                $customParamId = explode( '-' , $customParamKey );
+
+                $customParamArrNew[$customParamId[0]][] = $customParamValue;
+            }
+
+            foreach ( $customParamArrNew as $customParamKeyNew => $customParamValueNew ) {
+
+                if ( $customParamValueNew[0] != 'on' || !$customParamValueNew[2] || !$customParamValueNew[1] ) continue;
+
+                $finishArr[$customParamKeyNew.'-new']['name'] = $customParamValueNew[1];
+                $finishArr[$customParamKeyNew.'-new']['value'] = round($customParamValueNew[2]*$forComplicate);
+                $finishArr[$customParamKeyNew.'-new']['price'] = round($customParamValueNew[2]*$forComplicate)*$hourPrice;
+            }
+        }
+
+        return $finishArr;
+
+    }
+
+
+
+
 
 
 

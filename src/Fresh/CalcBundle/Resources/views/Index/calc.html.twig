@@ -142,6 +142,33 @@
                                 </div>
                             </legend>
 
+                            <div class="field first_step executors">
+
+                                <dl class="dropdown">
+                                    <dt>
+                                        <a href="#" class="button">
+                                            <span class="hida">Исполнители</span>
+                                            <p class="multiSel">
+                                                <input type="hidden" name="design_executors">
+                                            </p>
+                                        </a>
+                                    </dt>
+
+                                    <dd>
+                                        <div class="mutliSelect">
+                                            <ul>
+                                                {#{{ dump(work_stages) }}#}
+                                                {% for key, executor in executors %}
+                                                    <li><input type="checkbox" value="{{ key }}"/>{{ executor[1] }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </dd>
+
+                                </dl>
+
+                            </div>
+
                             <p class="add-more">
                                 <a href="#" class="add_templates">Добавить шаблоны</a>
                             </p>
@@ -215,7 +242,7 @@
                             <div class="adaptive field">
                                 <p>
                                     <label for="adaptive">Адаптив</label>
-                                    <input type="text" class="input" name="adaptive" id="adaptive" value="30">
+                                    <input type="text" class="input" name="adaptive" id="adaptive" value="40">
                                     <label for="adaptive" class="field_label">%</label>
                                 </p>
                             </div>

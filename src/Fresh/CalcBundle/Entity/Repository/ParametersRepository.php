@@ -22,7 +22,7 @@ class ParametersRepository extends \Doctrine\ORM\EntityRepository
             ->getResult(Query::HYDRATE_ARRAY);
     }
 
-    public function getParametersByIds( $parametersIds )
+    public function getParametersByIds( $parametersIds=[] )
     {
         $qb = $this->createQueryBuilder('c')
             ->select('c')
