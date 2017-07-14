@@ -226,12 +226,16 @@ class IndexController extends Controller
 
         $firstStepExecutorHeight=44;
         $executors = $this->executors;
-        foreach ( $firstStepExecutorsArr as $firstStepExecutor ) {
+//        echo '<pre>';var_dump($request->request->get('first_step_executors'));die;
+        foreach ($firstStepExecutorsArr as $firstStepExecutor) {
             $firstStepExecutorHeight += 10;
+            if ( true ) {
+                $pdf->writeHTMLCell('', '', 147, $firstStepExecutorHeight, '<p style="font-size: 10px;color: #222222;font-weight: lighter;">' . $executors[$firstStepExecutor][1] . '</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+                $pdf->writeHTMLCell('', '', 147, $firstStepExecutorHeight + 5, '<p style="font-size: 7px;color: #222222;font-weight:100;">' . $executors[$firstStepExecutor][0] . '</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
 
-            $pdf->writeHTMLCell( '' , '', 147, $firstStepExecutorHeight, '<p style="font-size: 10px;color: #222222;font-weight: lighter;">'.$executors[$firstStepExecutor][1].'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
-            $pdf->writeHTMLCell( '' , '', 147, $firstStepExecutorHeight+5, '<p style="font-size: 7px;color: #222222;font-weight:100;">'.$executors[$firstStepExecutor][0].'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+            }
         }
+        $first_step_total_hours =  $request->request->get('first_step-1') + $request->request->get('first_step-2');
 
         $pdf->writeHTMLCell( '' , '', 207, 55, '<p style="font-size: 10px;color: #222222;">'.( $request->request->get('first_step-1') ).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
         $pdf->writeHTMLCell( '' , '', 240, 55, '<p style="font-size: 10px;color: #222222;">'.( ( $request->request->get('first_step-1') )*( $request->request->get('first_step_hour_price') ) ).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
@@ -243,50 +247,13 @@ class IndexController extends Controller
         $pdf->writeHTMLCell( '' , '', 240, 78, '<p style="font-weight: bold;font-size: 10px;color: #222222;">'.( ( $request->request->get('first_step-2')+$request->request->get('first_step-1') )*( $request->request->get('first_step_hour_price') ) ).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
 
 
-//Смета разработки дизайна (Этап 2) (6 стр.)
+//Смета разработки дизайна (Этап 2)
         $design_hour_price = $request->request->get("design_hour_price");
         $designFinishArr = $this -> getResultArr( $designArr , $designCustomArr , $design_hour_price );
 
-//        foreach ($designArr as $paramId => $paramValue) {
-//
-//            if ( $paramValue[0] != 'on' || !$paramValue[1] ) {
-//                unset($designArr[$paramId]);
-//                continue;
-//            }
-//
-//            $designArr[$paramId] = $paramValue[1];
-//            $designIdsArr[] = $paramId;
-//        }
-//
-//        $parametersNames = $em->getRepository('FreshCalcBundle:Parameters')->getParametersByIds($designIdsArr);
-//
-//        foreach ( $parametersNames as $parametersNamesVal) {
-//
-//            $designFinishArr[$parametersNamesVal['id']]['name'] = $parametersNamesVal['parameterName'];
-//            $designFinishArr[$parametersNamesVal['id']]['value'] = $designArr[$parametersNamesVal['id']];
-//        }
-//
-//        if ( $designCustomArr ) {
-//
-//            foreach ( $designCustomArr as $customParamKey => $customParamValue) {
-//
-//                $customParamId = explode( '-' , $customParamKey );
-//
-//                $designCustomArrNew[$customParamId[0]][] = $customParamValue;
-//            }
-//
-//            foreach ( $designCustomArrNew as $customParamKeyNew => $customParamValueNew ) {
-//
-//                if ( $customParamValueNew[0] != 'on' || !$customParamValueNew[2] || !$customParamValueNew[1] ) continue;
-//
-//                $designFinishArr[$customParamKeyNew.'-new']['name'] = $customParamValueNew[1];
-//                $designFinishArr[$customParamKeyNew.'-new']['value'] = $customParamValueNew[2];
-//            }
-//        }
-//
         $pdf->SetFont($fontname2, '', 14, '', false);
 
-        if ( count($designFinishArr) <= 18 ) {
+        if ( count($designFinishArr) < 18 ) {
 
             $pdf->AddPage();
             $bMargin = $pdf->getBreakMargin();
@@ -307,37 +274,404 @@ class IndexController extends Controller
             array_push($designFinishArr, [ 'name'=>'Адаптивная версия дизайна', 'value'=>$adaptiveDesign, 'price'=>$adaptiveDesign*$design_hour_price] );
 
             $html123 = $this->renderView('FreshCalcBundle:PDF:tableTemplate.html.twig', array(
-                'designFinishArr'  => $designFinishArr,
+                'finishArr'  => $designFinishArr,
+                'total' => [ 'name'=>'ИТОГО 2Й ЭТАП', 'value'=>$totalDesign+$adaptiveDesign, 'price'=>($totalDesign+$adaptiveDesign)*$design_hour_price ],
+                'single' => 1,
+            ));
+
+            $pdf->writeHTMLCell( '' , '', 49, 55, $html123, $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+
+            $pdf->SetFont($fontname1, '', 14, '', false);
+            $designExecutorsArr = array_diff( explode( ',' , $request->request->get('design_executors') ) , array('') );
+
+            $designExecutorsHeight=44;
+            $executors = $this->executors;
+
+            foreach ( $designExecutorsArr as $designExecutor ) {
+                $designExecutorsHeight += 10;
+
+                $pdf->writeHTMLCell( '' , '', 147, $designExecutorsHeight, '<p style="font-size: 10px;color: #222222;font-weight: lighter;">'.$executors[$designExecutor][1].'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+                $pdf->writeHTMLCell( '' , '', 147, $designExecutorsHeight+5, '<p style="font-size: 7px;color: #222222;font-weight:100;">'.$executors[$designExecutor][0].'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+            }
+
+        } else {
+
+            $pdf->AddPage();
+            $bMargin = $pdf->getBreakMargin();
+            $auto_page_break = $pdf->getAutoPageBreak();
+            $pdf->SetAutoPageBreak(false, 0);
+            $img_file = $_SERVER['DOCUMENT_ROOT'].'web/images/design-first.jpg';
+            $pdf->Image($img_file, 0, 0, 297, 210, '', '', '', false, 1300, '', false, false, 0);
+
+//            $totalDesign = 0;
+//
+//            foreach ( $designFinishArr as $designFinishVal ) {
+//
+//                $totalDesign += $designFinishVal["value"];
+//
+//            }
+
+//            $adaptiveDesign = round($totalDesign*($this->adaptive));
+//            array_push($designFinishArr, [ 'name'=>'Адаптивная версия дизайна', 'value'=>$adaptiveDesign, 'price'=>$adaptiveDesign*$design_hour_price] );
+
+            $html123 = $this->renderView('FreshCalcBundle:PDF:tableTemplate.html.twig', array(
+                'finishArr'  => $designFinishArr,
+            ));
+
+            $pdf->writeHTMLCell( '' , '', 49, 55, $html123, $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+
+            $pdf->SetFont($fontname1, '', 14, '', false);
+            $designExecutorsArr = array_diff( explode( ',' , $request->request->get('design_executors') ) , array('') );
+
+            $designExecutorsHeight=44;
+            $executors = $this->executors;
+            foreach ( $designExecutorsArr as $designExecutor ) {
+                $designExecutorsHeight += 10;
+
+                $pdf->writeHTMLCell( '' , '', 147, $designExecutorsHeight, '<p style="font-size: 10px;color: #222222;font-weight: lighter;">'.$executors[$designExecutor][1].'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+                $pdf->writeHTMLCell( '' , '', 147, $designExecutorsHeight+5, '<p style="font-size: 7px;color: #222222;font-weight:100;">'.$executors[$designExecutor][0].'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+            }
+
+            $pdf->SetFont($fontname2, '', 14, '', false);
+            $pdf->AddPage();
+            $bMargin = $pdf->getBreakMargin();
+            $auto_page_break = $pdf->getAutoPageBreak();
+            $pdf->SetAutoPageBreak(false, 0);
+            $img_file = $_SERVER['DOCUMENT_ROOT'].'web/images/design-second.jpg';
+            $pdf->Image($img_file, 0, 0, 297, 210, '', '', '', false, 1300, '', false, false, 0);
+
+            $totalDesign = 0;
+
+            foreach ( $designFinishArr as $designFinishVal ) {
+
+                $totalDesign += $designFinishVal["value"];
+
+            }
+
+            $adaptiveDesign = round($totalDesign*($this->adaptive));
+            array_push($designFinishArr, [ 'name'=>'Адаптивная версия дизайна', 'value'=>$adaptiveDesign, 'price'=>$adaptiveDesign*$design_hour_price] );
+
+            $html123 = $this->renderView('FreshCalcBundle:PDF:tableTemplate.html.twig', array(
+                'finishArr'  => $designFinishArr,
                 'total' => [ 'name'=>'ИТОГО 2Й ЭТАП', 'value'=>$totalDesign+$adaptiveDesign, 'price'=>($totalDesign+$adaptiveDesign)*$design_hour_price ]
             ));
 
             $pdf->writeHTMLCell( '' , '', 49, 55, $html123, $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
 
+            $pdf->SetFont($fontname1, '', 14, '', false);
+            $designExecutorsArr = array_diff( explode( ',' , $request->request->get('design_executors') ) , array('') );
 
+            $designExecutorsHeight=44;
+            $executors = $this->executors;
+            foreach ( $designExecutorsArr as $designExecutor ) {
+                $designExecutorsHeight += 10;
 
-        } elseif ( count($designFinishArr) > 18 && count($designFinishArr) <= 36 ) {
+                $pdf->writeHTMLCell( '' , '', 147, $designExecutorsHeight, '<p style="font-size: 10px;color: #222222;font-weight: lighter;">'.$executors[$designExecutor][1].'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+                $pdf->writeHTMLCell( '' , '', 147, $designExecutorsHeight+5, '<p style="font-size: 7px;color: #222222;font-weight:100;">'.$executors[$designExecutor][0].'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+            }
+
+        }
+
+//Смета адаптивной верстки (Этап 3)
+        $mark_up_hour_price = $request->request->get("mark_up_hour_price");
+        $mark_upFinishArr = $this -> getResultArr( $mark_upArr , $mark_upCustomArr , $mark_up_hour_price );
+//        echo '<pre>';var_dump($mark_upFinishArr);die;
+        $pdf->SetFont($fontname2, '', 14, '', false);
+
+        if ( count($mark_upFinishArr) < 18 ) {
+
+            $pdf->AddPage();
+            $bMargin = $pdf->getBreakMargin();
+            $auto_page_break = $pdf->getAutoPageBreak();
+            $pdf->SetAutoPageBreak(false, 0);
+            $img_file = $_SERVER['DOCUMENT_ROOT'].'web/images/mark_up-single.jpg';
+            $pdf->Image($img_file, 0, 0, 297, 210, '', '', '', false, 1300, '', false, false, 0);
+
+            $totalMArk_up = 0;
+
+            foreach ( $mark_upFinishArr as $mark_upFinishVal ) {
+
+                $totalMArk_up += $mark_upFinishVal["value"];
+
+            }
+
+            $adaptiveDesign = round($totalMArk_up*($this->adaptive));
+            array_push($mark_upFinishArr, [ 'name'=>'Адаптивная версия', 'value'=>$adaptiveDesign, 'price'=>$adaptiveDesign*$design_hour_price] );
+
+            $html123 = $this->renderView('FreshCalcBundle:PDF:tableTemplate.html.twig', array(
+                'finishArr'  => $mark_upFinishArr,
+                'total' => [ 'name'=>'ИТОГО 3Й ЭТАП', 'value'=>$totalMArk_up+$adaptiveDesign, 'price'=>($totalMArk_up+$adaptiveDesign)*$design_hour_price ],
+                'single' => 1,
+            ));
+
+            $pdf->writeHTMLCell( '' , '', 49, 55, $html123, $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+
+            $pdf->SetFont($fontname1, '', 14, '', false);
+            $designExecutorsArr1 = array_diff( explode( ',' , $request->request->get('mark_up_executors') ) , array('') );
+
+            $designExecutorsHeight=44;
+            $executors = $this->executors;
+            foreach ( $designExecutorsArr1 as $designExecutor ) {
+                $designExecutorsHeight += 10;
+
+                $pdf->writeHTMLCell( '' , '', 147, $designExecutorsHeight, '<p style="font-size: 10px;color: #222222;font-weight: lighter;">'.$executors[$designExecutor][1].'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+                $pdf->writeHTMLCell( '' , '', 147, $designExecutorsHeight+5, '<p style="font-size: 7px;color: #222222;font-weight:100;">'.$executors[$designExecutor][0].'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+            }
 
         } else {
 
+            $pdf->AddPage();
+            $bMargin = $pdf->getBreakMargin();
+            $auto_page_break = $pdf->getAutoPageBreak();
+            $pdf->SetAutoPageBreak(false, 0);
+            $img_file = $_SERVER['DOCUMENT_ROOT'].'web/images/mark_up-first.jpg';
+            $pdf->Image($img_file, 0, 0, 297, 210, '', '', '', false, 1300, '', false, false, 0);
+//
+//            $totalDesign = 0;
+//
+//            foreach ( $mark_upFinishArr as $designFinishVal ) {
+//
+//                $totalDesign += $designFinishVal["value"];
+//
+//            }
+//
+//            $adaptiveDesign = round($totalDesign*($this->adaptive));
+//            array_push($mark_upFinishArr, [ 'name'=>'Адаптивная версия дизайна', 'value'=>$adaptiveDesign, 'price'=>$adaptiveDesign*$design_hour_price] );
+
+            $html123 = $this->renderView('FreshCalcBundle:PDF:tableTemplate.html.twig', array(
+                'finishArr'  => $mark_upFinishArr,
+            ));
+
+            $pdf->writeHTMLCell( '' , '', 49, 55, $html123, $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+
+            $pdf->SetFont($fontname1, '', 14, '', false);
+            $designExecutorsArr1 = array_diff( explode( ',' , $request->request->get('mark_up_executors') ) , array('') );
+
+            $designExecutorsHeight=44;
+            $executors = $this->executors;
+            foreach ( $designExecutorsArr1 as $designExecutor ) {
+                $designExecutorsHeight += 10;
+
+                $pdf->writeHTMLCell( '' , '', 147, $designExecutorsHeight, '<p style="font-size: 10px;color: #222222;font-weight: lighter;">'.$executors[$designExecutor][1].'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+                $pdf->writeHTMLCell( '' , '', 147, $designExecutorsHeight+5, '<p style="font-size: 7px;color: #222222;font-weight:100;">'.$executors[$designExecutor][0].'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+            }
+
+            $pdf->AddPage();
+            $bMargin = $pdf->getBreakMargin();
+            $auto_page_break = $pdf->getAutoPageBreak();
+            $pdf->SetAutoPageBreak(false, 0);
+            $img_file = $_SERVER['DOCUMENT_ROOT'].'web/images/mark_up-second.jpg';
+            $pdf->Image($img_file, 0, 0, 297, 210, '', '', '', false, 1300, '', false, false, 0);
+
+            $totalMArk_up = 0;
+
+            foreach ( $mark_upFinishArr as $mark_upFinishVal ) {
+
+                $totalMArk_up += $mark_upFinishVal["value"];
+
+            }
+
+            $adaptiveDesign = round($totalMArk_up*($this->adaptive));
+            array_push($mark_upFinishArr, [ 'name'=>'Адаптивная версия', 'value'=>$adaptiveDesign, 'price'=>$adaptiveDesign*$design_hour_price] );
+
+            $html123 = $this->renderView('FreshCalcBundle:PDF:tableTemplate.html.twig', array(
+                'finishArr'  => $mark_upFinishArr,
+                'total' => [ 'name'=>'ИТОГО 3Й ЭТАП', 'value'=>$totalMArk_up+$adaptiveDesign, 'price'=>($totalMArk_up+$adaptiveDesign)*$design_hour_price ],
+            ));
+
+            $pdf->writeHTMLCell( '' , '', 49, 55, $html123, $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+
+            $pdf->SetFont($fontname1, '', 14, '', false);
+            $designExecutorsArr1 = array_diff( explode( ',' , $request->request->get('mark_up_executors') ) , array('') );
+
+            $designExecutorsHeight=44;
+            $executors = $this->executors;
+            foreach ( $designExecutorsArr1 as $designExecutor ) {
+                $designExecutorsHeight += 10;
+
+                $pdf->writeHTMLCell( '' , '', 147, $designExecutorsHeight, '<p style="font-size: 10px;color: #222222;font-weight: lighter;">'.$executors[$designExecutor][1].'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+                $pdf->writeHTMLCell( '' , '', 147, $designExecutorsHeight+5, '<p style="font-size: 7px;color: #222222;font-weight:100;">'.$executors[$designExecutor][0].'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+            }
+
         }
 
-        $pdf->SetFont($fontname1, '', 14, '', false);
-        $designExecutorsArr = array_diff( explode( ',' , $request->request->get('design_executors') ) , array('') );
+//Смета программирования (Этап 4)
+        $programming_hour_price = $request->request->get("programming_hour_price");
+        $programingFinishArr = $this -> getResultArr( $programmingArr , $programmingCustomArr , $programming_hour_price );
+//        echo '<pre>';var_dump($programingFinishArr);die;
+        $pdf->SetFont($fontname2, '', 14, '', false);
 
-        $designExecutorsHeight=44;
+        if ( count($programingFinishArr) < 17 ) {
+
+            $pdf->AddPage();
+            $bMargin = $pdf->getBreakMargin();
+            $auto_page_break = $pdf->getAutoPageBreak();
+            $pdf->SetAutoPageBreak(false, 0);
+            $img_file = $_SERVER['DOCUMENT_ROOT'].'web/images/programming-single.jpg';
+            $pdf->Image($img_file, 0, 0, 297, 210, '', '', '', false, 1300, '', false, false, 0);
+
+            $totalProgramming = 0;
+
+            foreach ( $programingFinishArr as $programingFinishVal ) {
+
+                $totalProgramming += $programingFinishVal["value"];
+
+            }
+
+//            $adaptiveDesign = round($totalProgramming*($this->adaptive));
+            $adaptiveDesign = 0;
+//            array_push($programingFinishArr, [ 'name'=>'Адаптивная версия дизайна', 'value'=>$adaptiveDesign, 'price'=>$adaptiveDesign*$design_hour_price] );
+
+            $html123 = $this->renderView('FreshCalcBundle:PDF:tableTemplate.html.twig', array(
+                'finishArr'  => $programingFinishArr,
+                'total' => [ 'name'=>'ИТОГО 4Й ЭТАП', 'value'=>$totalProgramming+$adaptiveDesign, 'price'=>($totalProgramming+$adaptiveDesign)*$design_hour_price ],
+                'single' => 1,
+                'programming' => 1,
+            ));
+
+            $pdf->writeHTMLCell( '' , '', 49, 55, $html123, $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+
+            $pdf->SetFont($fontname1, '', 14, '', false);
+            $designExecutorsArr1 = array_diff( explode( ',' , $request->request->get('programming_executors') ) , array('') );
+
+            $designExecutorsHeight=44;
+            $executors = $this->executors;
+            foreach ( $designExecutorsArr1 as $designExecutor ) {
+                $designExecutorsHeight += 10;
+
+                $pdf->writeHTMLCell( '' , '', 147, $designExecutorsHeight, '<p style="font-size: 10px;color: #222222;font-weight: lighter;">'.$executors[$designExecutor][1].'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+                $pdf->writeHTMLCell( '' , '', 147, $designExecutorsHeight+5, '<p style="font-size: 7px;color: #222222;font-weight:100;">'.$executors[$designExecutor][0].'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+            }
+
+        } else {
+
+            $pdf->AddPage();
+            $bMargin = $pdf->getBreakMargin();
+            $auto_page_break = $pdf->getAutoPageBreak();
+            $pdf->SetAutoPageBreak(false, 0);
+            $img_file = $_SERVER['DOCUMENT_ROOT'].'web/images/programming-first.jpg';
+            $pdf->Image($img_file, 0, 0, 297, 210, '', '', '', false, 1300, '', false, false, 0);
+//
+//            $totalDesign = 0;
+//
+//            foreach ( $mark_upFinishArr as $designFinishVal ) {
+//
+//                $totalDesign += $designFinishVal["value"];
+//
+//            }
+//
+//            $adaptiveDesign = round($totalDesign*($this->adaptive));
+//            array_push($mark_upFinishArr, [ 'name'=>'Адаптивная версия дизайна', 'value'=>$adaptiveDesign, 'price'=>$adaptiveDesign*$design_hour_price] );
+
+            $html123 = $this->renderView('FreshCalcBundle:PDF:tableTemplate.html.twig', array(
+                'finishArr'  => $programingFinishArr,
+                'programming' => 1,
+            ));
+
+            $pdf->writeHTMLCell( '' , '', 49, 55, $html123, $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+
+            $pdf->SetFont($fontname1, '', 14, '', false);
+            $designExecutorsArr1 = array_diff( explode( ',' , $request->request->get('programming_executors') ) , array('') );
+
+            $designExecutorsHeight=44;
+            $executors = $this->executors;
+            foreach ( $designExecutorsArr1 as $designExecutor ) {
+                $designExecutorsHeight += 10;
+
+                $pdf->writeHTMLCell( '' , '', 147, $designExecutorsHeight, '<p style="font-size: 10px;color: #222222;font-weight: lighter;">'.$executors[$designExecutor][1].'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+                $pdf->writeHTMLCell( '' , '', 147, $designExecutorsHeight+5, '<p style="font-size: 7px;color: #222222;font-weight:100;">'.$executors[$designExecutor][0].'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+            }
+            $pdf->SetFont($fontname2, '', 14, '', false);
+            $pdf->AddPage();
+            $bMargin = $pdf->getBreakMargin();
+            $auto_page_break = $pdf->getAutoPageBreak();
+            $pdf->SetAutoPageBreak(false, 0);
+            $img_file = $_SERVER['DOCUMENT_ROOT'].'web/images/programming-second.jpg';
+            $pdf->Image($img_file, 0, 0, 297, 210, '', '', '', false, 1300, '', false, false, 0);
+
+            $totalProgramming = 0;
+
+            foreach ( $programingFinishArr as $programingFinishVal ) {
+
+                $totalProgramming += $programingFinishVal["value"];
+
+            }
+
+//            $adaptiveDesign = round($totalProgramming*($this->adaptive));
+            $adaptiveDesign = 0;
+//            array_push($programingFinishArr, [ 'name'=>'Адаптивная версия дизайна', 'value'=>$adaptiveDesign, 'price'=>$adaptiveDesign*$design_hour_price] );
+
+            $html123 = $this->renderView('FreshCalcBundle:PDF:tableTemplate.html.twig', array(
+                'finishArr'  => $programingFinishArr,
+                'total' => [ 'name'=>'ИТОГО 4Й ЭТАП', 'value'=>$totalProgramming+$adaptiveDesign, 'price'=>($totalProgramming+$adaptiveDesign)*$design_hour_price ],
+            ));
+
+            $pdf->writeHTMLCell( '' , '', 49, 55, $html123, $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+
+            $pdf->SetFont($fontname1, '', 14, '', false);
+            $designExecutorsArr1 = array_diff( explode( ',' , $request->request->get('programming_executors') ) , array('') );
+
+            $designExecutorsHeight=44;
+            $executors = $this->executors;
+            foreach ( $designExecutorsArr1 as $designExecutor ) {
+                $designExecutorsHeight += 10;
+
+                $pdf->writeHTMLCell( '' , '', 147, $designExecutorsHeight, '<p style="font-size: 10px;color: #222222;font-weight: lighter;">'.$executors[$designExecutor][1].'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+                $pdf->writeHTMLCell( '' , '', 147, $designExecutorsHeight+5, '<p style="font-size: 7px;color: #222222;font-weight:100;">'.$executors[$designExecutor][0].'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+            }
+
+        }
+
+//Смета финишной подготовки сайта (Этап 5)
+        $pdf->AddPage();
+        $bMargin = $pdf->getBreakMargin();
+        $auto_page_break = $pdf->getAutoPageBreak();
+        $pdf->SetAutoPageBreak(false, 0);
+        $img_file = $_SERVER['DOCUMENT_ROOT'].'web/images/fifth-step.jpg';
+        $pdf->Image($img_file, 0, 0, 297, 210, '', '', '', false, 1300, '', false, false, 0);
+
+        $firstStepExecutorsArr = array_diff( explode( ',' , $request->request->get('last_step_executors') ) , array('') );
+
+        $firstStepExecutorHeight=44;
         $executors = $this->executors;
-        foreach ( $designExecutorsArr as $designExecutor ) {
-            $designExecutorsHeight += 10;
+        foreach ( $firstStepExecutorsArr as $firstStepExecutor ) {
+            $firstStepExecutorHeight += 10;
 
-            $pdf->writeHTMLCell( '' , '', 147, $designExecutorsHeight, '<p style="font-size: 10px;color: #222222;font-weight: lighter;">'.$executors[$designExecutor][1].'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
-            $pdf->writeHTMLCell( '' , '', 147, $designExecutorsHeight+5, '<p style="font-size: 7px;color: #222222;font-weight:100;">'.$executors[$designExecutor][0].'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+            $pdf->writeHTMLCell( '' , '', 147, $firstStepExecutorHeight, '<p style="font-size: 10px;color: #222222;font-weight: lighter;">'.$executors[$firstStepExecutor][1].'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+            $pdf->writeHTMLCell( '' , '', 147, $firstStepExecutorHeight+5, '<p style="font-size: 7px;color: #222222;font-weight:100;">'.$executors[$firstStepExecutor][0].'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+        }
+        $last_step_total_hours =  $request->request->get('last_step-2')+$request->request->get('last_step-1')+$request->request->get('last_step-3') ;
+        $last_step_total = $last_step_total_hours *( $request->request->get('last_step_hour_price') ) ;
+
+        $pdf->writeHTMLCell( '' , '', 207, 54, '<p style="font-size: 10px;color: #222222;">'.( $request->request->get('last_step-1') ).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+        $pdf->writeHTMLCell( '' , '', 240, 54, '<p style="font-size: 10px;color: #222222;">'.( ( $request->request->get('last_step-1') )*( $request->request->get('last_step_hour_price') ) ).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+
+        $pdf->writeHTMLCell( '' , '', 207, 63, '<p style="font-size: 10px;color: #222222;">'.( $request->request->get('last_step-2') ).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+        $pdf->writeHTMLCell( '' , '', 240, 63, '<p style="font-size: 10px;color: #222222;">'.( ( $request->request->get('last_step-2') )*( $request->request->get('last_step_hour_price') ) ).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+
+        $pdf->writeHTMLCell( '' , '', 207, 72, '<p style="font-size: 10px;color: #222222;">'.( $request->request->get('last_step-3') ).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+        $pdf->writeHTMLCell( '' , '', 240, 72, '<p style="font-size: 10px;color: #222222;">'.( ( $request->request->get('last_step-3') )*( $request->request->get('last_step_hour_price') ) ).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+
+        $pdf->writeHTMLCell( '' , '', 207, 83, '<p style="font-weight: bold;font-size: 10px;color: #222222;">'.$last_step_total_hours.'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+        $pdf->writeHTMLCell( '' , '', 240, 83, '<p style="font-weight: bold;font-size: 10px;color: #222222;">'.$last_step_total.'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+
+
+        $totalProjectHours = $first_step_total_hours + ( $totalDesign + round($totalDesign*($this->adaptive)) ) + ( $totalMArk_up + round($totalMArk_up*($this->adaptive)) ) + $totalProgramming + $last_step_total_hours;
+        $totalProjectPrice = $first_step_total_hours*( $request->request->get('first_step_hour_price') ) + ( $totalDesign + round($totalDesign*($this->adaptive)) )*( $request->request->get('design_hour_price') ) + ( $totalMArk_up + round($totalMArk_up*($this->adaptive)) )*( $request->request->get('mark_up_hour_price') ) + $totalProgramming*( $request->request->get('programming_hour_price') ) + $last_step_total_hours*( $request->request->get('last_step_hour_price') );
+
+        $pdf->writeHTMLCell( '' , '', 207, 92, '<p style="font-weight: bold;font-size: 10px;color: #222222;">'.$totalProjectHours.'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+        $pdf->writeHTMLCell( '' , '', 240, 92, '<p style="font-weight: bold;font-size: 10px;color: #222222;">'.$totalProjectPrice.'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+
+        if ( $request->request->get('discount') ) {
+            $pdf->writeHTMLCell( '' , '', 50, 100, '<p style="font-weight: bold;font-size: 12px;color: #222222;">СКИДКА:</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+            $pdf->writeHTMLCell( '' , '', 240, 100, '<p style="font-weight: bold;font-size: 10px;color: #222222;">'.( $totalProjectPrice*$request->request->get('discount')/100 ).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+
+            $pdf->writeHTMLCell( '' , '', 50, 108, '<p style="font-weight: bold;font-size: 12px;color: #222222;">ИТОГО, УЧИТЫВАЯ СКИДКУ:</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+            $pdf->writeHTMLCell( '' , '', 240, 108, '<p style="font-weight: bold;font-size: 10px;color: #222222;">'.( $totalProjectPrice - ( $totalProjectPrice*$request->request->get('discount')/100 ) ).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+
         }
 
 
-//        echo '<pre>';var_dump($designFinishArr);die;
-
-
-//        $siteTypeParameters1 = $em->getRepository('FreshCalcBundle:Parameters')->getParametersByIds([]);
 
 
 
@@ -347,6 +681,29 @@ class IndexController extends Controller
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Клиентский лист (8 стр.)
+        $pdf->AddPage();
+        $bMargin = $pdf->getBreakMargin();
+        $auto_page_break = $pdf->getAutoPageBreak();
+        $pdf->SetAutoPageBreak(false, 0);
+        $img_file = $_SERVER['DOCUMENT_ROOT'].'web/images/client_list.jpg';
+        $pdf->Image($img_file, 0, 0, 297, 210, '', '', '', false, 1300, '', false, false, 0);
+        $pdf->SetAutoPageBreak($auto_page_break, $bMargin);
+        $pdf->Link(200, 40, 65, 20, 'http://www.fresh-d.net/studio/regals.html');
+        $pdf->writeHTMLCell( 180, 40, 222.5, 60, '<a href="https://youtu.be/YhNySK73C6o" style="display: block;font-size: 7px; padding: 25px;"><div style="width: 250px;height: 250px; padding: 250px;">http://www.fresh-d.net/studio/regals.html</div></a>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
 
 
 //Сайт Агро-Союз http://agroritet.com (4 стр.)
@@ -394,16 +751,6 @@ class IndexController extends Controller
         $pdf->SetAutoPageBreak($auto_page_break, $bMargin);
         //$pdf->writeHTMLCell( 75, 10, 10, 180, '<a href="http://www.auremo.org" style="display: block;font-size: 12px; padding: 25px;"><div style="width: 250px;height: 250px; padding: 250px;">http://www.auremo.org</div></a>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
 
-//Клиентский лист (8 стр.)
-        $pdf->AddPage();
-        $bMargin = $pdf->getBreakMargin();
-        $auto_page_break = $pdf->getAutoPageBreak();
-        $pdf->SetAutoPageBreak(false, 0);
-        $img_file = $_SERVER['DOCUMENT_ROOT'].'web/images/client_list.jpg';
-        $pdf->Image($img_file, 0, 0, 297, 210, '', '', '', false, 1300, '', false, false, 0);
-        $pdf->SetAutoPageBreak($auto_page_break, $bMargin);
-        $pdf->Link(200, 40, 65, 20, 'http://www.fresh-d.net/studio/regals.html');
-        $pdf->writeHTMLCell( 180, 40, 222.5, 60, '<a href="https://youtu.be/YhNySK73C6o" style="display: block;font-size: 7px; padding: 25px;"><div style="width: 250px;height: 250px; padding: 250px;">http://www.fresh-d.net/studio/regals.html</div></a>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
 
 //Смета по разработке (9 стр.)
 //        $pdf->AddPage();
@@ -476,6 +823,7 @@ class IndexController extends Controller
 //        $bMargin = $pdf->getBreakMargin();
 //        $auto_page_break = $pdf->getAutoPageBreak();
 //        $pdf->SetAutoPageBreak(false, 0);
+        $pdf->SetFont($fontname2, '', 14, '', false);
         $img_file = $_SERVER['DOCUMENT_ROOT'].'web/images/contact_information-01.jpg';
         $pdf->Image($img_file, 0, 0, 297, 210, '', '', '', false, 1300, '', false, false, 0);
         $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 058', PDF_HEADER_STRING, array(0,0,0), array(255,255,255));
@@ -484,10 +832,10 @@ class IndexController extends Controller
         
 //        $pdf->SetAutoPageBreak($auto_page_break, $bMargin);
         $pdf->SetMargins( -20 , -20 , -20 , true );
-        $pdf->writeHTMLCell( 200, 10, 177, 116, '<a href="https://youtu.be/7NB4_TBkGkc" style="display: block;font-size: 9px; padding: 25px;"><div style="width: 250px;height: 250px; padding: 250px;">https://youtu.be/7NB4_TBkGkc</div></a>', $border = 0, $ln = 1, $fill = 0, false, $align = '', false);
-        $pdf->writeHTMLCell( 200, 10, 177, 134, '<a href="http://www.fresh-d.net/" style="display: block;font-size: 9px; padding: 25px;"><div style="width: 250px;height: 250px; padding: 250px;">www.fresh-d.net</div></a>', $border = 0, $ln = 1, $fill = 0, false, $align = '', false);
-        $pdf->writeHTMLCell( 180, 10, 177, 151, '<a href="http://www.fresh-d.net/studio/regals.html" style="display: block;font-size: 9px; padding: 25px;"><div style="width: 250px;height: 250px; padding: 250px;">www.fresh-d.net/studio/regals.html</div></a>', $border = 0, $ln = 1, $fill = 0, false, $align = '', false);
-        $pdf->writeHTMLCell( 180, 10, 177, 167, '<a href="https://youtu.be/Fh9TsoCk7DY" style="display: block;font-size: 9px; padding: 25px;"><div style="width: 250px;height: 250px; padding: 250px;">https://youtu.be/Fh9TsoCk7DY</div></a>', $border = 0, $ln = 1, $fill = 0, false, $align = '', false);
+        $pdf->writeHTMLCell( 200, 10, 184, 126, '<a href="https://youtu.be/7NB4_TBkGkc" style="display: block;font-size: 10px; padding: 25px;"><div style="width: 250px;height: 250px; padding: 250px;">https://youtu.be/7NB4_TBkGkc</div></a>', $border = 0, $ln = 1, $fill = 0, false, $align = '', false);
+        $pdf->writeHTMLCell( 200, 10, 184, 145, '<a href="http://www.fresh-d.net/" style="display: block;font-size: 10px; padding: 25px;"><div style="width: 250px;height: 250px; padding: 250px;">www.fresh-d.net</div></a>', $border = 0, $ln = 1, $fill = 0, false, $align = '', false);
+        $pdf->writeHTMLCell( 180, 10, 184, 165, '<a href="http://www.fresh-d.net/studio/regals.html" style="display: block;font-size: 10px; padding: 25px;"><div style="width: 250px;height: 250px; padding: 250px;">www.fresh-d.net/studio/regals.html</div></a>', $border = 0, $ln = 1, $fill = 0, false, $align = '', false);
+        $pdf->writeHTMLCell( 180, 10, 184, 184, '<a href="https://youtu.be/Fh9TsoCk7DY" style="display: block;font-size: 10px; padding: 25px;"><div style="width: 250px;height: 250px; padding: 250px;">https://youtu.be/Fh9TsoCk7DY</div></a>', $border = 0, $ln = 1, $fill = 0, false, $align = '', false);
 
 
 
@@ -514,6 +862,7 @@ class IndexController extends Controller
     protected function getResultArr( $fixadParametersArr=[] , $customParametersArr=[] , $hourPrice )
     {
         $forComplicate = $this->for_complicate;
+        $finishArr = [];
 
         $em = $this->getDoctrine()->getManager();
         if ( $fixadParametersArr ) {
@@ -558,7 +907,7 @@ class IndexController extends Controller
                 $finishArr[$customParamKeyNew.'-new']['price'] = round($customParamValueNew[2]*$forComplicate)*$hourPrice;
             }
         }
-
+//        echo '<pre>';var_dump($finishArr);die;
         return $finishArr;
 
     }
