@@ -180,8 +180,8 @@ $(document).on( 'click' , '.del-custom-param' , function(e){
 
 
     $('#design').find('input:checked').each(function(){
-        design += parseInt($(this).siblings('.field').find('input.value[id$="value"]').val());
-        //console.log($(this).siblings('.field').find('input.value[id$="value"]').val());
+        design += parseInt($(this).siblings('.field').find('input.value[id$="value"]').val())*1;
+        // console.log($(this).siblings('.field').find('input.value[id$="value"]').val());
     });
     $('#programming').find('input:checked').each(function(){
         programming += parseInt($(this).siblings('.field').find('input.value[id$="value"]').val());
@@ -324,10 +324,11 @@ $(document).on( 'click' , '.get_pdf_path' , function(e){
         $('.mutliSelect input[type="checkbox"]').each(function(){
 
             var title = $(this).val() + ",";
-            var checkedRows = $('.multiSel input').val();
+            var checkedRows = $(this).closest('.field').find('.multiSel input').val();
 
             if ($(this).is(':checked')) {
-                $('.multiSel input').val( checkedRows + title );
+                console.log(checkedRows + title);
+                $(this).closest('.field').find('.multiSel input').val( checkedRows + title );
             }
         });
     });

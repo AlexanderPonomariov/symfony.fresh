@@ -90,6 +90,14 @@
                                 </div>
                             </div>
 
+                            <div class="section"><input type="checkbox" id="first_step-3" checked="">
+                                <div class="field">
+                                    <label for="first_step-1">Разработка логотипа</label>
+                                    <input type="text" id="first_step-3" name="first_step-3" value="23" placeholder="Введите значение" required="" class="value input">
+                                    <label for="first_step-1" class="hours"> час.</label>
+                                </div>
+                            </div>
+
                             <div class="section"><input type="checkbox" id="first_step-2" checked="">
                                 <div class="field">
                                     <label for="first_step-2">Написание ТЗ на разработку сайта</label>
@@ -115,7 +123,7 @@
                                             <ul>
                                                 {#{{ dump(work_stages) }}#}
                                                 {% for key, executor in executors %}
-                                                    <li><input type="checkbox" value="{{ key }}"/>{{ executor[1] }}</li>
+                                                    <li><input type="checkbox" value="{{ key }}" {% if key == 0 %}checked{% endif %}/>{{ executor[1] }}</li>
                                                 {% endfor %}
                                             </ul>
                                         </div>
@@ -159,7 +167,7 @@
                                             <ul>
                                                 {#{{ dump(work_stages) }}#}
                                                 {% for key, executor in executors %}
-                                                    <li><input type="checkbox" value="{{ key }}"/>{{ executor[1] }}</li>
+                                                    <li><input type="checkbox" value="{{ key }}" {% if key == 1 or key == 2 or key == 3 %}checked{% endif %}/>{{ executor[1] }}</li>
                                                 {% endfor %}
                                             </ul>
                                         </div>
@@ -203,7 +211,7 @@
                                             <ul>
                                                 {#{{ dump(work_stages) }}#}
                                                 {% for key, executor in executors %}
-                                                    <li><input type="checkbox" value="{{ key }}"/>{{ executor[1] }}</li>
+                                                    <li><input type="checkbox" value="{{ key }}" {% if key == 2 or key == 3 or key == 4 or key == 5 %}checked{% endif %}/>{{ executor[1] }}</li>
                                                 {% endfor %}
                                             </ul>
                                         </div>
@@ -247,7 +255,7 @@
                                             <ul>
                                                 {#{{ dump(work_stages) }}#}
                                                 {% for key, executor in executors %}
-                                                    <li><input type="checkbox" value="{{ key }}"/>{{ executor[1] }}</li>
+                                                    <li><input type="checkbox" value="{{ key }}" {% if key == 0 or key == 4 or key == 6 %}checked{% endif %}/>{{ executor[1] }}</li>
                                                 {% endfor %}
                                             </ul>
                                         </div>
@@ -319,7 +327,7 @@
                                             <ul>
                                                 {#{{ dump(work_stages) }}#}
                                                 {% for key, executor in executors %}
-                                                    <li><input type="checkbox" value="{{ key }}"/>{{ executor[1] }}</li>
+                                                    <li><input type="checkbox" value="{{ key }}" {% if key == 0 or key == 4 or key == 6 %}checked{% endif %}/>{{ executor[1] }}</li>
                                                 {% endfor %}
                                             </ul>
                                         </div>
@@ -351,7 +359,7 @@
                                             <ul>
                                                 {#{{ dump(work_stages) }}#}
                                                 {% for key, work_stage in work_stages %}
-                                                    <li><input type="checkbox" value="{{ key }}"/>{{ work_stage }}</li>
+                                                    <li><input type="checkbox" value="{{ key }}" checked/>{{ work_stage }}</li>
                                                 {% endfor %}
                                             </ul>
                                         </div>
