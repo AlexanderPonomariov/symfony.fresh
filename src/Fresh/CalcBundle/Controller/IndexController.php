@@ -179,9 +179,9 @@ class IndexController extends Controller
         $img_file = $_SERVER['DOCUMENT_ROOT'].'web/images/commerce_sugestion_2_page.jpg';
         $pdf->Image($img_file, 0, 0, 297, 210, '', '', '', false, 1300, '', false, false, 0);
         $pdf->SetAutoPageBreak($auto_page_break, $bMargin);
-        $pdf->writeHTMLCell( 100, $h = 0, 220, 40, '<a href="https://www.youtu.be/7NB4_TBkGkc" style="display: block;font-size: 5px;text-decoration: none"><p style="font-weight: bold;font-size: 13px;color: #222222;line-height: 0.95">УЗНАЙТЕ О НАС БОЛЬШЕ<br/>ВСЕГО ЗА 2 МИНУТЫ</p></a>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
-        $pdf->writeHTMLCell( 100, 50, 220, 55, '<a href="https://www.youtu.be/7NB4_TBkGkc" style="display: block;font-size: 7px; padding: 25px;"><div style="width: 250px;height: 250px; padding: 250px;">https://www.youtu.be/7NB4_TBkGkc</div></a>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
-        $pdf->writeHTMLCell( 100, 50, 199, 38, '<a href="https://www.youtu.be/7NB4_TBkGkc" style="display: block;font-size: 5px; padding: 25px;"><img src="'.$_SERVER['DOCUMENT_ROOT'].'web/images/watch.png" alt=""></a>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+        $pdf->writeHTMLCell( 100, $h = 0, 220, 40, '<a href="https://youtu.be/7NB4_TBkGkc" style="display: block;font-size: 5px;text-decoration: none"><p style="font-weight: bold;font-size: 13px;color: #222222;line-height: 0.95">УЗНАЙТЕ О НАС БОЛЬШЕ<br/>ВСЕГО ЗА 2 МИНУТЫ</p></a>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+        $pdf->writeHTMLCell( 100, 50, 220, 55, '<a href="https://youtu.be/7NB4_TBkGkc" style="display: block;font-size: 7px; padding: 25px;"><div style="width: 250px;height: 250px; padding: 250px;">https://youtu.be/7NB4_TBkGkc</div></a>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+        $pdf->writeHTMLCell( 100, 50, 199, 38, '<a href="https://youtu.be/7NB4_TBkGkc" style="display: block;font-size: 5px; padding: 25px;"><img src="'.$_SERVER['DOCUMENT_ROOT'].'web/images/watch.png" alt=""></a>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
         $pdf->writeHTMLCell( '' , $h = 0, 25, 20, '<p style="font-weight: bold;font-size: 28px;color: #F59D0C;text-transform: uppercase">ЗДРАВСТВУЙТЕ, '.$name.'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
 
 //Страница о нас с ссылками (3 стр.)
