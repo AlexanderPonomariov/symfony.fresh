@@ -177,18 +177,33 @@ $(document).on( 'click' , '.del-custom-param' , function(e){
     //console.log(check_required_fields());
 
     //if ( check_required_fields() ) return false;
+    var for_complicate = 1 + $('#for_complicate').val()/100;
+    var discount = 1 - $('#for_complicate').val()/100;
+    var firstStep = 0;
+    var lastStep = 0;
 
 
-    $('#design').find('input:checked').each(function(){
-        design += parseInt($(this).siblings('.field').find('input.value[id$="value"]').val())*1;
+    $('#design .section').find('input:checked').each(function(){
+        design += Math.round($(this).siblings('.field').find('input.value[id$="value"]').val()*for_complicate);
         // console.log($(this).siblings('.field').find('input.value[id$="value"]').val());
     });
-    $('#programming').find('input:checked').each(function(){
-        programming += parseInt($(this).siblings('.field').find('input.value[id$="value"]').val());
+        design = Math.round(design * ( 1 + $('#adaptive').val()/100 ));
+    $('#programming .section').find('input:checked').each(function(){
+        programming += Math.round($(this).siblings('.field').find('input.value[id$="value"]').val()*for_complicate);
     });
 
-    $('#mark_up').find('input:checked').each(function(){
-        markUp += parseInt($(this).siblings('.field').find('input.value[id$="value"]').val());
+    $('#mark_up .section').find('input:checked').each(function(){
+        markUp += Math.round($(this).siblings('.field').find('input.value[id$="value"]').val()*for_complicate);
+    });
+        markUp = Math.round(markUp * ( 1 + $('#adaptive').val()/100 ));
+
+
+    $('#first_step').find('.section [type="text"]').each(function(){
+        firstStep += Math.round($(this).val());
+    });
+
+    $('#last_step').find('.section [type="text"]').each(function(){
+        lastStep += Math.round($(this).val());
     });
 
     // adaptiveDesign = Math.ceil( design * ( +( $('#adaptive').val() ? $('#adaptive').val() : 1 ) ) / 100 );
@@ -201,11 +216,11 @@ $(document).on( 'click' , '.del-custom-param' , function(e){
 
     //totalTime = Math.ceil( (markUp + programmingFinal + adaptiveDesign + design)*( 1 + $('#for_complicate').val()/100 )*( 1 - $('#discount').val()/100 ) );
 
-    totalTime = Math.round( (+adaptiveDesign + +programming) * ( 1 + $('#for_complicate').val()/100 ) );
+    totalTime = firstStep + design + markUp + programming + lastStep;
 
     //totalPrice = (Math.ceil(+totalTime*$('#hour_price').val()/100))*100;
 
-    totalPrice = totalTime * $('#hour_price').val();
+    totalPrice =   firstStep * $('#first_step_hour_price').val() + design * $('#design_hour_price').val() + markUp * $('#mark_up_hour_price').val() + programming * $('#programming_hour_price').val() + lastStep * $('#first_step_hour_price').val();
 
     pricePerOnePayment = +totalPrice/$('#quantity_of_payments').val();
 
@@ -239,15 +254,15 @@ $(document).on( 'click' , '.del-custom-param' , function(e){
     );
 
     console.log('design = ' + design);
-    console.log('adaptiveDesign = ' + adaptiveDesign);
+    // console.log('adaptiveDesign = ' + adaptiveDesign);
     // console.log('design + adaptiveDesign = '+ (+adaptiveDesign + +design) );
     console.log('programming = '+ programming);
     console.log('markUp = ' + markUp);
     // console.log('programmingFinal = '+ programmingFinal );
-    console.log('totalTime = '+ totalTime );
+    console.log('firstStep = '+ firstStep );
+    console.log('lastStep = '+ lastStep );
     console.log('totalPrice = '+ totalPrice );
-    console.log('pricePerOnePayment = '+ pricePerOnePayment );
-    // console.log('markUpPrice = '+ markUpPrice );
+    console.log('totalTime = '+ totalTime );
     // console.log('programmingPrice = '+ programmingPrice );
     // console.log('designPrice = '+ designPrice );
 
@@ -292,7 +307,6 @@ $(document).on( 'click' , '.get_pdf_path' , function(e){
     console.log( createPdfButton.closest('form') );
 
     $.post( '/generate_pdf' , createPdfButton.closest('form').serialize() , function(data){
-        console.log(data);
         createPdfButton.parent().append('<a href="/'+data+'" download class="download_pdf">Скачать PDF</a>');
     });
 });
@@ -327,7 +341,6 @@ $(document).on( 'click' , '.get_pdf_path' , function(e){
             var checkedRows = $(this).closest('.field').find('.multiSel input').val();
 
             if ($(this).is(':checked')) {
-                console.log(checkedRows + title);
                 $(this).closest('.field').find('.multiSel input').val( checkedRows + title );
             }
         });
