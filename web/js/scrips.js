@@ -198,12 +198,12 @@ $(document).on( 'click' , '.del-custom-param' , function(e){
         markUp = Math.round(markUp * ( 1 + $('#adaptive').val()/100 ));
 
 
-    $('#first_step').find('.section [type="text"]').each(function(){
-        firstStep += Math.round($(this).val());
+    $('#first_step').find('input:checked').siblings('.field').each(function(){
+        firstStep += Math.round($(this).find('input.value[id^="first_step"]').val());
     });
 
-    $('#last_step').find('.section [type="text"]').each(function(){
-        lastStep += Math.round($(this).val());
+    $('#last_step').find('input:checked').siblings('.field').each(function(){
+        lastStep += Math.round($(this).find('input.value[id^="last_step"]').val());
     });
 
     // adaptiveDesign = Math.ceil( design * ( +( $('#adaptive').val() ? $('#adaptive').val() : 1 ) ) / 100 );

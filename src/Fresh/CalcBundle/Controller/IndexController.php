@@ -220,36 +220,70 @@ class IndexController extends Controller
         $bMargin = $pdf->getBreakMargin();
         $auto_page_break = $pdf->getAutoPageBreak();
         $pdf->SetAutoPageBreak(false, 0);
-        $img_file = $_SERVER['DOCUMENT_ROOT'].'web/images/first-step.jpg';
-        $pdf->Image($img_file, 0, 0, 297, 210, '', '', '', false, 1300, '', false, false, 0);
 
-        $firstStepExecutorsArr = array_diff( explode( ',' , $request->request->get('first_step_executors') ) , array('') );
+        if ( $request->request->get('first_step-3') && $request->request->get('first_step-3-checkbox') ) {
 
-        $firstStepExecutorHeight=44;
-        $executors = $this->executors;
+            $img_file = $_SERVER['DOCUMENT_ROOT'].'web/images/first-step-logo.jpg';
+            $pdf->Image($img_file, 0, 0, 297, 210, '', '', '', false, 1300, '', false, false, 0);
+
+            $firstStepExecutorsArr = array_diff( explode( ',' , $request->request->get('first_step_executors') ) , array('') );
+
+            $firstStepExecutorHeight=44;
+            $executors = $this->executors;
 //        echo '<pre>';var_dump($request->request->get('first_step_executors'));die;
 
-        foreach ($firstStepExecutorsArr as $firstStepExecutor) {
-            $firstStepExecutorHeight += 10;
-            if ( true ) {
-                $pdf->writeHTMLCell('', '', 147, $firstStepExecutorHeight, '<p style="font-size: 10px;color: #222222;font-weight: lighter;">' . $executors[$firstStepExecutor][1] . '</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
-                $pdf->writeHTMLCell('', '', 147, $firstStepExecutorHeight + 5, '<p style="font-size: 7px;color: #222222;font-weight:100;">' . $executors[$firstStepExecutor][0] . '</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+            foreach ($firstStepExecutorsArr as $firstStepExecutor) {
+                $firstStepExecutorHeight += 10;
+                if ( true ) {
+                    $pdf->writeHTMLCell('', '', 147, $firstStepExecutorHeight, '<p style="font-size: 10px;color: #222222;font-weight: lighter;">' . $executors[$firstStepExecutor][1] . '</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+                    $pdf->writeHTMLCell('', '', 147, $firstStepExecutorHeight + 5, '<p style="font-size: 7px;color: #222222;font-weight:100;">' . $executors[$firstStepExecutor][0] . '</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
 
+                }
             }
+            $first_step_total_hours =  $request->request->get('first_step-1') + $request->request->get('first_step-2') + $request->request->get('first_step-3');
+
+            $pdf->writeHTMLCell( '' , '', 207, 57, '<p style="font-size: 10px;color: #222222;">'.( $request->request->get('first_step-3') ).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+            $pdf->writeHTMLCell( '' , '', 240, 57, '<p style="font-size: 10px;color: #222222;">'.( ( $request->request->get('first_step-3') )*( $request->request->get('first_step_hour_price') ) ).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+
+            $pdf->writeHTMLCell( '' , '', 207, 68, '<p style="font-size: 10px;color: #222222;">'.( $request->request->get('first_step-1') ).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+            $pdf->writeHTMLCell( '' , '', 240, 68, '<p style="font-size: 10px;color: #222222;">'.( ( $request->request->get('first_step-1') )*( $request->request->get('first_step_hour_price') ) ).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+
+            $pdf->writeHTMLCell( '' , '', 207, 80, '<p style="font-size: 10px;color: #222222;">'.( $request->request->get('first_step-2') ).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+            $pdf->writeHTMLCell( '' , '', 240, 80, '<p style="font-size: 10px;color: #222222;">'.( ( $request->request->get('first_step-2') )*( $request->request->get('first_step_hour_price') ) ).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+
+            $pdf->writeHTMLCell( '' , '', 207, 91, '<p style="font-weight: bold;font-size: 10px;color: #222222;">'.(( $request->request->get('first_step-1') )+( $request->request->get('first_step-2') + $request->request->get('first_step-3') )).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+            $pdf->writeHTMLCell( '' , '', 240, 91, '<p style="font-weight: bold;font-size: 10px;color: #222222;">'.( ( $request->request->get('first_step-2')+$request->request->get('first_step-1') + $request->request->get('first_step-3') )*( $request->request->get('first_step_hour_price') ) ).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+
+        } else {
+            $img_file = $_SERVER['DOCUMENT_ROOT'].'web/images/first-step-without-logo.jpg';
+            $pdf->Image($img_file, 0, 0, 297, 210, '', '', '', false, 1300, '', false, false, 0);
+
+            $firstStepExecutorsArr = array_diff( explode( ',' , $request->request->get('first_step_executors') ) , array('') );
+
+            $firstStepExecutorHeight=44;
+            $executors = $this->executors;
+//        echo '<pre>';var_dump($request->request->get('first_step_executors'));die;
+
+            foreach ($firstStepExecutorsArr as $firstStepExecutor) {
+                $firstStepExecutorHeight += 10;
+                if ( true ) {
+                    $pdf->writeHTMLCell('', '', 147, $firstStepExecutorHeight, '<p style="font-size: 10px;color: #222222;font-weight: lighter;">' . $executors[$firstStepExecutor][1] . '</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+                    $pdf->writeHTMLCell('', '', 147, $firstStepExecutorHeight + 5, '<p style="font-size: 7px;color: #222222;font-weight:100;">' . $executors[$firstStepExecutor][0] . '</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+
+                }
+            }
+            $first_step_total_hours =  $request->request->get('first_step-1') + $request->request->get('first_step-2');
+
+            $pdf->writeHTMLCell( '' , '', 207, 58, '<p style="font-size: 10px;color: #222222;">'.( $request->request->get('first_step-1') ).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+            $pdf->writeHTMLCell( '' , '', 240, 58, '<p style="font-size: 10px;color: #222222;">'.( ( $request->request->get('first_step-1') )*( $request->request->get('first_step_hour_price') ) ).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+
+            $pdf->writeHTMLCell( '' , '', 207, 68, '<p style="font-size: 10px;color: #222222;">'.( $request->request->get('first_step-2') ).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+            $pdf->writeHTMLCell( '' , '', 240, 68, '<p style="font-size: 10px;color: #222222;">'.( ( $request->request->get('first_step-2') )*( $request->request->get('first_step_hour_price') ) ).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+
+            $pdf->writeHTMLCell( '' , '', 207, 78, '<p style="font-weight: bold;font-size: 10px;color: #222222;">'.(( $request->request->get('first_step-1') )+( $request->request->get('first_step-2') )).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+            $pdf->writeHTMLCell( '' , '', 240, 78, '<p style="font-weight: bold;font-size: 10px;color: #222222;">'.( ( $request->request->get('first_step-2')+$request->request->get('first_step-1') )*( $request->request->get('first_step_hour_price') ) ).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+
         }
-        $first_step_total_hours =  $request->request->get('first_step-1') + $request->request->get('first_step-2') + $request->request->get('first_step-3');
-
-        $pdf->writeHTMLCell( '' , '', 207, 57, '<p style="font-size: 10px;color: #222222;">'.( $request->request->get('first_step-3') ).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
-        $pdf->writeHTMLCell( '' , '', 240, 57, '<p style="font-size: 10px;color: #222222;">'.( ( $request->request->get('first_step-3') )*( $request->request->get('first_step_hour_price') ) ).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
-
-        $pdf->writeHTMLCell( '' , '', 207, 68, '<p style="font-size: 10px;color: #222222;">'.( $request->request->get('first_step-1') ).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
-        $pdf->writeHTMLCell( '' , '', 240, 68, '<p style="font-size: 10px;color: #222222;">'.( ( $request->request->get('first_step-1') )*( $request->request->get('first_step_hour_price') ) ).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
-
-        $pdf->writeHTMLCell( '' , '', 207, 80, '<p style="font-size: 10px;color: #222222;">'.( $request->request->get('first_step-2') ).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
-        $pdf->writeHTMLCell( '' , '', 240, 80, '<p style="font-size: 10px;color: #222222;">'.( ( $request->request->get('first_step-2') )*( $request->request->get('first_step_hour_price') ) ).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
-
-        $pdf->writeHTMLCell( '' , '', 207, 91, '<p style="font-weight: bold;font-size: 10px;color: #222222;">'.(( $request->request->get('first_step-1') )+( $request->request->get('first_step-2') + $request->request->get('first_step-3') )).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
-        $pdf->writeHTMLCell( '' , '', 240, 91, '<p style="font-weight: bold;font-size: 10px;color: #222222;">'.( ( $request->request->get('first_step-2')+$request->request->get('first_step-1') + $request->request->get('first_step-3') )*( $request->request->get('first_step_hour_price') ) ).'</p>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
 
 
 //Смета разработки дизайна (Этап 2)
