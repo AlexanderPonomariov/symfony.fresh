@@ -6,8 +6,8 @@
 
             {% if loop.index > 17 %}
                 <tr>
-                    <td width="270" height="17">{{ value.name }}</td>
-                    <td width="130" height="17"></td>
+                    <td width="250" height="17">{{ value.name }}</td>
+                    <td width="150" height="17"></td>
                     <td width="100" align="center">{{ value.value }}</td>
                     <td width="120" align="center">{{ value.price }}</td>
                 </tr>
@@ -18,15 +18,15 @@
             {% if loop.index <= 17 %}
                 {% if loop.index == 3 and programming is defined %}
                     <tr>
-                        <td width="270" height="17" style="font-weight: bold">разработка функионала:</td>
-                        <td width="130" height="17"></td>
+                        <td width="250" height="17" style="font-weight: bold">разработка функионала:</td>
+                        <td width="150" height="17"></td>
                         <td width="100" align="center"></td>
                         <td width="120" align="center"></td>
                     </tr>
                 {% endif %}
                 <tr>
-                    <td width="270" height="17">{{ value.name }}</td>
-                    <td width="130" height="17"></td>
+                    <td width="250" height="17">{{ value.name }}</td>
+                    <td width="150" height="17"></td>
                     <td width="100" align="center">{{ value.value }}</td>
                     <td width="120" align="center">{{ value.price }}</td>
                 </tr>
