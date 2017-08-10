@@ -810,7 +810,7 @@ class IndexController extends Controller
         $img_file = $_SERVER['DOCUMENT_ROOT'].'web/images/why_we.jpg';
         $pdf->Image($img_file, 0, 0, 297, 210, '', '', '', false, 1300, '', false, false, 0);
         $pdf->SetAutoPageBreak($auto_page_break, $bMargin);
-        $pdf->writeHTMLCell( 180, 40, 111, 139, '<a href="http://www.fresh-d.net/portfolio" style="display: block;font-size: 11px; padding: 25px;"><div style="width: 250px;height: 250px; padding: 250px;">www.fresh-d.net/portfolio</div></a>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+        $pdf->writeHTMLCell( 180, 40, 68, 135, '<a href="http://www.fresh-d.net/portfolio" style="display: block;font-size: 11px; padding: 25px;"><div style="width: 250px;height: 250px; padding: 250px;">www.fresh-d.net/portfolio</div></a>', $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
 
 //Доп. услуги (11 стр.)
 //        $pdf->AddPage();
