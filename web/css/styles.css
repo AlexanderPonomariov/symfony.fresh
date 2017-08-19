@@ -171,6 +171,7 @@ fieldset.inside_fieldset {
 .field.buttons-block {
     clear: both;
     width: 94% !important;
+    margin-top: 30px;
 }
 
 a.download_sample.button {
@@ -191,7 +192,12 @@ a.download_sample.button {
 .brif_form .contact_info .fieldsets .field.work_stages select {
     width: 100%;
 }
-
+.err-msg {
+    color: #ff0000;
+    position: absolute;
+    display: none;
+    left: 37%;
+}
 
 
 

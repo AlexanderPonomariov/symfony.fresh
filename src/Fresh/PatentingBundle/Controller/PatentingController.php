@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints\DateTime;
 
 class PatentingController extends Controller
 {
-    protected $monthUkr = ['','cічня', 'лютого','березеня','квітня','травня','червня','липеня','серпня','вересня','жовтня','листопада','грудня',];
+    protected $monthUkr = ['','cічня', 'лютого','березеня','квітня','травня','червня','липня','серпня','вересня','жовтня','листопада','грудня',];
 
     public function indexAction()
     {
@@ -287,7 +287,14 @@ class PatentingController extends Controller
             $paragraph_6_2 = $formalizationOfApplicationPrice + $payFeeForFilingApplicationPrice;
             $paragraph_6_3 = $payFeeForPublicationPrice + $taxForCertification->getPrice() + $forGetingCertificate->getPrice();
 
-            $totalPrice = $payCollectionForSearchPrice + $pricesByData[2]->getPrice() + $formalizationOfApplicationPrice + $payFeeForFilingApplicationPrice + $payFeeForPublicationPrice + $taxForCertification->getPrice() + $forGetingCertificate->getPrice();
+//            $totalPrice = $payCollectionForSearchPrice + $pricesByData[2]->getPrice() + $formalizationOfApplicationPrice + $payFeeForFilingApplicationPrice + $payFeeForPublicationPrice + $taxForCertification->getPrice() + $forGetingCertificate->getPrice();
+//
+//            var_dump('1');
+//            var_dump($paragraph_6_1);
+//            var_dump($paragraph_6_2);
+//            var_dump($paragraph_6_3);
+//            var_dump($totalPrice);
+//            die;
 
         } else if ( $registrations_urgency == 1/*Urgent*/ && !$search_neaded/*Without search*/ ) {
 
@@ -297,7 +304,14 @@ class PatentingController extends Controller
             $paragraph_6_2 = $payFeeForPublicationPrice + $taxForCertification->getPrice() + $forGetingCertificate->getPrice();
             $paragraph_6_3 = '';
 
-            $totalPrice = $formalizationOfApplicationPrice + $payFeeForFilingApplicationPrice + $payFeeForPublicationPrice + $taxForCertification->getPrice() + $forGetingCertificate->getPrice();
+//            $totalPrice = $formalizationOfApplicationPrice + $payFeeForFilingApplicationPrice + $payFeeForPublicationPrice + $taxForCertification->getPrice() + $forGetingCertificate->getPrice();
+//
+//            var_dump('2');
+//            var_dump($paragraph_6_1);
+//            var_dump($paragraph_6_2);
+//            var_dump($paragraph_6_3);
+//            var_dump($totalPrice);
+//            die;
 
         } else if ( $registrations_urgency == 3/*Urgent*/ ) {
 
@@ -307,8 +321,14 @@ class PatentingController extends Controller
             $paragraph_6_2 = $formalizationOfApplicationPrice + $payFeeForFilingApplicationPrice + $pricesByData[7]->getPrice() + $payFeeForAcceleratedRegistartionPrice;
             $paragraph_6_3 = $payFeeForPublicationPrice + $taxForCertification->getPrice() + $forGetingCertificate->getPrice();
 
-            $totalPrice = $pricesByData[2]->getPrice() + $payCollectionForSearchPrice + $formalizationOfApplicationPrice + $payFeeForFilingApplicationPrice + $pricesByData[7]->getPrice() + $payFeeForAcceleratedRegistartionPrice + $payFeeForPublicationPrice + $taxForCertification->getPrice() + $forGetingCertificate->getPrice();
-
+//            $totalPrice = $pricesByData[2]->getPrice() + $payCollectionForSearchPrice + $formalizationOfApplicationPrice + $payFeeForFilingApplicationPrice + $pricesByData[7]->getPrice() + $payFeeForAcceleratedRegistartionPrice + $payFeeForPublicationPrice + $taxForCertification->getPrice() + $forGetingCertificate->getPrice();
+//
+//            var_dump('3');
+//            var_dump($paragraph_6_1);
+//            var_dump($paragraph_6_2);
+//            var_dump($paragraph_6_3);
+//            var_dump($totalPrice);
+            die;
         } else if ( $registrations_urgency == 2/*Accelerated*/ ) {
 
             $specification = new TemplateProcessor($templatesPath.'specification_accelerated.docx');
@@ -316,9 +336,18 @@ class PatentingController extends Controller
             $paragraph_6_1 = $payCollectionForSearchPrice + $pricesByData[2]->getPrice();
             $paragraph_6_2 = $formalizationOfApplicationPrice + $payFeeForFilingApplicationPrice + $pricesByData[7]->getPrice() + $payFeeForAcceleratedRegistartionPrice;
             $paragraph_6_3 = $payFeeForPublicationPrice + $taxForCertification->getPrice() + $forGetingCertificate->getPrice();
-
-            $totalPrice = $formalizationOfApplicationPrice + $pricesByData[2]->getPrice() + $formalizationOfApplicationPrice + $payFeeForFilingApplicationPrice + $pricesByData[7]->getPrice() + $payFeeForAcceleratedRegistartionPrice + $payFeeForPublicationPrice + $taxForCertification->getPrice() + $forGetingCertificate->getPrice();
+//
+//            $totalPrice = $formalizationOfApplicationPrice + $pricesByData[2]->getPrice() + $formalizationOfApplicationPrice + $payFeeForFilingApplicationPrice + $pricesByData[7]->getPrice() + $payFeeForAcceleratedRegistartionPrice + $payFeeForPublicationPrice + $taxForCertification->getPrice() + $forGetingCertificate->getPrice();
+//
+//            var_dump('4');
+//            var_dump($paragraph_6_1);
+//            var_dump($paragraph_6_2);
+//            var_dump($paragraph_6_3);
+//            var_dump($totalPrice);
+//            die;
         }
+
+        $totalPrice = $paragraph_6_1 + $paragraph_6_2 + $paragraph_6_3;
 
         $monthUkr = $this->monthUkr;
         $date = new \DateTime();
@@ -427,7 +456,7 @@ class PatentingController extends Controller
 
     public function saveAction(Request $request)
     {
-//        echo '<pre>';var_dump($request->request);die;
+        //echo '<pre>';var_dump($request->request);die;
 		mb_internal_encoding("UTF-8");
         $em = $this->getDoctrine()->getManager();
 
@@ -442,8 +471,15 @@ class PatentingController extends Controller
 
 
         if ( !$request->request->get('organizations') || $request->request->get('update_customer') || $request->request->get('add_customer') ) {
-//            echo '<pre>';var_dump(( !$request->request->get('organizations') || $request->request->get('add_customer') ));die;
+//            echo '<pre>';var_dump($request->request->get('organizations'));die;
             $newLegalEntity = ( !$request->request->get('organizations') || $request->request->get('add_customer') ) ? new LegalEntities() : $em->getRepository('FreshPatentingBundle:LegalEntities')->find( $request->request->get('organizations') );
+
+            if ( $request->request->get('legal_entity_type') ) {
+                $asd = $em->getRepository('FreshPatentingBundle:LegalEntities')->find( $request->request->get('organizations') );
+            } else {
+
+            }
+
 
             $newLegalEntity->setorganizationType($request->request->get('legal_entity_type'));
             $newLegalEntity->setIsSelfOrganization(false);
@@ -453,9 +489,15 @@ class PatentingController extends Controller
             $newLegalEntity->setAddress($request->request->get('address'));
             $newLegalEntity->setIdentificationCode($request->request->get('identification_code'));
 
+            $identificationCodeExist = false;
+            $passportSeriesExist = false;
+            $passportNumberExist = false;
+
             if ( $request->request->get('legal_entity_type') /*Legal*/ ) {
 
                 $newLegalEntity->setOrganizationName($request->request->get('organization_name'));
+
+                $identificationCodeExist = $em->getRepository('FreshPatentingBundle:LegalEntities')->findBy(array('identificationCode' => $request->request->get('identification_code') ));
 
             } else { /*Phisical*/
 
@@ -464,7 +506,18 @@ class PatentingController extends Controller
                 $newLegalEntity->setPassportNumber($request->request->get('passport_number'));
                 $newLegalEntity->setPassportOther($request->request->get('passport_other'));
 
+                $passportSeriesExist = $em->getRepository('FreshPatentingBundle:LegalEntities')->findBy(array('passportSeries' => $request->request->get('passport_series') ));
+                $passportNumberExist = $em->getRepository('FreshPatentingBundle:LegalEntities')->findBy(array('passportNumber' => $request->request->get('passport_number') ));
+
             }
+
+            if ( ($identificationCodeExist || ( $passportSeriesExist && $passportNumberExist ) ) && !$request->request->get('update_customer') ) {
+                return new JsonResponse(array(
+                    'message' => 'Такой клиент уже существует',
+                    'error' => true,
+                ));
+            }
+
 
             $em->persist($newLegalEntity);
             $em->flush();

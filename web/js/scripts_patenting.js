@@ -140,7 +140,18 @@
 
         $.post( 'save' , saveContract.closest('form').serialize() , function(data){
 
-            console.log(data);
+            console.log(data.error);
+
+            if ( data.error ) {
+
+                saveContract.closest('.buttons-block').find('p').html(data.message).fadeIn();
+
+                setTimeout(function(){
+                    saveContract.closest('.buttons-block').find('p').fadeOut();
+                },3000);
+
+                return;
+            }
 
             saveContract.closest('.buttons-block').append('<a href="/'+data.archive +'" download class="download_sample button">Скачать договор</a>');
             // createContract.closest('.buttons-block').append('<a class="download_sample button save_client_and_contract">Сохранить/Обновить</a>');
