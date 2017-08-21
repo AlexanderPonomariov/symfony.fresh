@@ -435,11 +435,11 @@ class IndexController extends Controller
             }
 
             $adaptiveDesign = round($totalMArk_up*($this->adaptive));
-            array_push($mark_upFinishArr, [ 'name'=>'Адаптивная версия', 'value'=>$adaptiveDesign, 'price'=>$adaptiveDesign*$design_hour_price] );
+            array_push($mark_upFinishArr, [ 'name'=>'Адаптивная версия', 'value'=>$adaptiveDesign, 'price'=>$adaptiveDesign*$mark_up_hour_price] );
 
             $html123 = $this->renderView('FreshCalcBundle:PDF:tableTemplate.html.twig', array(
                 'finishArr'  => $mark_upFinishArr,
-                'total' => [ 'name'=>'ИТОГО 3Й ЭТАП', 'value'=>$totalMArk_up+$adaptiveDesign, 'price'=>($totalMArk_up+$adaptiveDesign)*$design_hour_price ],
+                'total' => [ 'name'=>'ИТОГО 3Й ЭТАП', 'value'=>$totalMArk_up+$adaptiveDesign, 'price'=>($totalMArk_up+$adaptiveDesign)*$mark_up_hour_price ],
                 'single' => 1,
             ));
 
@@ -511,11 +511,11 @@ class IndexController extends Controller
             }
 
             $adaptiveDesign = round($totalMArk_up*($this->adaptive));
-            array_push($mark_upFinishArr, [ 'name'=>'Адаптивная версия', 'value'=>$adaptiveDesign, 'price'=>$adaptiveDesign*$design_hour_price] );
+            array_push($mark_upFinishArr, [ 'name'=>'Адаптивная версия', 'value'=>$adaptiveDesign, 'price'=>$adaptiveDesign*$mark_up_hour_price] );
 
             $html123 = $this->renderView('FreshCalcBundle:PDF:tableTemplate.html.twig', array(
                 'finishArr'  => $mark_upFinishArr,
-                'total' => [ 'name'=>'ИТОГО 3Й ЭТАП', 'value'=>$totalMArk_up+$adaptiveDesign, 'price'=>($totalMArk_up+$adaptiveDesign)*$design_hour_price ],
+                'total' => [ 'name'=>'ИТОГО 3Й ЭТАП', 'value'=>$totalMArk_up+$adaptiveDesign, 'price'=>($totalMArk_up+$adaptiveDesign)*$mark_up_hour_price ],
             ));
 
             $pdf->writeHTMLCell( '' , '', 49, 55, $html123, $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
