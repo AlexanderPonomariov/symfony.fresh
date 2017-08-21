@@ -563,7 +563,7 @@ class IndexController extends Controller
 
             $html123 = $this->renderView('FreshCalcBundle:PDF:tableTemplate.html.twig', array(
                 'finishArr'  => $programingFinishArr,
-                'total' => [ 'name'=>'ИТОГО 4Й ЭТАП', 'value'=>$totalProgramming+$adaptiveDesign, 'price'=>($totalProgramming+$adaptiveDesign)*$design_hour_price ],
+                'total' => [ 'name'=>'ИТОГО 4Й ЭТАП', 'value'=>$totalProgramming+$adaptiveDesign, 'price'=>($totalProgramming+$adaptiveDesign)*$programming_hour_price ],
                 'single' => 1,
                 'programming' => 1,
             ));
@@ -642,7 +642,7 @@ class IndexController extends Controller
 
             $html123 = $this->renderView('FreshCalcBundle:PDF:tableTemplate.html.twig', array(
                 'finishArr'  => $programingFinishArr,
-                'total' => [ 'name'=>'ИТОГО 4Й ЭТАП', 'value'=>$totalProgramming+$adaptiveDesign, 'price'=>($totalProgramming+$adaptiveDesign)*$design_hour_price ],
+                'total' => [ 'name'=>'ИТОГО 4Й ЭТАП', 'value'=>$totalProgramming+$adaptiveDesign, 'price'=>($totalProgramming+$adaptiveDesign)*$programming_hour_price ],
             ));
 
             $pdf->writeHTMLCell( '' , '', 49, 55, $html123, $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
